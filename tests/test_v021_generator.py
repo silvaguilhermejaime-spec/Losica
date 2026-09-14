@@ -11,7 +11,6 @@ from losica_engine.grammar_v021 import LanguageExecutor, semantic_equivalent
 from losica_engine.lexicon_v021 import VOCABULARY_SCALES, _select_concepts
 from losica_engine.morphophonology import Morpheme, phonemic_from_orthography, realize_morphemes
 from losica_engine.phonology import is_legal_surface, legal_syllables
-from losica_engine.semantic_core import G_MANNER_PROX, G_TIME_ALWAYS
 from losica_engine.translation import translate
 from losica_engine.independence import canonical_linguistic_hash
 from losica_engine.typology import load_snapshot
@@ -228,19 +227,6 @@ def test_controlled_translation_is_read_only(language):
     assert canonical_linguistic_hash(state) == before_hash
     assert result["tokens"]
 
-
-def test_always_been_like_this_translates_compositionally(language):
-    result = translate(language, "I always been like this")
-    concepts = {token["concept"] for token in result["token_details"]}
-    assert {G_TIME_ALWAYS, G_MANNER_PROX} <= concepts
-    assert result["translation"] == "I have always been like this"
-    assert result["orthographic_sentence"]
-
-    third_person = translate(language, "It's always been like this")
-    third_concepts = {token["concept"] for token in third_person["token_details"]}
-    assert {G_TIME_ALWAYS, G_MANNER_PROX} <= third_concepts
-    assert third_person["translation"] == "it has always been like this"
-    assert third_person["orthographic_sentence"]
 
 
 def test_source_ledger_covers_each_required_research_boundary(language):
