@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 
 from .grammar_v021 import LanguageExecutor, clause, entity, participant_reference
+from .semantic_core import G_COP, G_MANNER_PROX, G_TIME_ALWAYS
 
 
 def _normalize_word(word: str) -> str:
@@ -58,6 +59,24 @@ def _lookup(index: dict[str, str], word: str, *, role: str) -> str:
 def parse_controlled_source(state: dict, text: str) -> dict:
     words = re.findall(r"[A-Za-z]+", text.lower())
     question = text.rstrip().endswith("?")
+    habitual_state_variants = {
+        ("i", "always", "been", "like", "this"),
+        ("i", "have", "always", "been", "like", "this"),
+        ("i", "ve", "always", "been", "like", "this"),
+        ("i", "was", "always", "like", "this"),
+    }
+    if tuple(words) in habitual_state_variants:
+        speaker = participant_reference(speaker="required", addressee="forbidden", cardinality=1)
+        return clause(
+            G_COP,
+            {
+                "THEME": speaker,
+                "ATTRIBUTE": entity(G_MANNER_PROX),
+                "TIME": entity(G_TIME_ALWAYS),
+            },
+            construction="copular",
+            features={"tense": "NPST", "aspect": "IPFV"},
+        )
     while words and words[0] in {"the", "a", "an"}:
         words.pop(0)
     tense, polarity = "NPST", "POS"
