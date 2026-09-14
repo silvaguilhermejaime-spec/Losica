@@ -1,0 +1,27 @@
+{
+  "backend": {
+    "engine": "fixture",
+    "role": "example of QBV bridge output"
+  },
+  "ranking": [
+    {
+      "imitation_id": "I001",
+      "referent_id": "R1",
+      "score": 0.91,
+      "speaker_id": "S01"
+    },
+    {
+      "imitation_id": "I002",
+      "referent_id": "R1",
+      "score": 0.87,
+      "speaker_id": "S02"
+    },
+    {
+      "imitation_id": "I003",
+      "referent_id": "R2",
+      "score": 0.52,
+      "speaker_id": "S03"
+    }
+  ],
+  "schema": "losica-vocal-retrieval-ranking/1"
+}

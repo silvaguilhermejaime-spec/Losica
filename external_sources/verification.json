@@ -1,0 +1,105 @@
+{
+  "catalog_sha256": "930689a9d78f0c57eac54eb0e9389230953a2e1196cf689f89ca557758576abc",
+  "record_counts": {
+    "activitynet-entities": 46195,
+    "audiocaps": 49810,
+    "epic-kitchens-100": 76885,
+    "epic-sounds": 107078,
+    "talk2car": 9512
+  },
+  "schema": "losica-source-catalog-verification/1",
+  "target_sentence_audit": {
+    "bread": {
+      "accepted_token_forms": [
+        "bread"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 637,
+      "record_counts_by_source": {
+        "activitynet-entities": 97,
+        "epic-kitchens-100": 540
+      }
+    },
+    "failed_result": {
+      "accepted_token_forms": [
+        "fail",
+        "failed",
+        "failing",
+        "fails"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 41,
+      "record_counts_by_source": {
+        "activitynet-entities": 32,
+        "audiocaps": 9
+      }
+    },
+    "inability": {
+      "accepted_token_forms": [
+        "can't",
+        "cannot",
+        "couldn't",
+        "unable"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 8,
+      "record_counts_by_source": {
+        "activitynet-entities": 4,
+        "talk2car": 4
+      }
+    },
+    "purchase": {
+      "accepted_token_forms": [
+        "bought",
+        "buy",
+        "buying",
+        "buys"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 13,
+      "record_counts_by_source": {
+        "activitynet-entities": 9,
+        "talk2car": 4
+      }
+    },
+    "same_day": {
+      "accepted_token_forms": [
+        "today"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 11,
+      "record_counts_by_source": {
+        "activitynet-entities": 2,
+        "talk2car": 9
+      }
+    },
+    "stated_intention": {
+      "accepted_token_forms": [
+        "intend",
+        "intended",
+        "intending",
+        "intends",
+        "intention",
+        "intentions",
+        "plan",
+        "planned",
+        "planning",
+        "plans",
+        "want",
+        "wanted",
+        "wanting",
+        "wants"
+      ],
+      "measurement_rule": "number of catalog records containing at least one exact case-folded token from accepted_token_forms",
+      "record_count": 228,
+      "record_counts_by_source": {
+        "activitynet-entities": 28,
+        "audiocaps": 1,
+        "epic-kitchens-100": 2,
+        "talk2car": 197
+      }
+    }
+  },
+  "total_record_count": 289480,
+  "verified_source_file_count": 10
+}

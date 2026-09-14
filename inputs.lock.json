@@ -1,0 +1,41 @@
+{
+  "schema": "losica-input-lock/2",
+  "release": "0.29.0",
+  "generation": {
+    "algorithm_id": "losica-causal-induction-v1",
+    "seed": 19020,
+    "causal_stream_sha256": "55e7ec9804365959b1fc208c287cd7f251ddfb3e0ed72042d51d51ce572f2ec9",
+    "source_sha256": "7e249e5e6d13eda21f0e19e8050c554a28962fbfdbd6f3927a29cefe69c90c8d",
+    "frame_count": 4096,
+    "sample_width": 12,
+    "control_width": 4,
+    "vocabulary_scale": "large"
+  },
+  "code": {
+    "losica_engine/causal_stream.py": "7653af7548adc4d2592dc21370cd2ae63b875ea940c50aa665b61516ffee7a56",
+    "losica_engine/causal_attestation.py": "05b0b4f4c5c49b62e2f0f206c9b1fe1e880e587f62b519391453a45a2f16cce8",
+    "losica_engine/experiential_language.py": "4ec530ac130c7f7f4fbca4d800929bcefa91913fa16255d238772862c9324d09",
+    "losica_engine/causal_validation.py": "43c0495a21d016a619b3b30b00bd6ff942e14d6b612cf4e59616fb3e36345878",
+    "losica_engine/causal_adapter.py": "f07a3e52b9de70812bd099be854c9d8789c53279a8a6c4bd645d96eb710caf52",
+    "losica_engine/causal_finalize.py": "8dddb40675634f515ece1ea7430792901c57107845672d43dfa1ef77377aa976",
+    "losica_engine/causal_use.py": "a9ced65ac64de56e52cad5a90f3d03972555940983b3daae0a57873956ab2156",
+    "losica_engine/causal_grammar.py": "ec06ce84b8c7d922c3ee3b005ef4a946f3b1bd07610d931d2fd925afaeca336c",
+    "losica_engine/causal_history.py": "16675888c48a0fa689be9f2c341187d49d53482da2f16712f7bd8f8a23776ba6",
+    "config/preproto.json": "47c11e7d8b835933d815d279918a47a039b1509ffa0c2387ecbecd722afbae65"
+  },
+  "excluded_generation_materials": [
+    "data/empirical_core_v0_26.json",
+    "data/empirical_source_v0_26.json",
+    "data/semantic_topology_v0_26.json",
+    "data/display_en_v0_26.json",
+    "rewards",
+    "supplied_event_boundaries",
+    "simulator_oracle_state",
+    "target_specific_sensors",
+    "pretrained_semantic_representations"
+  ],
+  "generated_product": {
+    "path": "language.json",
+    "sha256": "c55d5ca93aa936f757573c296836282441d1d1b1560bdf518a150738185f4d99"
+  }
+}

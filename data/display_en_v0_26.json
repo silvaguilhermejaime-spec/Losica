@@ -1,0 +1,1518 @@
+{
+  "concepts": [
+    {
+      "concepticon_id": "221",
+      "definition": "The state of combustion in which inflammable material burns, producing heat, flames and often smoke.",
+      "gloss": "FIRE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "683",
+      "definition": "A human being.",
+      "gloss": "PERSON",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "695",
+      "definition": "To get from one place to another by any means.",
+      "gloss": "GO",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "948",
+      "definition": "Common liquid (H₂O) which forms rain, rivers, the sea, etc., and which makes up a large part of the bodies of organisms.",
+      "gloss": "WATER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1336",
+      "definition": "To consume something solid or semi-solid (usually food) by putting it into the mouth and eventually swallowing it.",
+      "gloss": "EAT",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1203",
+      "definition": "Having much distance from one terminating point on an object or an area to another terminating point.",
+      "gloss": "LONG",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1447",
+      "definition": "To transfer the possession or holding (of an object) to another person.",
+      "gloss": "GIVE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1446",
+      "definition": "To move toward or to reach either the speaker, the person spoken to, or the subject of the speaker's narrative.",
+      "gloss": "COME",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1202",
+      "definition": "Of a great size.",
+      "gloss": "BIG",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1749",
+      "definition": "To grasp with the hands.",
+      "gloss": "TAKE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1277",
+      "definition": "That part of the fore limb below the forearm or wrist in primates (including humans).",
+      "gloss": "HAND",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "700",
+      "definition": "To lift and bring to somewhere else; to transport by lifting.",
+      "gloss": "CARRY",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1035",
+      "definition": "Having desired or positive qualities.",
+      "gloss": "GOOD",
+      "ontological_category": "Property",
+      "semantic_field": "Emotions and values"
+    },
+    {
+      "concepticon_id": "1252",
+      "definition": "The abode of a human being, their place of residence.",
+      "gloss": "HOUSE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The house"
+    },
+    {
+      "concepticon_id": "1401",
+      "definition": "To consume a liquid through the mouth.",
+      "gloss": "DRINK",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1585",
+      "definition": "To rest in a state of decreased consciousness and reduced metabolism.",
+      "gloss": "SLEEP",
+      "ontological_category": "Action/Process",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1246",
+      "definition": "Not large or big; small in size.",
+      "gloss": "SMALL",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1416",
+      "definition": "To be in a position with the upper body upright and the legs resting.",
+      "gloss": "SIT",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1409",
+      "definition": "To perceive [images] with the eye, without necessarily paying attention to them.",
+      "gloss": "SEE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1229",
+      "definition": "Having lived or existed for a relatively long period of time.",
+      "gloss": "OLD",
+      "ontological_category": "Property",
+      "semantic_field": "Time"
+    },
+    {
+      "concepticon_id": "619",
+      "definition": "Any living organism characterized by voluntary movement, the possession of cells with noncellulose cell walls and specialized sense organs enabling rapid response to stimuli, and the ingestion of complex organic substances such as plants and other animals.",
+      "gloss": "ANIMAL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "256",
+      "definition": "A substance that can be ingested and utilized by the organism as a source of nutrition and energy.",
+      "gloss": "FOOD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1408",
+      "definition": "To perceive sound with the ear, without necessarily paying attention to it.",
+      "gloss": "HEAR",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1623",
+      "definition": "To communicate by the use of words.",
+      "gloss": "SPEAK",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "1292",
+      "definition": "Not good; unfavorable; negative.",
+      "gloss": "BAD",
+      "ontological_category": "Property",
+      "semantic_field": "Emotions and values"
+    },
+    {
+      "concepticon_id": "906",
+      "definition": "Any large woody perennial plant with a distinct trunk giving rise to branches or leaves at some distance from the ground.",
+      "gloss": "TREE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "1803",
+      "definition": "The substance making up the central part of the trunk and branches of a tree. Used as a material for construction, to manufacture various items, etc. or as fuel.",
+      "gloss": "WOOD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "27",
+      "definition": "A predominantly mechanical mixture of a variety of individual gases forming the earth's enveloping atmosphere.",
+      "gloss": "AIR",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1297",
+      "definition": "The limb of an animal (including humans) that extends from the groin to the ankle.",
+      "gloss": "LEG",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "2262",
+      "definition": "Relating to the female sex of animals (adjective).",
+      "gloss": "FEMALE (OF ANIMAL)",
+      "ontological_category": "Property",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "133",
+      "definition": "To create a fabric by interlacing threads.",
+      "gloss": "WEAVE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "706",
+      "definition": "Having an absolute or (more often) relative lack of light.",
+      "gloss": "DARK",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "652",
+      "definition": "Level or rolling open land, usually at a low elevation.",
+      "gloss": "PLAIN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1212",
+      "definition": "The speaker or writer and at least one other person.",
+      "gloss": "WE",
+      "ontological_category": "Other",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "626",
+      "definition": "A specified geographical tract of the Earth's surface including all its attributes, comprising its geology, superficial deposits, topography, hydrology, soils, flora and fauna, together with the results of past and present human activity, to the extent that these attributes exert a significant influence on the present and future land utilization. (Source: WHIT)",
+      "gloss": "LAND",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1225",
+      "definition": "The period between sunrise and sunset where one enjoys daylight.",
+      "gloss": "DAY (NOT NIGHT)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Time"
+    },
+    {
+      "concepticon_id": "763",
+      "definition": "The tissue forming the outer covering of the vertebrate body: it consists of two layers, the outermost of which may be covered with hair, scales, feathers, etc. It is mainly protective and sensory in function.",
+      "gloss": "SKIN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "2",
+      "definition": "Any kind of solid material divided in particles of very small size.",
+      "gloss": "DUST",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "2125",
+      "definition": "A naturally occurring solid aggregate of one or more minerals or mineraloids.",
+      "gloss": "STONE OR ROCK",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1489",
+      "definition": "Suspensions of minute water droplets or ice crystals produced by the condensation of water vapour.",
+      "gloss": "CLOUD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1221",
+      "definition": "The organ of the face used to breath and smell.",
+      "gloss": "NOSE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "363",
+      "definition": "To live; to reside; to remain or continue.",
+      "gloss": "DWELL (LIVE, RESIDE)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "The house"
+    },
+    {
+      "concepticon_id": "2259",
+      "definition": "The soft substance in the body of living things.",
+      "gloss": "FLESH",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1402",
+      "definition": "The fleshy organ on the chest of a sexually mature human female containing mammary glands.",
+      "gloss": "BREAST",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1514",
+      "definition": "A female chicken.",
+      "gloss": "HEN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "10",
+      "definition": "Wood intended to be burned.",
+      "gloss": "FIREWOOD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1226",
+      "definition": "The time it takes the Earth to complete one revolution of the Sun (between 365.24 and 365.26 days depending on the point of reference).",
+      "gloss": "YEAR",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Time"
+    },
+    {
+      "concepticon_id": "674",
+      "definition": "Opening in the lower half of a human face which is used for food ingestion and articulation.",
+      "gloss": "MOUTH",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "630",
+      "definition": "Electromagnetic radiation that is capable of causing a visual sensation. (Source: CED)",
+      "gloss": "LIGHT (RADIATION)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1318",
+      "definition": "A type of domesticated bird from the order of Galliformes which is often raised as a type of poultry (Gallus gallus domesticus).",
+      "gloss": "CHICKEN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "2249",
+      "definition": "Being narrow (of flat or long objects).",
+      "gloss": "THIN (OF SHAPE OF OBJECT)",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1554",
+      "definition": "An adult human member of the sex that begets young by fertilizing ova.",
+      "gloss": "MAN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "141",
+      "definition": "To cause to undergo fire combustion.",
+      "gloss": "BURN (SOMETHING)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "605",
+      "definition": "Edible, starchy seeds of the grass family (Graminae) usable as food by man and his livestock.",
+      "gloss": "GRAIN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "863",
+      "definition": "The boundary of a surface.",
+      "gloss": "EDGE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1210",
+      "definition": "Of a physical object, having great weight.",
+      "gloss": "HEAVY",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1562",
+      "definition": "The ability for rational thought.",
+      "gloss": "MIND",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Cognition"
+    },
+    {
+      "concepticon_id": "1498",
+      "definition": "The natural number two (2).",
+      "gloss": "TWO",
+      "ontological_category": "Number",
+      "semantic_field": "Quantity"
+    },
+    {
+      "concepticon_id": "714",
+      "definition": "A mature fertilized plant ovule, consisting of an embryo and its food store surrounded by a protective seed coat (testa).",
+      "gloss": "SEED",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "889",
+      "definition": "A bright yellow, red or bluish light which emerges during combustion processes.",
+      "gloss": "FLAME",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "484",
+      "definition": "To declare, after a judgment, that somebody is guilty of committing a crime.",
+      "gloss": "CONDEMN",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Law"
+    },
+    {
+      "concepticon_id": "1228",
+      "definition": "The soft and loose material forming a great part of the Earth surface.",
+      "gloss": "EARTH (SOIL)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "2648",
+      "definition": "The hair on the head of humans (rather than the hair in general or the hair on the body).",
+      "gloss": "HAIR (HEAD)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "323",
+      "definition": "Esters of three fatty acid chains and the alcohol glycerol which form a semi-solid substance in room temperature and occur in animals and plants.",
+      "gloss": "FAT (ORGANIC SUBSTANCE)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "634",
+      "definition": "The edible flesh of animals, especially that of mammals.",
+      "gloss": "MEAT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1646",
+      "definition": "A young female person, usually a child or teenager.",
+      "gloss": "GIRL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "964",
+      "definition": "The soft, curly hair that forms the fleece of sheep, lamas and other animals and which is used to produce clothing.",
+      "gloss": "WOOL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "383",
+      "definition": "Someone who has control over something or someone; the owner of an animal or slave or someone who employs others.",
+      "gloss": "MASTER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Social and political relations"
+    },
+    {
+      "concepticon_id": "1989",
+      "definition": "Young cattle.",
+      "gloss": "CALF",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1801",
+      "definition": "Biological offspring.",
+      "gloss": "CHILD (DESCENDANT)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1620",
+      "definition": "One's male child.",
+      "gloss": "SON",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1200",
+      "definition": "The male partner in a marriage.",
+      "gloss": "HUSBAND",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "2264",
+      "definition": "The daughter-in-law of a woman.",
+      "gloss": "DAUGHTER-IN-LAW (OF WOMAN)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "671",
+      "definition": "A loose material consisting of small mineral particles, or rock and mineral particles, distinguishable by the naked eye; grains vary from almost spherical to angular, with a diameter range from 1/16 to 2 millimeters.",
+      "gloss": "SAND",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1493",
+      "definition": "The natural number one (1).",
+      "gloss": "ONE",
+      "ontological_category": "Number",
+      "semantic_field": "Quantity"
+    },
+    {
+      "concepticon_id": "1917",
+      "definition": "To establish connection between two or more things.",
+      "gloss": "TIE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "189",
+      "definition": "The terminal hair that develops on the human body during and after puberty.",
+      "gloss": "HAIR (BODY)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1869",
+      "definition": "To obtain in exchange for money or goods.",
+      "gloss": "BUY",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1216",
+      "definition": "A woman who has at least one child.",
+      "gloss": "MOTHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1262",
+      "definition": "A male person who has the same parents as another person.",
+      "gloss": "BROTHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1482",
+      "definition": "One side of the top of the torso, where an arm attaches or joins.",
+      "gloss": "SHOULDER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1410",
+      "definition": "To be sure about something or be acquainted with something.",
+      "gloss": "KNOW (SOMETHING)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Cognition"
+    },
+    {
+      "concepticon_id": "1395",
+      "definition": "Circular or having a circular cross-section in at least one direction.",
+      "gloss": "ROUND",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1169",
+      "definition": "A castrated bull.",
+      "gloss": "OX",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1486",
+      "definition": "To put a plant in the ground so that it strikes root and grows.",
+      "gloss": "PLANT (SOMETHING)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "816",
+      "definition": "One of the two equal parts of a whole.",
+      "gloss": "HALF",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Quantity"
+    },
+    {
+      "concepticon_id": "1327",
+      "definition": "The brother of someone’s father or mother.",
+      "gloss": "UNCLE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "618",
+      "definition": "A very steep decline, typically found in the mountains or on shores.",
+      "gloss": "PRECIPICE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1839",
+      "definition": "To shed tears due to the impact of an emotion.",
+      "gloss": "CRY",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Emotions and values"
+    },
+    {
+      "concepticon_id": "11",
+      "definition": "Absence of light.",
+      "gloss": "DARKNESS",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "2261",
+      "definition": "Relating to the male sex of humans.",
+      "gloss": "MALE (OF PERSON)",
+      "ontological_category": "Property",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1725",
+      "definition": "To be in accordance with expectations.",
+      "gloss": "CORRECT (RIGHT)",
+      "ontological_category": "Property",
+      "semantic_field": "Emotions and values"
+    },
+    {
+      "concepticon_id": "887",
+      "definition": "Having an acrid taste.",
+      "gloss": "BITTER",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "731",
+      "definition": "Any one of various liquids for drinking.",
+      "gloss": "BEVERAGE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1690",
+      "definition": "Delimitation for an area.",
+      "gloss": "FENCE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "711",
+      "definition": "Having a vertical extent greater than the average.",
+      "gloss": "TALL",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1351",
+      "definition": "An adult female pig.",
+      "gloss": "SOW (FEMALE PIG)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1364",
+      "definition": "In good physical and mental condition; free from disease.",
+      "gloss": "HEALTHY",
+      "ontological_category": "Property",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "2135",
+      "definition": "To exchange goods with or without exchanging money.",
+      "gloss": "TRADE OR BARTER",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "76",
+      "definition": "A male juvenile between the onset of puberty and maturity; in the state of development between puberty and maturity.",
+      "gloss": "YOUNG MAN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1218",
+      "definition": "Thick, strong string made of several strands that have been twisted together.",
+      "gloss": "ROPE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "478",
+      "definition": "Either of the two fleshy protrusions around the opening of the mouth.",
+      "gloss": "LIP",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1571",
+      "definition": "To provide goods or services in exchange for money.",
+      "gloss": "SELL",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1594",
+      "definition": "Ground or milled grain or cereal.",
+      "gloss": "FLOUR",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1673",
+      "definition": "The upper limb, extending from the shoulder to the wrist and sometimes including the hand.",
+      "gloss": "ARM",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1357",
+      "definition": "An animal's female offspring (including that of a human).",
+      "gloss": "DAUGHTER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1366",
+      "definition": "A young male person, usually a child or teenager.",
+      "gloss": "BOY",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "420",
+      "definition": "A vegetation community dominated by trees and other woody shrubs, growing close enough together that the tree tops touch or overlap, creating various degrees of shade on the forest floor.",
+      "gloss": "FOREST",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1647",
+      "definition": "A juvenile horse, especially one which is not yet weaned.",
+      "gloss": "FOAL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1033",
+      "definition": "To break something into small pieces by pressing it flat, or grinding it to powder.",
+      "gloss": "GRIND",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "367",
+      "definition": "To transport oneself by sitting on and directing an animal.",
+      "gloss": "RIDE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "629",
+      "definition": "The dressed or tanned hide of an animal, usually with the hair removed.",
+      "gloss": "LEATHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "1201",
+      "definition": "A branching, hair-like structure that grows on the skin of birds and protects them against coldness and water and allows their wings to create lift.",
+      "gloss": "FEATHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "994",
+      "definition": "A weapon made of a curved piece of wood or other flexible material whose ends are connected by a string, used for shooting arrows.",
+      "gloss": "BOW",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Warfare and hunting"
+    },
+    {
+      "concepticon_id": "1301",
+      "definition": "The part of a human’s body below the ankle that is used in order to stand and walk.",
+      "gloss": "FOOT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1743",
+      "definition": "To join or unite, as one thing to another, or as several particulars, so as to increase the number, augment the quantity, enlarge the magnitude, or so as to form into one aggregate; to sum up; to put together mentally, as, to add numbers; to add up a column.",
+      "gloss": "JOIN",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "580",
+      "definition": "The body-hair of an animal (excluding humans) or a piece of clothing made thereof.",
+      "gloss": "FUR",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1507",
+      "definition": "A botanical fruit that can be eaten raw used as food.",
+      "gloss": "FRUIT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "2146",
+      "definition": "Preparing food by exposing it to open fire or to hot fat.",
+      "gloss": "ROAST OR FRY",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "606",
+      "definition": "A very large and widespread family of Monocotyledoneae, with more than 10.000 species, most of which are herbaceous, but a few are woody. The stems are jointed, the long, narrow leaves originating at the nodes. The flowers are inconspicuous, with a much reduced perianth, and are wind-pollinated or cleistogamous.",
+      "gloss": "GRASS",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "266",
+      "definition": "One of the small flat pieces of skin that cover the bodies of fish.",
+      "gloss": "SCALE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1884",
+      "definition": "Resistant to pressure.",
+      "gloss": "HARD",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1363",
+      "definition": "The sound and tones human beings are able to produce with the vocal cords.",
+      "gloss": "VOICE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "270",
+      "definition": "A container for holding and pouring liquids with a handle and a spout.",
+      "gloss": "JUG",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1161",
+      "definition": "A long, thin and flexible form of material, generally with a round cross-section, used in sewing, weaving or in the construction of string.",
+      "gloss": "THREAD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "1767",
+      "definition": "To move an object against another object such that abrasion or minor cutting occurs.",
+      "gloss": "SCRAPE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "1608",
+      "definition": "To perceive with the ear (paying attention to what is heard).",
+      "gloss": "LISTEN",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1280",
+      "definition": "To descend in free fall due to the effect of gravity.",
+      "gloss": "FALL",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1417",
+      "definition": "To put to death; to end a life.",
+      "gloss": "KILL",
+      "ontological_category": "Action/Process",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1093",
+      "definition": "What is equally far away from two ends or being in that position.",
+      "gloss": "MIDDLE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1895",
+      "definition": "All coverings designed to be worn on a person's body.",
+      "gloss": "CLOTHES",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "1291",
+      "definition": "The rear of body, especially the part between the neck and the end of the spine and opposite the chest and belly.",
+      "gloss": "BACK",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "157",
+      "definition": "To modify the color of something by applying dye.",
+      "gloss": "DYE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "1344",
+      "definition": "A male sheep.",
+      "gloss": "RAM",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1127",
+      "definition": "To make something (an object, a message) go from one place to another.",
+      "gloss": "SEND",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1217",
+      "definition": "A male parent.",
+      "gloss": "FATHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "2475",
+      "definition": "A male goat.",
+      "gloss": "MALE GOAT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "326",
+      "definition": "A long outer garment worn over the shoulders covering the back; a cape, often with a hood.",
+      "gloss": "CLOAK",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Clothing and grooming"
+    },
+    {
+      "concepticon_id": "1352",
+      "definition": "A utensil consisting of a sharpened piece of hard material such as steel or other metal, ceramic, glass or stone, usually attached to a handle, that is formed in a manner that allows for cutting softer materials, especially meat or other food.",
+      "gloss": "KNIFE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1427",
+      "definition": "Having nice or positive properties (specifically with regard to the senses, and most commonly, that of sight).",
+      "gloss": "BEAUTIFUL",
+      "ontological_category": "Property",
+      "semantic_field": "Emotions and values"
+    },
+    {
+      "concepticon_id": "2265",
+      "definition": "The daughter-in-law of a man.",
+      "gloss": "DAUGHTER-IN-LAW (OF MAN)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1530",
+      "definition": "A roughly hemispherical container used to hold, mix or present food, such as salad, fruit or soup, or other items.",
+      "gloss": "BOWL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1256",
+      "definition": "The part of the body of an animal or human which contains the brain, mouth and main sense organs.",
+      "gloss": "HEAD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1346",
+      "definition": "The front part of the neck.",
+      "gloss": "THROAT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "694",
+      "definition": "To get or obtain an item; to come into the possession of something.",
+      "gloss": "GET",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1424",
+      "definition": "Having the colour of a yolk, a lemon or gold.",
+      "gloss": "YELLOW",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1153",
+      "definition": "Domesticated bovine animals, including cows, steers and bulls, raised and bred on a ranch or farm.",
+      "gloss": "CATTLE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "938",
+      "definition": "An adult female horse.",
+      "gloss": "MARE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "819",
+      "definition": "An organ in the body, involved in digestion of food.",
+      "gloss": "STOMACH",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1468",
+      "definition": "To try to find something.",
+      "gloss": "LOOK FOR",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "526",
+      "definition": "To cry like a wolf, dog, or other canids.",
+      "gloss": "HOWL",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "77",
+      "definition": "A female juvenile between the onset of puberty and maturity; in the state of development between puberty and maturity.",
+      "gloss": "YOUNG WOMAN",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1008",
+      "definition": "Male bovine animal.",
+      "gloss": "BULL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1448",
+      "definition": "To grasp or grip (particularly with the hand) so that the object does not end up at the surface below.",
+      "gloss": "HOLD",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "723",
+      "definition": "A position or area in a space.",
+      "gloss": "PLACE (POSITION)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1759",
+      "definition": "A male with more years of age than one or more of his siblings.",
+      "gloss": "OLDER BROTHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1081",
+      "definition": "Sum owed in a restaurant, or the relative bill.",
+      "gloss": "BILL",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "2003",
+      "definition": "To move as a fluid from one position to another (e.g. of water or of people).",
+      "gloss": "FLOW",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1823",
+      "definition": "To receive (something) from somebody temporarily, expecting to return it.",
+      "gloss": "BORROW",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "1304",
+      "definition": "A person below the age of puberty.",
+      "gloss": "CHILD (YOUNG HUMAN)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1618",
+      "definition": "A son of someone's child.",
+      "gloss": "GRANDSON",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1480",
+      "definition": "The physical structure of a human or animal.",
+      "gloss": "BODY",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1333",
+      "definition": "The part of the body (found in some animals, including humans) that connects the head and the trunk.",
+      "gloss": "NECK",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "471",
+      "definition": "The part of the leg between the pelvis and the knee.",
+      "gloss": "UPPER LEG (THIGH)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1348",
+      "definition": "An adult male pig.",
+      "gloss": "BOAR (MALE PIG)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1199",
+      "definition": "The female partner in a marriage.",
+      "gloss": "WIFE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1681",
+      "definition": "In human beings, the part between the thorax and hips.",
+      "gloss": "WAIST",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1640",
+      "definition": "A person who has the same parents as another person.",
+      "gloss": "SIBLING",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1536",
+      "definition": "To be aware of the meaning of.",
+      "gloss": "UNDERSTAND",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Cognition"
+    },
+    {
+      "concepticon_id": "1437",
+      "definition": "To divide fully or partly along a more or less straight line.",
+      "gloss": "SPLIT",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "2267",
+      "definition": "The son-in-law of a man.",
+      "gloss": "SON-IN-LAW (OF MAN)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1844",
+      "definition": "A craft used for transportation of goods, fishing, racing, recreational cruising, or military use on or in the water, propelled by oars or outboard motor or inboard motor or by wind.",
+      "gloss": "BOAT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1682",
+      "definition": "Having committed an offense, crime, violation, or wrong, especially against moral or penal law.",
+      "gloss": "GUILTY",
+      "ontological_category": "Property",
+      "semantic_field": "Law"
+    },
+    {
+      "concepticon_id": "1828",
+      "definition": "To ask for a service or physical goods, often without returning the favor in kind.",
+      "gloss": "ASK (REQUEST)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "930",
+      "definition": "A group of houses and other buildings, such as a church, a school and some shops, which is smaller than a town, usually in the countryside.",
+      "gloss": "VILLAGE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Social and political relations"
+    },
+    {
+      "concepticon_id": "624",
+      "definition": "An enclosed body of water, usually but not necessarily fresh water, from which the sea is excluded.",
+      "gloss": "LAKE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "987",
+      "definition": "To continue to be in the same place or state.",
+      "gloss": "REMAIN",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "584",
+      "definition": "Not easy, which needs hard work, patience and effort of either the physical or mental kind.",
+      "gloss": "DIFFICULT",
+      "ontological_category": "Property",
+      "semantic_field": "Cognition"
+    },
+    {
+      "concepticon_id": "709",
+      "definition": "To pass on knowledge and skills.",
+      "gloss": "TEACH",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Cognition"
+    },
+    {
+      "concepticon_id": "728",
+      "definition": "Having no predecessor. The ordinal number corresponding to one.",
+      "gloss": "FIRST",
+      "ontological_category": "Other",
+      "semantic_field": "Quantity"
+    },
+    {
+      "concepticon_id": "942",
+      "definition": "A viscous, sweet substance produced from nectar or honeydew by bees.",
+      "gloss": "HONEY",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "680",
+      "definition": "To divide or be divided into pieces and thereby damaged.",
+      "gloss": "BREAK (DESTROY OR GET DESTROYED)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "1422",
+      "definition": "To be alive; to have a life.",
+      "gloss": "BE ALIVE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "The body"
+    },
+    {
+      "concepticon_id": "1753",
+      "definition": "Highest and most elevated point.",
+      "gloss": "TOP",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1760",
+      "definition": "A male with fewer years of age than one or more of his siblings.",
+      "gloss": "YOUNGER BROTHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1511",
+      "definition": "A male chicken (Gallus gallus domesticus), a domestic bird.",
+      "gloss": "ROOSTER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1075",
+      "definition": "A device for catching and holding animals.",
+      "gloss": "TRAP (PITFALL)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Warfare and hunting"
+    },
+    {
+      "concepticon_id": "1272",
+      "definition": "A woman with one or more siblings who have one or more children; a sister of someone's father or mother.",
+      "gloss": "AUNT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "43",
+      "definition": "To guide by moving in front.",
+      "gloss": "LEAD (GUIDE)",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "1307",
+      "definition": "A system of communication using the spoken or signed word or using symbols that represent words, signs or sounds.",
+      "gloss": "LANGUAGE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "1019",
+      "definition": "Something that is on the right side relative to another object.",
+      "gloss": "RIGHT",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "1840",
+      "definition": "To form by combining materials or parts.",
+      "gloss": "BUILD",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "1265",
+      "definition": "Being in a position comparatively far above to the ground.",
+      "gloss": "HIGH",
+      "ontological_category": "Property",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "2691",
+      "definition": "The sister of one's father.",
+      "gloss": "PATERNAL AUNT (FATHER'S SISTER)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "653",
+      "definition": "Any living organism that synthesizes its food from inorganic substances, possesses cellulose cell walls, responds slowly and often permanently to a stimulus, lacks specialized sense organs and nervous system, and has no powers of locomotion.",
+      "gloss": "PLANT (VEGETATION)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Agriculture and vegetation"
+    },
+    {
+      "concepticon_id": "1007",
+      "definition": "Female bovine animal (Bos taurus) of the subfamily Bovinae of the family Bovidae.",
+      "gloss": "COW",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "640",
+      "definition": "A mixture of clay and/or silt with water to form a plastic mass with a particle size preponderantly below 0.06 mm diameter. It is deposited in low-energy environments in lakes, estuaries and lagoons. It may also be deposited in deep-sea environments. (Source: WHIT)",
+      "gloss": "MUD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "1496",
+      "definition": "The mother of one of someone's parents.",
+      "gloss": "GRANDMOTHER",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1421",
+      "definition": "To draw in a substance by creating a practical vacuum in the mouth, and as a result a difference in pressure.",
+      "gloss": "SUCK",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1458",
+      "definition": "To utter specific words or notions.",
+      "gloss": "SAY",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Speech and language"
+    },
+    {
+      "concepticon_id": "183",
+      "definition": "To cook (something) in an oven, but not in fat.",
+      "gloss": "BAKE",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "88",
+      "definition": "A structure that provides a natural habitation for bees; as in a hollow tree.",
+      "gloss": "BEEHIVE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1462",
+      "definition": "A vessel used for cooking or storing food or liquids.",
+      "gloss": "POT",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "1052",
+      "definition": "With a small mass, little weight or density; the opposite of heavy.",
+      "gloss": "LIGHT (WEIGHT)",
+      "ontological_category": "Property",
+      "semantic_field": "Sense perception"
+    },
+    {
+      "concepticon_id": "1399",
+      "definition": "A loose, earthy, extremely fine-grained, natural sediment or soft rock composed primarily of clay-size or colloidal particles and characterized by high plasticity and by a considerable content of clay mineral and subordinate amounts of finely divided quartz, decomposed feldspar, carbonates, ferruginous matter, and other impurities; it forms a plastic, moldable mass when finely ground and mixed with water, retains its shape on drying, and becomes firm, rocklike and permanently hard on heating or firing.",
+      "gloss": "CLAY",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "194",
+      "definition": "A group comprising parents, offsprings and others closely related or associated with them.",
+      "gloss": "FAMILY",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Kinship"
+    },
+    {
+      "concepticon_id": "1345",
+      "definition": "A female sheep.",
+      "gloss": "EWE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "1970",
+      "definition": "A light narrow boat driven by a paddle.",
+      "gloss": "CANOE",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "702",
+      "definition": "To take hold of, especially in the hands, so as to seize or restrain or stop the motion of.",
+      "gloss": "CATCH",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Motion"
+    },
+    {
+      "concepticon_id": "582",
+      "definition": "To put an item or resource at the disposal of another, with the requirement to have the same or its equivalent returned eventually.",
+      "gloss": "LEND",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Possession"
+    },
+    {
+      "concepticon_id": "936",
+      "definition": "An uncastrated male horse.",
+      "gloss": "STALLION",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Animals"
+    },
+    {
+      "concepticon_id": "269",
+      "definition": "Contrasting with 'raw'.",
+      "gloss": "COOKED",
+      "ontological_category": "Property",
+      "semantic_field": "Food and drink"
+    },
+    {
+      "concepticon_id": "354",
+      "definition": "To strike hard, usually repeatedly.",
+      "gloss": "POUND",
+      "ontological_category": "Action/Process",
+      "semantic_field": "Basic actions and technology"
+    },
+    {
+      "concepticon_id": "742",
+      "definition": "Extreme part.",
+      "gloss": "END (OF SPACE)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Spatial relations"
+    },
+    {
+      "concepticon_id": "965",
+      "definition": "The Earth with all its inhabitants and all things upon it.",
+      "gloss": "WORLD",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "The physical world"
+    },
+    {
+      "concepticon_id": "743",
+      "definition": "The last or final part.",
+      "gloss": "END (OF TIME)",
+      "ontological_category": "Person/Thing",
+      "semantic_field": "Time"
+    }
+  ],
+  "schema": "losica-display-en/5",
+  "source": "Concepticon English annotations; downstream display metadata"
+}

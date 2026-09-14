@@ -1,0 +1,55 @@
+{
+  "candidate_count": 2,
+  "candidates": [
+    {
+      "aggregate_retrieval_score": 1.78,
+      "annotated_form": "ˈma",
+      "evidence": [
+        {
+          "imitation_id": "I001",
+          "retrieval_score": 0.91,
+          "speaker_id": "S01",
+          "transcription_provenance": {
+            "method": "example"
+          }
+        },
+        {
+          "imitation_id": "I002",
+          "retrieval_score": 0.87,
+          "speaker_id": "S02",
+          "transcription_provenance": {
+            "method": "example"
+          }
+        }
+      ],
+      "evidence_count": 2,
+      "preproto_form": "ma",
+      "prominence": 0,
+      "speaker_count": 2
+    },
+    {
+      "aggregate_retrieval_score": 0.52,
+      "annotated_form": "ˈni",
+      "evidence": [
+        {
+          "imitation_id": "I003",
+          "retrieval_score": 0.52,
+          "speaker_id": "S03",
+          "transcription_provenance": {
+            "method": "example"
+          }
+        }
+      ],
+      "evidence_count": 1,
+      "preproto_form": "ni",
+      "prominence": 0,
+      "speaker_count": 1
+    }
+  ],
+  "query_waveform": "data/demo_losica_acoustic.json",
+  "retrieval_backend": {
+    "engine": "fixture",
+    "role": "example of QBV bridge output"
+  },
+  "schema": "losica-word-candidates/3"
+}

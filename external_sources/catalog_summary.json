@@ -1,0 +1,13 @@
+{
+  "catalog_sha256": "930689a9d78f0c57eac54eb0e9389230953a2e1196cf689f89ca557758576abc",
+  "record_counts": {
+    "activitynet-entities": 46195,
+    "audiocaps": 49810,
+    "epic-kitchens-100": 76885,
+    "epic-sounds": 107078,
+    "talk2car": 9512
+  },
+  "rule": "Expressions are copied from inspected source annotations. No expression is written or paraphrased by Losica or by this collector.",
+  "schema": "losica-external-source-catalog-summary/1",
+  "total_record_count": 289480
+}

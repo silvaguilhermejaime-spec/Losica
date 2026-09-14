@@ -1,0 +1,338 @@
+{
+  "schema": "losica-grounding-source-lock/1",
+  "created_utc": "2026-09-13T00:00:00Z",
+  "causal_rule": {
+    "generation_input": "numeric records from the observed recording",
+    "external_alignment_input": "externally authored expression plus a pointer into that same recording",
+    "forbidden_edge": "external expression -> generated semantic region",
+    "allowed_edge": "recording range -> generated event IDs -> generated region IDs; external expression is attached to the recording range afterward"
+  },
+  "score_rubric": {
+    "range": "integer 0 through 10",
+    "formula": "evidence_link + signal_access + human_wording + setting_coverage + losica_fit",
+    "components": {
+      "evidence_link": {"0": "text only", "1": "clip or episode", "2": "time, frame, sample, or bounding-box link"},
+      "signal_access": {"0": "signal unavailable", "1": "derived signal, restricted signal, or simulation", "2": "real raw recording obtainable under stated terms"},
+      "human_wording": {"0": "machine-written", "1": "fixed templates or automatic parses", "2": "human free wording"},
+      "setting_coverage": {"0": "no observed setting", "1": "one narrow setting", "2": "several everyday settings"},
+      "losica_fit": {"0": "cannot share observation offsets", "1": "episode converter required", "2": "source pointers can map directly to offsets"}
+    }
+  },
+  "sources": [
+    {
+      "source_id": "ego4d",
+      "repository": "https://github.com/facebookresearch/Ego4d",
+      "revision": "4bd10ed40b4f8d8ad26344afc2c8526f7d1dedeb",
+      "source_files": ["ego4d/cli/manifest.py", "ego4d/cli/download.py", "notebooks/annotation_visualization.ipynb"],
+      "annotation_products": ["Narrations", "Goal-Step", "Episodic Memory", "Forecasting", "Ego-Exo4D synchronized views"],
+      "identity_fields": ["video_uid", "clip_uid", "annotation_uid", "timestamp_sec"],
+      "wording_origin": "human dense narration and task annotation",
+      "alignment": "video and clip time",
+      "catalog_status": "not mirrored; license acceptance and official downloader required",
+      "score_components": [2, 2, 2, 2, 2],
+      "score": 10,
+      "losica_use": "primary real-world source; convert raw video/audio to numeric frames and narration timestamps to source ranges"
+    },
+    {
+      "source_id": "epic-kitchens-100",
+      "repository": "https://github.com/epic-kitchens/epic-kitchens-100-annotations",
+      "revision": "ea8b40457a400c3fffa1c7f406ef3dc169cc2522",
+      "local_repository_dir": "epic",
+      "source_files": ["EPIC_100_train.csv", "EPIC_100_validation.csv", "EPIC_100_verb_classes.csv", "EPIC_100_noun_classes.csv"],
+      "identity_fields": ["narration_id", "video_id", "start_timestamp", "stop_timestamp", "start_frame", "stop_frame"],
+      "expression_field": "narration",
+      "wording_origin": "participant narration",
+      "catalog_record_count": 76885,
+      "file_sha256": {
+        "EPIC_100_train.csv": "a3a7ef2e397bd8af12bd0496b09d61b1f2c1f3f6e1726fa86af50a27f4855e87",
+        "EPIC_100_validation.csv": "35f7932ba0a1127a96cac215a98d35398946f343e3cea9ad6688ed17eee9d75d"
+      },
+      "score_components": [2, 2, 2, 1, 2],
+      "score": 9,
+      "losica_use": "direct time-range adapter for kitchen actions, handled objects, and participant descriptions"
+    },
+    {
+      "source_id": "epic-sounds",
+      "repository": "https://github.com/epic-kitchens/epic-sounds-annotations",
+      "revision": "57a922f0d352e9429f1ef8a37eee21758dd3a33c",
+      "local_repository_dir": "epic_sounds",
+      "source_files": ["EPIC_Sounds_train.csv", "EPIC_Sounds_validation.csv", "sound_events_not_categorised.csv"],
+      "identity_fields": ["annotation_id", "video_id", "start_timestamp", "stop_timestamp", "start_sample", "stop_sample"],
+      "expression_field": "description",
+      "wording_origin": "human audio description",
+      "catalog_record_count": 107078,
+      "file_sha256": {
+        "EPIC_Sounds_train.csv": "225427ab288cc5c72c1680abb29f5ab8ccd3608c3f4cf409541d2c5cf720dd32",
+        "EPIC_Sounds_validation.csv": "fff66485d8478762fd9cde1a829e6d91713a5f2f7f917e3af746cf891dd62e5a",
+        "sound_events_not_categorised.csv": "f546238215eadbc28c42c37dd419637ab8dfc5eefaa7439a4fa4a4d0ce2e6746"
+      },
+      "score_components": [2, 2, 2, 1, 2],
+      "score": 9,
+      "losica_use": "direct sample-range adapter for audible event distinctions"
+    },
+    {
+      "source_id": "droid",
+      "repository": "https://github.com/droid-dataset/droid",
+      "revision": "33ae6a67274f36d2e29525b86f23a56616ef43a7",
+      "source_files": ["droid/postprocessing/schema.py", "droid/data_loading/dataset.py", "docs/the-droid-dataset.md"],
+      "identity_fields": ["episode_id", "timestamp", "trajectory actions", "language instruction"],
+      "wording_origin": "dataset language annotation",
+      "catalog_status": "not mirrored; annotations and recordings are separate downloads and language coverage is incomplete",
+      "score_components": [1, 2, 2, 1, 1],
+      "score": 7,
+      "losica_use": "numeric action/state evidence; attach episode language only where an annotation is present"
+    },
+    {
+      "source_id": "bridge-data-v2",
+      "repository": "https://github.com/rail-berkeley/bridge_data_v2",
+      "revision": "bc60a35b701a12021c8c95e9d8601274d3acd928",
+      "source_files": ["data_processing/bridgedata_raw_to_numpy.py", "data_processing/bridgedata_numpy_to_tfrecord.py", "jaxrl_m/data/bridge_dataset.py"],
+      "identity_fields": ["observations", "next_observations", "actions", "language", "time_stamp"],
+      "wording_origin": "trajectory language annotation",
+      "catalog_status": "not mirrored; raw trajectories are an external download",
+      "score_components": [1, 2, 2, 1, 1],
+      "score": 7,
+      "losica_use": "intervention and state-change evidence; map each trajectory label to its episode offsets"
+    },
+    {
+      "source_id": "activitynet-entities",
+      "repository": "https://github.com/facebookresearch/ActivityNet-Entities",
+      "revision": "eb455f7cdd9847cb6dca9f099c84070e2a85f614",
+      "local_repository_dir": "activitynet_entities",
+      "source_files": ["data/anet_entities_cleaned_class_thresh50_trainval.json", "data/anet_entities_trainval.json", "data/anet_entities_skeleton.txt"],
+      "identity_fields": ["video ID", "segment ID", "timestamps", "frame_ind", "process_idx", "process_bnd_box"],
+      "expression_field": "tokens joined with spaces",
+      "wording_origin": "ActivityNet human description with human noun-phrase boxes",
+      "catalog_record_count": 46195,
+      "file_sha256": {
+        "data/anet_entities_trainval.json": "affcde87d14cb6ddd9ad0063683455d5ee626aeb1fbbd5770e1f7fdce80bfd46",
+        "data/anet_entities_cleaned_class_thresh50_trainval.json": "f3e166c8c489dd0a27e53ed90cd95dcee65495868208190833b01de6bc097df2"
+      },
+      "score_components": [2, 1, 2, 2, 2],
+      "score": 9,
+      "losica_use": "time-aligned descriptions plus phrase-to-object box evidence"
+    },
+    {
+      "source_id": "refego",
+      "repository": "https://github.com/shuheikurita/RefEgo",
+      "revision": "59799404be1ffeb6206f36c116d3880d2910af66",
+      "source_files": ["dataset/README.md", "MDETR/datasets/refego.py"],
+      "identity_fields": ["video_id", "clip_id", "img_id", "bbox", "caption", "label", "is_obj_in"],
+      "wording_origin": "human referring expression",
+      "catalog_status": "not mirrored; annotation archives require the dataset download route",
+      "score_components": [2, 1, 2, 2, 2],
+      "score": 9,
+      "losica_use": "phrase-to-object identity and persistence across Ego4D frames"
+    },
+    {
+      "source_id": "talk2car",
+      "repository": "https://github.com/talk2car/Talk2Car",
+      "revision": "3fde52aee3341312196ab9b2f999337eff0693a0",
+      "local_repository_dir": "talk2car",
+      "source_files": ["data/commands/train_commands.json", "data/commands/val_commands.json", "data/README.md", "talk2car.py"],
+      "identity_fields": ["command_token", "scene_token", "sample_token", "box_token", "2d_box"],
+      "expression_field": "command",
+      "wording_origin": "human command",
+      "catalog_record_count": 9512,
+      "file_sha256": {
+        "data/commands/train_commands.json": "5a90c471284685bd8dd8bfa6e992cfefce69e58a392c934d2f9d54ea119a42d2",
+        "data/commands/val_commands.json": "56e2dc27ec1fd83e5e6fb910c6582a7331c591babd194257c8d9680ad22a3f9d"
+      },
+      "score_components": [2, 1, 2, 1, 2],
+      "score": 8,
+      "losica_use": "speaker intention and referred-object grounding at a nuScenes sample"
+    },
+    {
+      "source_id": "visual-genome",
+      "repository": "https://github.com/ranjaykrishna/visual_genome_python_driver",
+      "revision": "b092f5e52259f7611400eefbc41061e126ef9cba",
+      "source_files": ["visual_genome/api.py", "visual_genome/models.py", "visual_genome/data/getRegionDescriptions.sh"],
+      "identity_fields": ["image ID", "region ID", "phrase", "x", "y", "width", "height", "object ID", "relationship ID"],
+      "wording_origin": "human region descriptions, object names, attributes, relations, and questions",
+      "catalog_status": "not mirrored; official annotation downloads exceed this deliverable",
+      "score_components": [2, 2, 2, 2, 1],
+      "score": 9,
+      "losica_use": "static object, attribute, spatial-relation, and region-phrase evidence"
+    },
+    {
+      "source_id": "video-localized-narratives",
+      "repository": "https://google.github.io/video-localized-narratives/",
+      "revision": "official 2021 release",
+      "source_files": ["JSONL annotation release described on project site"],
+      "identity_fields": ["video ID", "annotator ID", "spoken narrative", "word times", "pointer trace", "frame time"],
+      "wording_origin": "human spoken narration",
+      "catalog_status": "not mirrored; base video datasets have separate terms",
+      "score_components": [2, 1, 2, 2, 2],
+      "score": 9,
+      "losica_use": "word-time and pointer-trace alignment for visible referents"
+    },
+    {
+      "source_id": "youcook2",
+      "repository": "https://youcook2.eecs.umich.edu/",
+      "revision": "annotation release updated 2019-05-07",
+      "source_files": ["official train+validation annotation JSON", "YouCook2-BB annotation JSON"],
+      "identity_fields": ["video ID", "recipe type", "segment start", "segment end", "sentence", "bounding boxes"],
+      "wording_origin": "human imperative step descriptions",
+      "catalog_status": "not mirrored; official download and video terms apply",
+      "score_components": [2, 1, 2, 1, 2],
+      "score": 8,
+      "losica_use": "multi-step preparation sequences and handled-material descriptions"
+    },
+    {
+      "source_id": "vatex",
+      "repository": "https://eric-xw.github.io/vatex-website/download.html",
+      "revision": "v1.1",
+      "source_files": ["vatex_training_v1.0.json", "vatex_validation_v1.0.json", "vatex_public_test_english_v1.1.json"],
+      "identity_fields": ["videoID", "enCap", "chCap"],
+      "wording_origin": "human English and Chinese captions, including paired translations",
+      "catalog_status": "not mirrored; official annotation download available under CC BY 4.0",
+      "score_components": [1, 1, 2, 2, 1],
+      "score": 7,
+      "losica_use": "multilingual external rendering after a clip has generated Losica regions"
+    },
+    {
+      "source_id": "how2",
+      "repository": "https://github.com/srvk/how2-dataset",
+      "revision": "59c8a7523660514a1a55349c2e4f54ffa9ca3953",
+      "source_files": ["README.md", "reproduce/300h/translations.pt.bz2"],
+      "identity_fields": ["utterance ID", "English subtitle", "Portuguese translation", "video features"],
+      "wording_origin": "video subtitle and crowdsourced Portuguese translation",
+      "catalog_status": "not mirrored; repository reports that most original videos are no longer obtainable",
+      "score_components": [2, 0, 2, 2, 1],
+      "score": 7,
+      "losica_use": "translation evaluation only where the corresponding recording is locally present"
+    },
+    {
+      "source_id": "audiocaps",
+      "repository": "https://github.com/Labbeti/aac-datasets",
+      "revision": "631524fb86eef351c1848e42196fbe5cf62442e4",
+      "local_repository_dir": "aac_datasets",
+      "source_files": ["data/audiocaps/train_v2.csv", "src/aac_datasets/datasets/audiocaps.py"],
+      "identity_fields": ["audiocap_id", "youtube_id", "start_time", "caption"],
+      "expression_field": "caption",
+      "wording_origin": "human caption, human-corrected",
+      "catalog_record_count": 49810,
+      "file_sha256": {"data/audiocaps/train_v2.csv": "9d895d80dd893d2582ef771df69b84326eb7155230892ebccc51ad780c47c7fe"},
+      "score_components": [2, 1, 2, 2, 2],
+      "score": 9,
+      "losica_use": "ten-second sound-description alignment"
+    },
+    {
+      "source_id": "clotho",
+      "repository": "https://github.com/Labbeti/aac-datasets",
+      "revision": "631524fb86eef351c1848e42196fbe5cf62442e4",
+      "source_files": ["src/aac_datasets/datasets/clotho.py"],
+      "identity_fields": ["audio ID", "caption ID", "caption", "audio file"],
+      "wording_origin": "human captions",
+      "catalog_status": "loader inspected; corpus not downloaded",
+      "score_components": [2, 2, 2, 2, 2],
+      "score": 10,
+      "losica_use": "15-to-30-second sound-description alignment with five descriptions per clip"
+    },
+    {
+      "source_id": "vlep",
+      "repository": "https://github.com/jayleicn/VideoLanguageFuturePred",
+      "revision": "1ce739513dc818a858a94939d163fa1aa4238a77",
+      "local_repository_dir": "vlep",
+      "source_files": ["data/vlep_train_release.jsonl", "data/vlep_dev_release.jsonl", "data/vlep_test_release.jsonl", "data/README.md"],
+      "identity_fields": ["example_id", "vid_name", "ts", "events", "answer"],
+      "expression_field": "each member of events",
+      "wording_origin": "human future-event candidates",
+      "catalog_status": "not mirrored; annotations are distributed beside a dataset download agreement",
+      "file_sha256": {"data/vlep_train_release.jsonl": "bdae52205775829db507693386b8d24807b3f708bae0f3eea14f52a96000e085"},
+      "score_components": [1, 1, 2, 2, 1],
+      "score": 7,
+      "losica_use": "external hypothesis vocabulary for future events; never treat a candidate sentence as observed state"
+    },
+    {
+      "source_id": "teach",
+      "repository": "https://github.com/alexa/teach",
+      "revision": "903191e256da866a603d1bbfb21db34e0874392d",
+      "source_files": ["src/teach/dataset/interaction.py", "src/teach/dataset/actions.py", "src/teach/dataset/episode.py"],
+      "identity_fields": ["episode", "interaction", "utterance", "action_id", "time_start", "success"],
+      "wording_origin": "human-human dialogue",
+      "catalog_status": "not collected; simulated household environment",
+      "score_components": [1, 1, 2, 1, 1],
+      "score": 6,
+      "losica_use": "adapter and failure-state test fixture, not primary world evidence"
+    },
+    {
+      "source_id": "alfred",
+      "repository": "https://github.com/askforalfred/alfred",
+      "revision": "f91f4c0c96c7a29f33d0557f86b0a21035379b3b",
+      "source_files": ["data/README.md", "data/preprocess.py"],
+      "identity_fields": ["task_desc", "high_descs", "high_idx", "low_idx", "image_name", "high_pddl", "low_actions"],
+      "wording_origin": "human task and step descriptions",
+      "catalog_status": "not collected; simulated household environment and external trajectory download",
+      "score_components": [2, 1, 2, 1, 1],
+      "score": 7,
+      "losica_use": "multi-step alignment test fixture, not primary world evidence"
+    },
+    {
+      "source_id": "calvin",
+      "repository": "https://github.com/mees/calvin",
+      "revision": "fa03f01f19c65920e18cf37398a9ce859274af76",
+      "source_files": ["calvin_models/calvin_agent/datasets/disk_dataset.py", "calvin_models/calvin_agent/utils/language_annotator.py", "calvin_models/conf/annotations/new_playtable.yaml"],
+      "identity_fields": ["episode range", "task ID", "language annotation", "robot observations", "actions"],
+      "wording_origin": "authored task-expression list",
+      "catalog_status": "not collected; fixed task list in simulation",
+      "score_components": [2, 1, 1, 1, 1],
+      "score": 6,
+      "losica_use": "importer regression fixture only"
+    },
+    {
+      "source_id": "ud-english-ewt",
+      "repository": "https://github.com/UniversalDependencies/UD_English-EWT",
+      "revision": "4a4d77f599ea53cc405f85d0cec4b2f14f81d42b",
+      "source_files": ["en_ewt-ud-train.conllu", "en_ewt-ud-dev.conllu", "en_ewt-ud-test.conllu", "README.md"],
+      "identity_fields": ["sent_id", "text", "token ID", "lemma", "UPOS", "features", "head", "dependency", "MISC"],
+      "wording_origin": "human-corrected linguistic annotation",
+      "catalog_status": "not placed in grounding catalog; it has no observation pointer",
+      "score_components": [0, 0, 2, 2, 0],
+      "score": 4,
+      "losica_use": "external English query parser only"
+    },
+    {
+      "source_id": "propbank",
+      "repository": "https://github.com/propbank/propbank-release",
+      "revision": "4abade0b53ce4a181e1d98b3518101c1a44d395a",
+      "source_files": ["README.md", "data/**/*.prop", "data/**/*.gold_skel"],
+      "identity_fields": ["roleset", "predicate", "numbered argument", "stand-off token pointer"],
+      "wording_origin": "adjudicated human semantic-role annotation",
+      "catalog_status": "not placed in grounding catalog; source texts may require LDC releases",
+      "score_components": [0, 0, 2, 2, 0],
+      "score": 4,
+      "losica_use": "external sentence-role parser only"
+    },
+    {
+      "source_id": "bigvideo-vmt",
+      "repository": "https://github.com/DeepLearnXMU/BigVideo-VMT",
+      "revision": "ea6fb2118d1bdb89954fbbcc9ccbd9f2b31402bd",
+      "source_files": ["fairseq_mmt/prepro/tsv_preproc_vatex.py", "fairseq_mmt/fairseq/tasks/multimodal_translation.py"],
+      "identity_fields": ["video ID", "source sentence", "target sentence", "video features"],
+      "wording_origin": "external multilingual corpora consumed by the code",
+      "catalog_status": "code inspected; annotation corpus is not shipped in the repository",
+      "score_components": [1, 0, 2, 2, 0],
+      "score": 5,
+      "losica_use": "translation model reference, not a label source snapshot"
+    },
+    {
+      "source_id": "wavcaps",
+      "repository": "https://github.com/Labbeti/aac-datasets",
+      "revision": "631524fb86eef351c1848e42196fbe5cf62442e4",
+      "source_files": ["src/aac_datasets/datasets/wavcaps.py", "README.md"],
+      "identity_fields": ["audio ID", "caption", "source subset"],
+      "wording_origin": "machine-written or machine-rewritten caption",
+      "catalog_status": "rejected",
+      "score_components": [2, 1, 0, 2, 2],
+      "score": 7,
+      "losica_use": "none; violates the external-authorship requirement"
+    }
+  ],
+  "catalog": {
+    "path": "source_labels.jsonl",
+    "record_count": 289480,
+    "sha256": "930689a9d78f0c57eac54eb0e9389230953a2e1196cf689f89ca557758576abc",
+    "included_sources": ["epic-kitchens-100", "epic-sounds", "activitynet-entities", "talk2car", "audiocaps"]
+  }
+}

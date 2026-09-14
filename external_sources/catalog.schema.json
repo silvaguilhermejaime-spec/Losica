@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://losica.invalid/schemas/external-source-record-1.json",
+  "title": "Losica external source record",
+  "type": "object",
+  "required": ["schema", "source_id", "external_id", "expression", "expression_origin", "evidence_role", "observation_ref", "source_file"],
+  "properties": {
+    "schema": {"const": "losica-external-source-record/1"},
+    "source_id": {"type": "string", "minLength": 1},
+    "external_id": {"type": "string", "minLength": 1},
+    "expression": {"type": "string", "minLength": 1},
+    "expression_origin": {"type": "string", "minLength": 1},
+    "evidence_role": {"type": "string", "minLength": 1},
+    "accepted_candidate": {"type": ["boolean", "null"]},
+    "observation_ref": {"type": "object", "minProperties": 1},
+    "source_file": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

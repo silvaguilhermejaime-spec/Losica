@@ -1,0 +1,785 @@
+diff --git a/losica_engine/display_en.py b/losica_engine/display_en.py
+index d244e7e..8031893 100644
+--- a/losica_engine/display_en.py
++++ b/losica_engine/display_en.py
+@@ -19,12 +19,23 @@ FUNCTION_LABELS = {
+ }
+ 
+ 
+-def attach_english_display(lexicon: list[dict], snapshot_path: str | Path = DEFAULT_DISPLAY_SNAPSHOT) -> None:
++def load_english_display_labels(snapshot_path: str | Path = DEFAULT_DISPLAY_SNAPSHOT) -> dict[str, str]:
+     snapshot = json.loads(Path(snapshot_path).read_text(encoding="utf-8"))
+-    concept_labels = {f"c:{row['concepticon_id']}": row["gloss"].lower() for row in snapshot["concepts"]}
++    return {str(row["concepticon_id"]): row["gloss"].lower() for row in snapshot["concepts"]} | FUNCTION_LABELS
++
++
++def attach_display_labels(lexicon: list[dict], display_labels: dict) -> None:
++    concept_labels = {str(key): str(value) for key, value in display_labels.items()}
+     for lexeme in lexicon:
+-        aliases = [concept_labels[m["concept"]] for m in lexeme.get("concept_mappings", []) if m["concept"] in concept_labels]
+-        label = (aliases[0] if aliases else None) or FUNCTION_LABELS.get(lexeme["concept"])
++        object_ids = [
++            str(link["object_id"])
++            for mapping in lexeme.get("concept_mappings", [])
++            for link in mapping.get("links", [])
++            if link.get("namespace") == "concepticon"
++        ]
++        aliases = [concept_labels.get(object_id, concept_labels.get(f"c:{object_id}")) for object_id in object_ids]
++        aliases = [label for label in aliases if label is not None]
++        label = (aliases[0] if aliases else None) or concept_labels.get(lexeme["concept"])
+         if lexeme.get("class") == "numeral" and lexeme["concept"].startswith("n:"):
+             label = lexeme["concept"][2:]
+         if lexeme.get("reference_cell"):
+@@ -40,3 +51,7 @@ def attach_english_display(lexicon: list[dict], snapshot_path: str | Path = DEFA
+         display["en"] = label or lexeme["lexeme_id"]
+         if aliases:
+             display["en_aliases"] = aliases
++
++
++def attach_english_display(lexicon: list[dict], snapshot_path: str | Path = DEFAULT_DISPLAY_SNAPSHOT) -> None:
++    attach_display_labels(lexicon, load_english_display_labels(snapshot_path))
+diff --git a/losica_engine/finalize_language.py b/losica_engine/finalize_language.py
+index 8724a85..32982f3 100644
+--- a/losica_engine/finalize_language.py
++++ b/losica_engine/finalize_language.py
+@@ -52,9 +52,23 @@ def main(argv=None):
+     ap = argparse.ArgumentParser(description="Generate and validate a finished Losica language bundle")
+     ap.add_argument("--seed", type=int, default=19020)
+     ap.add_argument("--out-dir", default="output")
++    ap.add_argument("--out", help="write the complete language JSON directly to this path")
+     ap.add_argument("--history-generations", type=int, default=0)
+     ap.add_argument("--display-locale", choices=["en", "none"], default="en")
+     args = ap.parse_args(argv)
++    if args.out:
++        state = generate_complete_language(
++            seed=args.seed,
++            vocabulary_scale="large",
++            historical_generations=args.history_generations,
++            display_locale=None if args.display_locale == "none" else args.display_locale,
++        )
++        validation = validate_complete_language(state)
++        target = Path(args.out)
++        target.parent.mkdir(parents=True, exist_ok=True)
++        target.write_text(json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
++        print(json.dumps({"out": str(target), **validation}, sort_keys=True))
++        return
+     report = finalize_language(
+         seed=args.seed,
+         out_dir=args.out_dir,
+diff --git a/losica_engine/full_language.py b/losica_engine/full_language.py
+index 672f661..2531e81 100644
+--- a/losica_engine/full_language.py
++++ b/losica_engine/full_language.py
+@@ -3,6 +3,7 @@ from __future__ import annotations
+ 
+ import argparse
+ import copy
++import hashlib
+ import json
+ from pathlib import Path
+ 
+@@ -15,12 +16,81 @@ from .lexicon_v021 import VOCABULARY_SCALES, by_concept, concept_target, generat
+ from .morphology_v021 import allocate_morphology, compound_lexemes, derive_lexeme, generate_paradigms
+ from .morphophonology import orthographic_form
+ from .typology import DEFAULT_SNAPSHOT, load_snapshot, sample_typological_profile
+-from .semantic_core import G_COP, G_EXIST, G_INT_PERSON, G_QUANT_UNIV
++from .semantic_core import G_COP, G_EXIST, G_INT_PERSON, G_QUANT_UNIV, lexical_item_id
+ 
+ SCHEMA = "losica-complete-language/2"
+ DEFAULT_PHONOLOGY = Path(__file__).resolve().parents[1] / "config/preproto.json"
+ DEFAULT_PROFILE = Path(__file__).resolve().parents[1] / "config/language_profile.json"
+ PROJECT_ROOT = Path(__file__).resolve().parents[1]
++PRESENTATION_FIELDS = frozenset({"display"})
++
++
++def remove_presentation_fields(value):
++    if isinstance(value, dict):
++        return {key: remove_presentation_fields(item) for key, item in value.items() if key not in PRESENTATION_FIELDS}
++    if isinstance(value, list):
++        return [remove_presentation_fields(item) for item in value]
++    return copy.deepcopy(value)
++
++
++def _evidence_sha256(evidence: dict) -> str:
++    payload = json.dumps(evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
++    return hashlib.sha256(payload).hexdigest()
++
++
++def _generation_record(language: dict, evidence: dict, parameters: dict) -> dict:
++    memberships = []
++    for lexeme in language["lexicon"]:
++        for mapping in lexeme.get("concept_mappings", []):
++            membership = mapping.get("membership_record")
++            if membership is None:
++                continue
++            link = next(link for link in mapping.get("links", []) if link.get("namespace") == "concepticon")
++            memberships.append({
++                "lexical_item_id": lexeme["lexeme_id"],
++                "meaning_region_id": lexeme["semantic_region_id"],
++                "concepticon_link": link,
++                "record": copy.deepcopy(membership),
++            })
++    source_ids = set()
++    for decision in language["profile"]["sampling_decisions"]:
++        source_ids.update(map(str, decision.get("source_ids", [])))
++    for item in memberships:
++        source_ids.update(item["record"]["evidence_edge_ids"])
++        source_ids.add(item["concepticon_link"]["object_id"])
++    seeds = {language["seed"]}
++    for decision in language["profile"]["sampling_decisions"]:
++        if decision.get("seed") is not None:
++            seeds.add(int(decision["seed"]))
++    return {
++        "schema": "losica-generation-record/1",
++        "algorithm": "losica-complete-language-v1",
++        "seed": language["seed"],
++        "seeds": sorted(seeds),
++        "evidence_sha256": _evidence_sha256(evidence),
++        "evidence_ids": sorted(source_ids),
++        "parameters": copy.deepcopy(parameters),
++        "decisions": [copy.deepcopy(item["record"]) for item in memberships],
++        "memberships": memberships,
++    }
++
++
++def replay_generation(record: dict, evidence: dict) -> dict:
++    """Rebuild and verify a generated language from its recorded evidence and choices."""
++    from .semantic_network import replay_membership
++
++    evidence = load_snapshot(evidence)
++    if record.get("schema") != "losica-generation-record/1" or record.get("algorithm") != "losica-complete-language-v1":
++        raise ValueError("unsupported generation record")
++    if record.get("evidence_sha256") != _evidence_sha256(evidence):
++        raise ValueError("generation evidence does not match the recorded evidence digest")
++    for membership in record.get("memberships", []):
++        replay_membership(membership["record"], evidence)
++    parameters = dict(record["parameters"])
++    state = generate_complete_language(seed=int(record["seed"]), evidence=evidence, display_labels=None, **parameters)
++    if state["generation_record"] != record:
++        raise ValueError("regenerated decisions do not match the generation record")
++    return remove_presentation_fields(state)
+ 
+ 
+ def _apply_profile_override(sampled: dict, path: str | Path | None) -> dict:
+@@ -86,7 +156,7 @@ def _derive_productive_lexemes(lexicon, morphology, cfg, profile, orthography):
+         process = process_for_class.get(base.get("class"))
+         if process not in morphology.get("derivation", {}):
+             continue
+-        result.append(derive_lexeme(base, process, morphology, cfg, profile, orthography, f"LEX_DER_{len(result)+1:04d}"))
++        result.append(derive_lexeme(base, process, morphology, cfg, profile, orthography, lexical_item_id(f"der-{len(result)+1:04d}")))
+     return result
+ 
+ 
+@@ -115,7 +185,7 @@ def _compound_sample_lexemes(lexicon, cfg, profile, orthography):
+     nouns = fixture["nouns"][:4]
+     pairs = ((nouns[0], nouns[1]), (nouns[2], nouns[3]))
+     return [
+-        compound_lexemes([left, right], cfg, profile, orthography, f"LEX_CMP_{i:03d}")
++        compound_lexemes([left, right], cfg, profile, orthography, lexical_item_id(f"cmp-{i:03d}"))
+         for i, (left, right) in enumerate(pairs, 1)
+     ]
+ 
+@@ -227,12 +297,13 @@ def _source_ledger(snapshot: dict) -> list[dict]:
+ def generate_complete_language(
+     *, phonology_path=DEFAULT_PHONOLOGY, profile_path=DEFAULT_PROFILE, empirical_snapshot_path=DEFAULT_SNAPSHOT,
+     seed=19020, vocabulary_scale="intermediate", historical_generations=0, canonical_sound_change_engine="Lexurgy", display_locale=None,
++    evidence: dict | None = None, display_labels: dict | None = None,
+ ) -> dict:
+     cfg = load_phonology(phonology_path)
+-    snapshot = load_snapshot(empirical_snapshot_path)
+-    profile = _apply_profile_override(sample_typological_profile(seed, empirical_snapshot_path), profile_path)
++    snapshot = load_snapshot(evidence if evidence is not None else empirical_snapshot_path)
++    profile = _apply_profile_override(sample_typological_profile(seed, snapshot), profile_path)
+     orthography = _orthography(seed, cfg)
+-    lexicon, allocator, lexical_decisions = generate_lexicon(snapshot, cfg, profile, seed=seed, scale=vocabulary_scale, project_root=PROJECT_ROOT)
++    lexicon, allocator, lexical_decisions = generate_lexicon(snapshot, cfg, profile, seed=seed, scale=vocabulary_scale, project_root=PROJECT_ROOT, display_labels=None)
+     morphology = allocate_morphology(profile, allocator, seed=seed)
+     lexicon.extend(_derive_productive_lexemes(lexicon, morphology, cfg, profile, orthography["segment_symbols"]))
+     lexicon.extend(_compound_sample_lexemes(lexicon, cfg, profile, orthography["segment_symbols"]))
+@@ -283,17 +354,7 @@ def generate_complete_language(
+         },
+         "source_ledger": _source_ledger(snapshot),
+     }
+-    if display_locale == "en":
+-        from .display_en import attach_english_display
+-        attach_english_display(language["lexicon"])
+-        # Re-realize examples so human-readable glosses/translations are display-only.
+-        display_executor = LanguageExecutor(lexicon=language["lexicon"], paradigms=language["paradigms"], morphology=language["morphology"], profile=language["profile"])
+-        language["examples"] = [display_executor.realize(x["semantic_graph"]) for x in language["examples"]]
+-        for ex in language["examples"]:
+-            parsed = analyze_surface(language, ex["orthographic_sentence"])
+-            parsed["round_trip_equivalent"] = any(semantic_equivalent(ex["semantic_graph"], candidate) for candidate in parsed["analyses"])
+-            ex["analysis"] = parsed
+-    elif display_locale not in (None, "none"):
++    if display_locale not in (None, "none", "en"):
+         raise ValueError(f"display locale accepts en or none; received {display_locale!r}")
+ 
+     language["capability_probes"] = _capability_probes(language)
+@@ -308,6 +369,17 @@ def generate_complete_language(
+         "phonology": "every lexical, derived, inflected, and sentence token has a legal active-stage parse", "semantics": "typed meaning → realization → surface analysis preserves each licensed reading",
+         "cldf": "export metadata validates with pycldf", "history": "every child stage names its parent and generation",
+     }
++    language["generation_record"] = _generation_record(language, snapshot, {
++        "vocabulary_scale": vocabulary_scale,
++        "historical_generations": historical_generations,
++        "canonical_sound_change_engine": canonical_sound_change_engine,
++    })
++    if display_labels is None and display_locale == "en":
++        from .display_en import load_english_display_labels
++        display_labels = load_english_display_labels()
++    if display_labels is not None:
++        from .display_en import attach_display_labels
++        attach_display_labels(language["lexicon"], display_labels)
+     return language
+ 
+ 
+diff --git a/losica_engine/grammar_v021.py b/losica_engine/grammar_v021.py
+index 2c658ce..7f4b869 100644
+--- a/losica_engine/grammar_v021.py
++++ b/losica_engine/grammar_v021.py
+@@ -116,7 +116,7 @@ class LanguageExecutor:
+ 
+     def _reference_lexeme(self, value: dict) -> dict:
+         cell_id = resolve_cell(value, self.profile["reference_system"]["cells"])
+-        return self._lex(f"r:{cell_id}")
++        return self._lex(cell_id)
+ 
+     def _np(self, obj: dict, role: str, deprel: str) -> list[dict]:
+         if "reference" in obj:
+diff --git a/losica_engine/lexicon_v021.py b/losica_engine/lexicon_v021.py
+index efb3136..1dc450e 100644
+--- a/losica_engine/lexicon_v021.py
++++ b/losica_engine/lexicon_v021.py
+@@ -10,7 +10,7 @@ from pathlib import Path
+ from .config import PhonologyConfig
+ from .morphophonology import prominence_index
+ from .phonology import legal_syllables, syllabify_surface
+-from .semantic_core import FUNCTION_SPECS, frame_structure, probe_id
++from .semantic_core import FUNCTION_SPECS, frame_structure, lexical_item_id
+ from .semantic_network import generate_semantic_regions, region_class
+ from .numeral_system import numeral_semantic_id
+ 
+@@ -62,11 +62,11 @@ def _select_concepts(snapshot: dict, scale: str, seed: int) -> list[dict]:
+     return select_probes(snapshot, concept_target(snapshot, scale), seed)
+ 
+ 
+-def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, seed: int, scale: str, project_root: Path) -> tuple[list[dict], FormAllocator, list[dict]]:
++def generate_lexicon(evidence: dict, cfg: PhonologyConfig, profile: dict, *, seed: int, scale: str, project_root: Path, display_labels: dict | None = None) -> tuple[list[dict], FormAllocator, list[dict]]:
+     rng = random.Random(seed ^ 0x4C455849)
+     allocator = FormAllocator.create(cfg, rng)
+-    target = concept_target(snapshot, scale)
+-    regions, decisions = generate_semantic_regions(snapshot, target, seed)
++    target = concept_target(evidence, scale)
++    regions, decisions = generate_semantic_regions(evidence, target, seed)
+     lexicon = []
+     for region in regions:
+         cls = region_class(region)
+@@ -75,14 +75,16 @@ def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, see
+         pindex = prominence_index(form.split("."), profile["prosody"]["word_prominence_rule"])
+         mappings = [{
+             "concepticon_id": anchor["concepticon_id"],
++            "links": list(anchor["links"]),
+             "concept": anchor["probe_id"],
+             "probe_id": anchor["probe_id"],
+             "membership": anchor["membership"],
+             "structural_evidence": anchor.get("structural_evidence", {}),
++            "membership_record": anchor["membership_record"],
+         } for anchor in region["anchors"]]
+         argument_structure = frame_structure(frame_id) if cls == "verb" and frame_id else None
+         lexicon.append({
+-            "lexeme_id": f"LEX_{len(lexicon)+1:04d}",
++            "lexeme_id": lexical_item_id(f"{len(lexicon)+1:04d}"),
+             "semantic_region_id": region["region_id"],
+             "semantic_region": region,
+             "lemma": region["region_id"],
+@@ -112,7 +114,7 @@ def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, see
+                     "anchor_probe_ids": [m["probe_id"] for m in mappings],
+                 },
+                 "clics": {
+-                    "version": snapshot.get("colexification_prior", {}).get("version"),
++                    "version": evidence.get("colexification_prior", {}).get("version"),
+                     "edges": region.get("direct_edge_evidence", []),
+                     "evidence_channel": "semantic topology",
+                 },
+@@ -121,13 +123,13 @@ def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, see
+         })
+ 
+     for cell in profile["reference_system"]["cells"]:
+-        semantic_id = f"r:{cell['cell_id']}"
++        semantic_id = cell["cell_id"]
+         form = allocator.take(); syllables = form.split(".")
+         pindex = prominence_index(syllables, profile["prosody"]["word_prominence_rule"])
+         lexicon.append({
+-            "lexeme_id": f"GRAM_{len(lexicon)+1:04d}", "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
++            "lexeme_id": lexical_item_id(f"{len(lexicon)+1:04d}"), "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
+             "concept_mappings": [], "class": "pronoun", "distribution": {"closed_class": True, "licensed_by": cell["condition"]},
+-            "argument_structure": None, "reference_cell": cell["cell_id"], "grammatical_features": cell["condition"],
++            "argument_structure": None, "reference_cell": cell["cell_id"], "meaning_partition_id": cell["partition_id"], "grammatical_features": cell["condition"],
+             "underlying_form": form, "form": form, "syllables": syllables, "prominence": pindex,
+             "annotated_form": ".".join(("ˈ" if i == pindex else "") + x for i, x in enumerate(syllables)),
+             "formation": "generated_reference_form",
+@@ -139,7 +141,7 @@ def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, see
+         form = allocator.take(); syllables = form.split(".")
+         pindex = prominence_index(syllables, profile["prosody"]["word_prominence_rule"])
+         lexicon.append({
+-            "lexeme_id": f"GRAM_{len(lexicon)+1:04d}", "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
++            "lexeme_id": lexical_item_id(f"{len(lexicon)+1:04d}"), "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
+             "concept_mappings": [], "class": "numeral", "distribution": {"closed_class": True, "licensed_by": {"numeral_value": value}},
+             "argument_structure": None, "grammatical_features": {"numeral_value": value},
+             "underlying_form": form, "form": form, "syllables": syllables, "prominence": pindex,
+@@ -152,13 +154,16 @@ def generate_lexicon(snapshot: dict, cfg: PhonologyConfig, profile: dict, *, see
+         form = allocator.take(); syllables = form.split(".")
+         pindex = prominence_index(syllables, profile["prosody"]["word_prominence_rule"])
+         lexicon.append({
+-            "lexeme_id": f"GRAM_{len(lexicon)+1:04d}", "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
++            "lexeme_id": lexical_item_id(f"{len(lexicon)+1:04d}"), "lemma": semantic_id, "concept": semantic_id, "concepticon_id": None,
+             "concept_mappings": [], "class": cls, "distribution": {"closed_class": True, "licensed_by": features},
+             "argument_structure": argument_structure, "grammatical_features": features, "underlying_form": form, "form": form, "syllables": syllables, "prominence": pindex,
+             "annotated_form": ".".join(("ˈ" if i == pindex else "") + x for i, x in enumerate(syllables)),
+             "formation": "generated_grammatical_form",
+             "provenance": {"entity": "lexeme", "representation": "grammatical semantic realization", "inputs": [semantic_id, features], "transformation": "profile-driven closed-class allocation", "outputs": [form], "seed": seed},
+         })
++    if display_labels is not None:
++        from .display_en import attach_display_labels
++        attach_display_labels(lexicon, display_labels)
+     return lexicon, allocator, decisions
+ 
+ 
+diff --git a/losica_engine/morphology_v021.py b/losica_engine/morphology_v021.py
+index 023a57b..9bb1858 100644
+--- a/losica_engine/morphology_v021.py
++++ b/losica_engine/morphology_v021.py
+@@ -6,6 +6,7 @@ from itertools import product
+ from .config import PhonologyConfig
+ from .lexicon_v021 import FormAllocator
+ from .morphophonology import Morpheme, realize_morphemes
++from .semantic_core import meaning_cell_id, meaning_partition_id
+ 
+ UNIMORPH_VERSION = "schema current at Losica v0.26; 23 dimensions / 212+ features"
+ 
+@@ -29,10 +30,17 @@ def _affix(allocator: FormAllocator, attachment: str) -> str:
+ 
+ 
+ def _dimension(values: list[str], base: str | None, allocator: FormAllocator, attachment: str, dim: str) -> dict:
++    partition_id = meaning_partition_id(f"morphology-{dim}")
+     forms = {}
+     for value in values:
+         forms[value] = "" if value == base else _affix(allocator, attachment)
+-    return {"dimension": dim, "values": values, "exponents": forms, "attachment": attachment}
++    cells = [{
++        "cell_id": meaning_cell_id(f"{partition_id[3:]}-{value if value is not None else 'none'}"),
++        "partition_id": partition_id,
++        "value": value,
++        "exponent": forms.get(value, ""),
++    } for value in (values or [None])]
++    return {"partition_id": partition_id, "dimension": dim, "values": values, "exponents": forms, "attachment": attachment, "cells": cells}
+ 
+ 
+ def allocate_morphology(profile: dict, allocator: FormAllocator, *, seed: int) -> dict:
+@@ -84,10 +92,17 @@ def allocate_morphology(profile: dict, allocator: FormAllocator, *, seed: int) -
+     verb_template = "STEM-POLARITY-ASPECT-TENSE-MOOD-SUBJECT" if attachment == "suffix" and vp.get("voice", ["ACT"]) == ["ACT"] and not vp.get("evidentiality") else (
+         "STEM-" + "-".join(x.upper() for x in verb_order) if attachment == "suffix" else "-".join(x.upper() for x in reversed(verb_order)) + "-STEM"
+     )
++    partitions = [noun_number, noun_case, *verbal_dimensions.values()]
+     return {
+         "schema": "losica-morphology/2",
+         "unimorph": {"schema_version": UNIMORPH_VERSION, "bundle_storage": "dimension-value map"},
+         "attachment": attachment,
++        "meaning_partitions": [{
++            "partition_id": partition["partition_id"],
++            "dimension": partition["dimension"],
++            "cell_ids": [cell["cell_id"] for cell in partition["cells"]],
++        } for partition in partitions],
++        "cells": [cell for partition in partitions for cell in partition["cells"]],
+         "noun": {"number": noun_number["exponents"], "case": noun_case["exponents"], "dimensions": {"number": noun_number, "case": noun_case}, "template": noun_template},
+         "verb": {**{k: v["exponents"] for k, v in verbal_dimensions.items()}, "dimensions": verbal_dimensions, "template": verb_template},
+         "derivation": derivation,
+@@ -111,12 +126,13 @@ def _host_final_labial(form: str) -> bool:
+     return plain.endswith(("p", "m"))
+ 
+ 
+-def _morpheme_for(dim: str, value: str, forms: dict, morphology: dict, host_form: str) -> Morpheme:
+-    form = forms.get(value, "")
++def _morpheme_for(dim: str, value: str, partition: dict, morphology: dict, host_form: str) -> Morpheme:
++    form = partition["exponents"].get(value, "")
+     for rule in morphology.get("allomorphy", []):
+         if rule["dimension"] == dim and rule["value"] == value and _host_final_labial(host_form):
+             form = rule["conditioned_form"]
+-    return Morpheme(f"INFL-{dim.upper()}-{value}", form, value, morphology["attachment"])
++    cell = next(cell for cell in partition["cells"] if cell["value"] == value)
++    return Morpheme(cell["cell_id"], form, str(value), morphology["attachment"])
+ 
+ 
+ def realize_inflection(lexeme: dict, bundle: dict, morphology: dict, cfg: PhonologyConfig, profile: dict, orthography: dict[str, str]) -> dict:
+@@ -124,12 +140,16 @@ def realize_inflection(lexeme: dict, bundle: dict, morphology: dict, cfg: Phonol
+     order = morphology["morpheme_order"][category]
+     dimensions = morphology[category]
+     morphemes = []
++    meaning_cells = []
+     for slot in order:
+         if slot == "stem":
+             morphemes.append(Morpheme(lexeme["lexeme_id"], lexeme["underlying_form"], lexeme["lemma"], "root"))
+         else:
+             value = bundle[slot]
+-            morphemes.append(_morpheme_for(slot, value, dimensions[slot], morphology, lexeme["underlying_form"]))
++            partition = dimensions["dimensions"][slot]
++            cell = next(cell for cell in partition["cells"] if cell["value"] == value)
++            meaning_cells.append({"partition_id": partition["partition_id"], "cell_id": cell["cell_id"]})
++            morphemes.append(_morpheme_for(slot, value, partition, morphology, lexeme["underlying_form"]))
+     realized = realize_morphemes(
+         morphemes, cfg, rules=profile["morphology"]["morphophonology"],
+         prominence_rule=profile["prosody"]["word_prominence_rule"], orthography=orthography,
+@@ -138,6 +158,7 @@ def realize_inflection(lexeme: dict, bundle: dict, morphology: dict, cfg: Phonol
+     return {
+         **bundle,
+         "feature_bundle": {k: v for k, v in bundle.items()},
++        "meaning_cells": meaning_cells,
+         "unimorph": ";".join(str(v) for v in bundle.values() if v not in (None, "NONE")),
+         "form": realized["surface_phonemic"],
+         "orthographic": realized["orthographic"],
+diff --git a/losica_engine/reference_system.py b/losica_engine/reference_system.py
+index 9334918..2580919 100644
+--- a/losica_engine/reference_system.py
++++ b/losica_engine/reference_system.py
+@@ -3,6 +3,8 @@ from __future__ import annotations
+ 
+ import random
+ 
++from .semantic_core import meaning_cell_id, meaning_partition_id
++
+ 
+ def _cell(cell_id: str, *, speaker: str, addressee: str, cardinality: dict) -> dict:
+     return {
+@@ -15,6 +17,18 @@ def _cell(cell_id: str, *, speaker: str, addressee: str, cardinality: dict) -> d
+     }
+ 
+ 
++def _partition(system_id: str, cells: list[dict], kind: str) -> dict:
++    partition_id = meaning_partition_id(f"{kind}-{system_id}")
++    normalized = []
++    for index, cell in enumerate(cells):
++        normalized.append({
++            **cell,
++            "cell_id": meaning_cell_id(f"{kind}-{system_id}-{index:04d}"),
++            "partition_id": partition_id,
++        })
++    return {"system_id": system_id, "partition_id": partition_id, "cells": normalized}
++
++
+ def _three_by_two() -> list[dict]:
+     return [
+         _cell("R0", speaker="required", addressee="forbidden", cardinality={"exact": 1}),
+@@ -76,7 +90,7 @@ def sample_reference_system(rng: random.Random, seed: int) -> tuple[dict, dict]:
+     ids = list(REFERENCE_ARCHITECTURES)
+     chosen = rng.choices(ids, weights=REFERENCE_WEIGHTS, k=1)[0]
+     cells = REFERENCE_ARCHITECTURES[chosen]()
+-    system = {"system_id": chosen, "cells": cells}
++    system = _partition(chosen, cells, "reference")
+     decision = {
+         "feature": "participant_reference_partition",
+         "value": chosen,
+@@ -95,7 +109,7 @@ def sample_reference_system(rng: random.Random, seed: int) -> tuple[dict, dict]:
+ 
+ def sample_agreement_system(rng: random.Random, seed: int, reference_system: dict, enabled: bool) -> tuple[dict, dict]:
+     if not enabled:
+-        system = {"system_id": "AGR-0", "cells": [{"cell_id": "A0", "condition": {"any": True}}]}
++        system = _partition("AGR-0", [{"cell_id": "A0", "condition": {"any": True}}], "agreement")
+         weights = [1.0]
+         candidates = ["AGR-0"]
+     else:
+@@ -112,7 +126,7 @@ def sample_agreement_system(rng: random.Random, seed: int, reference_system: dic
+             ]
+         else:
+             cells = [{"cell_id": "A0", "condition": {"any": True}}]
+-        system = {"system_id": chosen, "cells": cells}
++        system = _partition(chosen, cells, "agreement")
+     decision = {
+         "feature": "subject_index_partition",
+         "value": system["system_id"],
+diff --git a/losica_engine/semantic_core.py b/losica_engine/semantic_core.py
+index c44e3da..efcf1b3 100644
+--- a/losica_engine/semantic_core.py
++++ b/losica_engine/semantic_core.py
+@@ -1,6 +1,8 @@
+ """Language-neutral semantic identifiers used by the complete-language generator."""
+ from __future__ import annotations
+ 
++import re
++
+ # Stable grammatical-semantic IDs. These identify Losica's formal semantic operators.
+ G_DEM_PROX = "g:0101"
+ G_DEM_DIST = "g:0102"
+@@ -68,3 +70,30 @@ def concepticon_id(probe: str) -> str | None:
+ def frame_structure(frame_id: str) -> dict:
+     spec = LEXICAL_FRAME_SPECS[frame_id]
+     return {"frame_id": frame_id, **{k: (list(v) if isinstance(v, list) else v) for k, v in spec.items()}}
++
++
++def _identifier(prefix: str, value: object) -> str:
++    text = re.sub(r"[^a-z0-9]+", "-", str(value).strip().lower()).strip("-")
++    if not text:
++        raise ValueError(f"{prefix} identifier requires a non-empty value")
++    return f"{prefix}:{text}"
++
++
++def lexical_item_id(value: object) -> str:
++    return _identifier("lx", value)
++
++
++def meaning_region_id(value: object) -> str:
++    return _identifier("sr", value)
++
++
++def meaning_partition_id(value: object) -> str:
++    return _identifier("sp", value)
++
++
++def meaning_cell_id(value: object) -> str:
++    return _identifier("sc", value)
++
++
++def concepticon_link(object_id: object) -> dict[str, str]:
++    return {"namespace": "concepticon", "object_id": str(object_id)}
+diff --git a/losica_engine/semantic_network.py b/losica_engine/semantic_network.py
+index 8d6fbcd..8b39ee7 100644
+--- a/losica_engine/semantic_network.py
++++ b/losica_engine/semantic_network.py
+@@ -10,6 +10,11 @@ from collections import defaultdict
+ import hashlib
+ import random
+ 
++from .semantic_core import concepticon_link, meaning_region_id
++
++
++MEMBERSHIP_ALGORITHM = "colex-region-v1"
++
+ 
+ def _stable_float(*parts: object) -> float:
+     payload = "|".join(map(str, parts)).encode("utf-8")
+@@ -74,6 +79,49 @@ def _edge_map(snapshot: dict) -> dict[frozenset[str], dict]:
+     }
+ 
+ 
++def _edge_rows(evidence) -> list[dict]:
++    if isinstance(evidence, dict):
++        rows = evidence.get("colexification_edges", evidence.get("edges", []))
++        if isinstance(rows, dict):
++            rows = list(rows.values())
++        return list(rows)
++    return list(evidence)
++
++
++def replay_membership(record: dict, evidence) -> bool:
++    """Validate and replay a lexical membership threshold decision."""
++    required = {"algorithm", "evidence_edge_ids", "seed", "draw", "threshold", "accepted"}
++    missing = required - set(record)
++    if missing:
++        raise ValueError(f"membership record is missing {sorted(missing)}")
++    if record["algorithm"] != MEMBERSHIP_ALGORITHM:
++        raise ValueError(f"unsupported membership algorithm {record['algorithm']!r}")
++    available = {str(row["edge_id"]) for row in _edge_rows(evidence) if row.get("edge_id") is not None}
++    unknown = set(map(str, record["evidence_edge_ids"])) - available
++    if unknown:
++        raise ValueError(f"membership record names unknown evidence edges: {sorted(unknown)}")
++    replayed = float(record["draw"]) <= float(record["threshold"])
++    if replayed is not bool(record["accepted"]):
++        raise ValueError("membership record's accepted value does not match its draw and threshold")
++    return replayed
++
++
++def _membership_record(*, seed: int, evidence_edge_ids: list[str], draw: float = 0.0, threshold: float = 0.0) -> dict:
++    return {
++        "algorithm": MEMBERSHIP_ALGORITHM,
++        "evidence_edge_ids": sorted(set(map(str, evidence_edge_ids))),
++        "seed": seed,
++        "draw": draw,
++        "threshold": threshold,
++        "accepted": draw <= threshold,
++    }
++
++
++def _supporting_edge_ids(cid: str, direct: dict, preferred: list[dict] | None = None) -> list[str]:
++    rows = preferred or [edge for pair, edge in direct.items() if cid in pair]
++    return [str(edge["edge_id"]) for edge in rows if edge.get("edge_id") is not None]
++
++
+ def _chunk_size(rng: random.Random, group_size: int) -> int:
+     if group_size <= 1:
+         return 1
+@@ -110,7 +158,7 @@ def generate_semantic_regions(snapshot: dict, target: int, seed: int) -> tuple[l
+         for _, _, _, _, edge in sorted(ordered_pairs):
+             a, b = str(edge["source_concepticon_id"]), str(edge["target_concepticon_id"])
+             if a in unused and b in unused:
+-                rid = f"sr:{len(regions)+1:04d}"
++                rid = meaning_region_id(f"{len(regions)+1:04d}")
+                 regions.append(_region_record(rid, community_id, [a, b], by_id, seed, direct))
+                 unused.remove(a); unused.remove(b)
+         rest = [cid for cid in members if cid in unused]
+@@ -118,7 +166,7 @@ def generate_semantic_regions(snapshot: dict, target: int, seed: int) -> tuple[l
+             size = min(_chunk_size(rng, len(rest)), len(rest))
+             chunk = rest[:size]
+             rest = rest[size:]
+-            rid = f"sr:{len(regions)+1:04d}"
++            rid = meaning_region_id(f"{len(regions)+1:04d}")
+             regions.append(_region_record(rid, community_id, chunk, by_id, seed, direct))
+ 
+     # High-connectivity probes can participate in a second lexical region in the
+@@ -133,12 +181,18 @@ def generate_semantic_regions(snapshot: dict, target: int, seed: int) -> tuple[l
+     for row in candidates:
+         cid = str(row["concepticon_id"])
+         community_id = str(row.get("community_id") or f"isolated:{cid}")
+-        if community_sizes.get(community_id, 1) < 3 or _stable_float("overlap", seed, cid) >= 0.14:
++        draw = _stable_float("overlap", seed, cid)
++        if community_sizes.get(community_id, 1) < 3 or draw > 0.14:
+             continue
+         other = next((r for r in regions if r["community_id"] == community_id and all(a["concepticon_id"] != cid for a in r["anchors"])), None)
+         if other is None:
+             continue
+-        other["anchors"].append(_anchor(row, membership=round(0.35 + 0.35 * _stable_float("weight", seed, cid, other["region_id"]), 6)))
++        record = _membership_record(seed=seed, evidence_edge_ids=_supporting_edge_ids(cid, direct), draw=draw, threshold=0.14)
++        other["anchors"].append(_anchor(
++            row,
++            membership=round(0.35 + 0.35 * _stable_float("weight", seed, cid, other["region_id"]), 6),
++            membership_record=record,
++        ))
+         overlap_count += 1
+ 
+     for region in regions:
+@@ -160,11 +214,14 @@ def generate_semantic_regions(snapshot: dict, target: int, seed: int) -> tuple[l
+     return regions, decisions
+ 
+ 
+-def _anchor(row: dict, membership: float = 1.0) -> dict:
++def _anchor(row: dict, membership: float = 1.0, membership_record: dict | None = None) -> dict:
++    object_id = str(row["concepticon_id"])
+     return {
+-        "concepticon_id": str(row["concepticon_id"]),
++        "concepticon_id": object_id,
++        "links": [concepticon_link(object_id)],
+         "probe_id": f"c:{row['concepticon_id']}",
+         "membership": membership,
++        "membership_record": membership_record,
+         "structural_evidence": {
+             k: row[k] for k in (
+                 "network_rank", "community_id", "graph_degree", "weighted_family_degree",
+@@ -175,18 +232,20 @@ def _anchor(row: dict, membership: float = 1.0) -> dict:
+ 
+ 
+ def _region_record(rid: str, community_id: str, members: list[str], by_id: dict[str, dict], seed: int, direct: dict) -> dict:
+-    anchors = []
+-    for index, cid in enumerate(members):
+-        row = by_id[cid]
+-        degree = int(row.get("graph_degree") or row.get("degree") or 0)
+-        weight = 1.0 if index == 0 else round(0.58 + min(0.35, degree / 30.0) + 0.05 * _stable_float("member", seed, rid, cid), 6)
+-        anchors.append(_anchor(row, min(weight, 0.96)))
+     traced = []
+     for i, a in enumerate(members):
+         for b in members[i+1:]:
+             edge = direct.get(frozenset((a, b)))
+             if edge:
+                 traced.append(edge)
++    anchors = []
++    for index, cid in enumerate(members):
++        row = by_id[cid]
++        degree = int(row.get("graph_degree") or row.get("degree") or 0)
++        weight = 1.0 if index == 0 else round(0.58 + min(0.35, degree / 30.0) + 0.05 * _stable_float("member", seed, rid, cid), 6)
++        preferred = [edge for edge in traced if cid in {str(edge["source_concepticon_id"]), str(edge["target_concepticon_id"])}]
++        record = _membership_record(seed=seed, evidence_edge_ids=_supporting_edge_ids(cid, direct, preferred or None))
++        anchors.append(_anchor(row, min(weight, 0.96), record))
+     return {
+         "region_id": rid,
+         "community_id": community_id,
+diff --git a/losica_engine/typology.py b/losica_engine/typology.py
+index 0d0110e..8e9bae9 100644
+--- a/losica_engine/typology.py
++++ b/losica_engine/typology.py
+@@ -3,6 +3,7 @@ from __future__ import annotations
+ 
+ import json
+ import random
++import copy
+ from pathlib import Path
+ 
+ from .reference_system import sample_agreement_system, sample_reference_system
+@@ -11,8 +12,8 @@ from .numeral_system import sample_numeral_system
+ DEFAULT_SNAPSHOT = Path(__file__).resolve().parents[1] / "data" / "empirical_core_v0_26.json"
+ 
+ 
+-def load_snapshot(path: str | Path = DEFAULT_SNAPSHOT) -> dict:
+-    obj = json.loads(Path(path).read_text(encoding="utf-8"))
++def load_snapshot(path: str | Path | dict = DEFAULT_SNAPSHOT) -> dict:
++    obj = copy.deepcopy(path) if isinstance(path, dict) else json.loads(Path(path).read_text(encoding="utf-8"))
+     if obj.get("schema") != "losica-empirical-core/5":
+         raise ValueError("losica-empirical-core/5 required")
+     return obj
+@@ -50,8 +51,8 @@ def _normalize_syntax(features: dict[str, str]) -> dict:
+     }
+ 
+ 
+-def sample_typological_profile(seed: int, snapshot_path: str | Path = DEFAULT_SNAPSHOT) -> dict:
+-    snapshot = load_snapshot(snapshot_path)
++def sample_typological_profile(seed: int, evidence: str | Path | dict = DEFAULT_SNAPSHOT) -> dict:
++    snapshot = load_snapshot(evidence)
+     rng = random.Random(seed)
+     candidates = [p for p in snapshot["wals_joint_profiles"] if all(v != "ND" for v in p["features"].values())]
+     weights = [p["weight"] for p in candidates]
+diff --git a/losica_engine/validation_v021.py b/losica_engine/validation_v021.py
+index 313864a..6d39b4e 100644
+--- a/losica_engine/validation_v021.py
++++ b/losica_engine/validation_v021.py
+@@ -18,14 +18,20 @@ def validate_complete_language(state: dict, phonology_path: str | Path | None =
+     mapping = state["orthography"]["segment_symbols"]
+     for row in state["lexicon"]:
+         lexical_checks += 1
++        if not row["lexeme_id"].startswith("lx:"):
++            errors.append(f"lexeme {row['lexeme_id']} lacks an lx: lexical-item identifier")
+         if not is_legal_surface(row["form"], cfg): errors.append(f"lexeme {row['lexeme_id']} lacks a legal active-stage parse")
+         orthography_checks += 1
+         if phonemic_from_orthography(row["orthographic"], mapping, cfg).replace(".", "") != row["form"].replace(".", ""):
+             errors.append(f"lexeme {row['lexeme_id']} has an orthography-to-phoneme mapping mismatch")
+         if row["annotated_form"].count("ˈ") != 1: errors.append(f"lexeme {row['lexeme_id']} requires exactly one prominent syllable")
+         for concept in row.get("concept_mappings", []):
+-            if not concept.get("concepticon_id"):
++            links = concept.get("links", [])
++            if not links or any(set(link) != {"namespace", "object_id"} or link["namespace"] != "concepticon" for link in links):
+                 errors.append(f"lexeme {row['lexeme_id']} has an unbound Concepticon mapping")
++            membership = concept.get("membership_record", {})
++            if set(membership) != {"algorithm", "evidence_edge_ids", "seed", "draw", "threshold", "accepted"} or bool(membership.get("accepted")) != (float(membership.get("draw", 1)) <= float(membership.get("threshold", 0))):
++                errors.append(f"lexeme {row['lexeme_id']} has an invalid membership record")
+     lexemes = {x["lexeme_id"]: x for x in state["lexicon"]}
+     noun_expected = {tuple(sorted(x.items())) for x in noun_bundles(state["morphology"])}
+     verb_expected = {tuple(sorted(x.items())) for x in verb_bundles(state["morphology"])}
+@@ -47,6 +53,10 @@ def validate_complete_language(state: dict, phonology_path: str | Path | None =
+             orthography_checks += 1
+             if phonemic_from_orthography(cell["orthographic"], mapping, cfg).replace(".", "") != cell["form"].replace(".", ""):
+                 errors.append(f"paradigm {lid} has an orthography mismatch")
++            for reference in cell.get("meaning_cells", []):
++                partition = next((p for p in state["morphology"].get("meaning_partitions", []) if p["partition_id"] == reference["partition_id"]), None)
++                if partition is None or reference["cell_id"] not in partition["cell_ids"]:
++                    errors.append(f"paradigm {lid} refers to a morphology cell outside its partition")
+     executor = LanguageExecutor(lexicon=state["lexicon"], paradigms=state["paradigms"], morphology=state["morphology"], profile=state["profile"])
+     for example in state["examples"]:
+         for token in example["tokens"]:
+@@ -88,6 +98,8 @@ def validate_complete_language(state: dict, phonology_path: str | Path | None =
+         region = lexeme.get("semantic_region") or {}
+         if lexeme.get("concept") != lexeme.get("semantic_region_id") or region.get("region_id") != lexeme.get("semantic_region_id"):
+             errors.append(f"lexeme {lexeme['lexeme_id']} requires internal semantic-region identity")
++        if not lexeme.get("semantic_region_id", "").startswith("sr:"):
++            errors.append(f"lexeme {lexeme['lexeme_id']} requires an sr: meaning-region identifier")
+         if not mappings or not region.get("community_id"):
+             errors.append(f"lexeme {lexeme['lexeme_id']} requires structural semantic anchors")
+         if len(mappings) > 1:
+@@ -99,6 +111,13 @@ def validate_complete_language(state: dict, phonology_path: str | Path | None =
+         errors.append("lexical semantic topology requires at least one multi-anchor region")
+     if semantic_roots and not any(count > 1 for count in probe_region_counts.values()):
+         errors.append("lexical semantic topology requires at least one overlapping probe-to-region mapping")
++    morphology_partitions = {p["partition_id"]: set(p["cell_ids"]) for p in state["morphology"].get("meaning_partitions", [])}
++    for partition_id, cell_ids in morphology_partitions.items():
++        if not partition_id.startswith("sp:") or any(not cell_id.startswith("sc:") for cell_id in cell_ids):
++            errors.append(f"morphology partition {partition_id} has non-canonical identifiers")
++    for cell in state["morphology"].get("cells", []):
++        if cell["cell_id"] not in morphology_partitions.get(cell["partition_id"], set()):
++            errors.append(f"morphology cell {cell['cell_id']} does not belong to {cell['partition_id']}")
+     stages = state["history"]["stages"]
+     for index, stage in enumerate(stages):
+         if stage["generation"] != index:

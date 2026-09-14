@@ -1,0 +1,8 @@
+lexeme_id	category_id	preproto_form	prominence	provenance
+L_EX_BASE	C001	ka	0	legacy example source
+L_HOST_A	C001	ka	0	example host A
+L_HOST_B	C001	mi	0	example host B
+L_HOST_C	C002	tuk	0	example host C
+L_MARK_A	C001	na	0	example marker source A
+L_MARK_B	C001	ru	0	example marker source B
+L_MARK_C	C001	ki	0	example marker source C

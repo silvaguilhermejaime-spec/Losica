@@ -1,0 +1,59 @@
+{
+  "inventory": [
+    "a",
+    "i",
+    "k",
+    "m",
+    "n",
+    "u"
+  ],
+  "phonology": "config/preproto.json",
+  "records": [
+    {
+      "imitation_id": "I001",
+      "provenance": {
+        "method": "example"
+      },
+      "raw_tokens": [
+        "m",
+        "a"
+      ],
+      "status": "accepted",
+      "tokens": [
+        "m",
+        "a"
+      ]
+    },
+    {
+      "imitation_id": "I002",
+      "provenance": {
+        "method": "example"
+      },
+      "raw_tokens": [
+        "m",
+        "a"
+      ],
+      "status": "accepted",
+      "tokens": [
+        "m",
+        "a"
+      ]
+    },
+    {
+      "imitation_id": "I003",
+      "provenance": {
+        "method": "example"
+      },
+      "raw_tokens": [
+        "n",
+        "i"
+      ],
+      "status": "accepted",
+      "tokens": [
+        "n",
+        "i"
+      ]
+    }
+  ],
+  "schema": "losica-imitation-transcriptions/1"
+}

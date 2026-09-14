@@ -1,0 +1,25 @@
+# sent_id = losica-fixture-transitive
+# text = The person sees the child.
+1	The	the	DET	_	Definite=Def	2	det	_	_
+2	person	person	NOUN	_	Number=Sing	3	nsubj	_	_
+3	sees	see	VERB	_	Tense=Pres	0	root	_	_
+4	the	the	DET	_	Definite=Def	5	det	_	_
+5	child	child	NOUN	_	Number=Sing	3	obj	_	_
+
+# sent_id = losica-fixture-complement
+# text = The person knows that the child sleeps.
+1	person	person	NOUN	_	Number=Sing	2	nsubj	_	_
+2	knows	know	VERB	_	Tense=Pres	0	root	_	_
+3	that	that	SCONJ	_	_	5	mark	_	_
+4	child	child	NOUN	_	Number=Sing	5	nsubj	_	_
+5	sleeps	sleep	VERB	_	Tense=Pres	2	ccomp	_	_
+
+# sent_id = losica-fixture-relative
+# text = The child whom the person sees sleeps.
+1	child	child	NOUN	_	Number=Sing	6	nsubj	_	_
+2	whom	who	PRON	_	PronType=Rel	4	obj	_	_
+3	person	person	NOUN	_	Number=Sing	4	nsubj	_	_
+4	sees	see	VERB	_	Tense=Pres	1	acl:relcl	_	_
+5	REF	ref	PART	_	_	2	ref	_	_
+6	sleeps	sleep	VERB	_	Tense=Pres	0	root	_	_
+
