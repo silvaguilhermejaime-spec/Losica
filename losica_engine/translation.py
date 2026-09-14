@@ -8,7 +8,6 @@ from __future__ import annotations
 import re
 
 from .grammar_v021 import LanguageExecutor, clause, entity, participant_reference
-from .semantic_core import G_COP, G_MANNER_PROX, G_TIME_ALWAYS
 
 
 def _normalize_word(word: str) -> str:
@@ -59,29 +58,6 @@ def _lookup(index: dict[str, str], word: str, *, role: str) -> str:
 def parse_controlled_source(state: dict, text: str) -> dict:
     words = re.findall(r"[A-Za-z]+", text.lower())
     question = text.rstrip().endswith("?")
-    habitual_state_subjects = {
-        ("i", "always", "been", "like", "this"): "i",
-        ("i", "have", "always", "been", "like", "this"): "i",
-        ("i", "ve", "always", "been", "like", "this"): "i",
-        ("i", "was", "always", "like", "this"): "i",
-        ("it", "always", "been", "like", "this"): "it",
-        ("it", "has", "always", "been", "like", "this"): "it",
-        ("it", "s", "always", "been", "like", "this"): "it",
-        ("it", "was", "always", "like", "this"): "it",
-    }
-    habitual_subject = habitual_state_subjects.get(tuple(words))
-    if habitual_subject is not None:
-        subject = _pronoun(habitual_subject)
-        return clause(
-            G_COP,
-            {
-                "THEME": subject,
-                "ATTRIBUTE": entity(G_MANNER_PROX),
-                "TIME": entity(G_TIME_ALWAYS),
-            },
-            construction="copular",
-            features={"tense": "NPST", "aspect": "IPFV"},
-        )
     while words and words[0] in {"the", "a", "an"}:
         words.pop(0)
     tense, polarity = "NPST", "POS"
