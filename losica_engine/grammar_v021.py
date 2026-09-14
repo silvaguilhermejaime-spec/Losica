@@ -10,7 +10,7 @@ from .numeral_system import decompose_cardinal, numeral_semantic_id
 from .semantic_core import (
     G_ADP_INSTR, G_ADP_LOC, G_ADP_SOURCE, G_COMP, G_COORD_ADD, G_COP, G_DEM_DIST,
     G_DEM_PROX, G_EXIST, G_IMP, G_INT_PERSON, G_NEG, G_NUM_1, G_NUM_2,
-    G_MANNER_PROX, G_Q_POLAR, G_REL, G_TIME_ALWAYS,
+    G_Q_POLAR, G_REL,
 )
 
 UD_VERSION = "2.18"
@@ -170,13 +170,6 @@ class LanguageExecutor:
             return phrase[:1] + [marker] + phrase[1:]
         return phrase + [marker]
 
-    def _adjunct(self, obj: dict, role: str, adposition: str) -> list[dict]:
-        if "concept" in obj:
-            lexical = self._lex(obj["concept"])
-            if lexical.get("class") == "adverb":
-                return [self._token(lexical, deprel="advmod", role=role)]
-        return self._oblique(obj, role, "obl", adposition)
-
     def _subject_index(self, obj: dict) -> str:
         if "reference" in obj:
             ref = obj["reference"]
@@ -225,12 +218,7 @@ class LanguageExecutor:
             subject = self._np(args.get("THEME") or args.get("POSSESSED"), "THEME", "nsubj")
             attr = self._token(self._lex(args["ATTRIBUTE"]["concept"]), deprel="root", role="ATTRIBUTE")
             cop = self._verb(G_COP, subject_obj, features); cop["deprel"] = "cop"
-            adjuncts = []
-            for role, marker in (("TIME", G_ADP_LOC), ("MANNER", G_ADP_INSTR)):
-                value = args.get(role)
-                if isinstance(value, dict) and value.get("type") == "entity":
-                    adjuncts.extend(self._adjunct(value, role, marker))
-            tokens = subject + adjuncts + [attr, cop] if self.profile["syntax"]["clause_order"].endswith("V") else [cop] + subject + adjuncts + [attr]
+            tokens = subject + [attr, cop] if self.profile["syntax"]["clause_order"].endswith("V") else [cop] + subject + [attr]
             return self._result("copular", graph, tokens)
         if construction == "possessive" or {"POSSESSOR", "POSSESSED"} <= set(args):
             possessed = copy.deepcopy(args["POSSESSED"]); possessed["possessor"] = args["POSSESSOR"]
@@ -266,7 +254,7 @@ class LanguageExecutor:
         for role, marker in adjunct_specs:
             value = args.get(role)
             if isinstance(value, dict) and value.get("type") == "entity":
-                objects.append(self._adjunct(value, role, marker))
+                objects.append(self._oblique(value, role, "obl", marker))
         verb = self._verb(pred, subject_obj, features)
         tokens = self._linearize_core(subject, objects, verb)
         if features.get("polarity") == "NEG":
@@ -392,14 +380,6 @@ def semantic_translation(graph: dict, label=None) -> str:
     args = graph.get("arguments", {})
     features = graph.get("features", {})
     subject = args.get("AGENT") or args.get("THEME") or args.get("POSSESSED")
-    if (
-        graph.get("predicate") == G_COP
-        and (args.get("ATTRIBUTE") or {}).get("concept") == G_MANNER_PROX
-        and (args.get("TIME") or {}).get("concept") == G_TIME_ALWAYS
-    ):
-        subject_text = _entity_translation(subject, label)
-        auxiliary = "have" if subject_text in {"I", "you", "we", "they"} else "has"
-        return f"{subject_text} {auxiliary} always been like this"
     words = [] if features.get("mood") == "IMP" else ([_entity_translation(subject, label)] if subject else [])
     if features.get("polarity") == "NEG":
         words.append("NEG")
