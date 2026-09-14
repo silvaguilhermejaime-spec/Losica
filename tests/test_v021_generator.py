@@ -236,6 +236,12 @@ def test_always_been_like_this_translates_compositionally(language):
     assert result["translation"] == "I have always been like this"
     assert result["orthographic_sentence"]
 
+    third_person = translate(language, "It's always been like this")
+    third_concepts = {token["concept"] for token in third_person["token_details"]}
+    assert {G_TIME_ALWAYS, G_MANNER_PROX} <= third_concepts
+    assert third_person["translation"] == "it has always been like this"
+    assert third_person["orthographic_sentence"]
+
 
 def test_source_ledger_covers_each_required_research_boundary(language):
     names = {x["source"] for x in language["source_ledger"]}
