@@ -3,7 +3,9 @@ name: Verify Losica changes
 on:
   workflow_dispatch:
   push:
-    branches: [fix/consonant-degemination]
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
