@@ -16,7 +16,6 @@ FUNCTION_LABELS = {
     s.G_Q_POLAR: "question", s.G_NEG: "negator", s.G_COMP: "complementizer",
     s.G_REL: "relativizer", s.G_IMP: "imperative", s.G_COP: "copula",
     s.G_EXIST: "exist", s.G_ADP_LOC: "inside", s.G_ADP_SOURCE: "from", s.G_ADP_INSTR: "with",
-    s.G_TIME_ALWAYS: "always", s.G_MANNER_PROX: "like this",
 }
 
 
