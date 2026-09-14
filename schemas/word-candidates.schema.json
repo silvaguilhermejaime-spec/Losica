@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "candidate_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "candidates": {
+      "type": "array"
+    },
+    "query_waveform": {
+      "type": "string"
+    },
+    "retrieval_backend": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "losica-word-candidates/3"
+    }
+  },
+  "required": [
+    "schema",
+    "candidate_count",
+    "candidates"
+  ],
+  "title": "Losica word candidates v3",
+  "type": "object"
+}

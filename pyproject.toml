@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "losica-lexicon-engine"
+version = "0.29.0"
+requires-python = ">=3.11"
+description = "Causal-stream Losica language generator with replayable lexical and construction learning"
+dependencies = ["numpy>=1.26", "scipy>=1.11", "soundfile>=0.12", "pycldf>=2.1,<3"]
+
+[project.optional-dependencies]
+transcription = ["allosaurus>=1.0"]
+test = ["pytest>=9", "hypothesis>=6", "jsonschema>=4"]
+
+[project.scripts]
+losica-engine = "losica_engine.cli:main"
+losica-vocalsketch-fetch = "losica_engine.vocalsketch_fetch:main"
+losica-vocalsketch-index = "losica_engine.corpus_vocalsketch:main"
+losica-rwcp-index = "losica_engine.rwcp_onomatopoeia:main"
+losica-transcribe = "losica_engine.transcription:main"
+losica-wordgen = "losica_engine.word_generation:main"
+losica-empirical-pipeline = "losica_engine.pipeline_cli:main"
+losica-world-audio-import = "losica_engine.world_audio:main"
+losica-generate-language = "losica_engine.experiential_language:main"
+losica-generate-complete-language = "losica_engine.experiential_language:main"
+losica-finalize-language = "losica_engine.causal_finalize:main"
+losica-validate-language = "losica_engine.causal_validation:main"
+losica-use-language = "losica_engine.causal_use:main"
+losica-align-language = "losica_engine.causal_adapter:main"
+losica-use-legacy-language = "losica_engine.use_language:main"
+losica-languageevolution = "losica_engine.languageevolution_adapter:main"
+losica-check-integrations = "losica_engine.integration_check:main"
+
+[tool.setuptools]
+packages = ["losica_engine"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

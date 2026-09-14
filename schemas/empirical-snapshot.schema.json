@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "losica-empirical-snapshot/1",
+  "type": "object",
+  "required": ["schema", "versions", "concepts", "colexification_edges", "wals_joint_profiles", "wals_feature_audits", "grambank_parameters", "phoible"],
+  "properties": {
+    "schema": {"const": "losica-empirical-snapshot/1"},
+    "concepts": {"type": "array", "minItems": 512},
+    "colexification_edges": {"type": "array"},
+    "wals_joint_profiles": {"type": "array", "minItems": 2},
+    "wals_feature_audits": {"type": "object", "required": ["20A", "21A", "22A", "23A", "24A", "25A", "49A", "101A", "102A"]}
+  }
+}

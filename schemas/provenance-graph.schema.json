@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "losica-provenance-graph/1",
+  "type": "object",
+  "required": ["schema", "categories", "nodes"],
+  "properties": {
+    "schema": {"const": "losica-provenance-graph/1"},
+    "categories": {"type": "array", "contains": {"const": "generated_choice"}},
+    "nodes": {"type": "array", "minItems": 1}
+  }
+}

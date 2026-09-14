@@ -1,0 +1,33 @@
+{
+  "name": "Pre-Proto-Losica → Proto-Losica",
+  "postnasal": {
+    "mp": "b",
+    "nt": "d",
+    "nk": "g"
+  },
+  "p_lenition": {
+    "segment": "p",
+    "result": "β",
+    "environments": [
+      "intervocalic",
+      "coda"
+    ]
+  },
+  "glides": {
+    "enabled": true,
+    "i": "j",
+    "u": "w",
+    "condition": "nonprominent_adjacent_vowel"
+  },
+  "coalescence": {
+    "tj": "ts",
+    "kw": "kʷ",
+    "gw": "gʷ"
+  },
+  "vowel_lowering": {
+    "enabled": true,
+    "i": "e",
+    "u": "o",
+    "condition": "nonprominent_syllabic"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://losica.local/schemas/causal-language.schema.json",
+  "title": "Losica causal language",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "seed", "language_id", "causal_inputs", "normalizers", "events", "semantic_regions", "semantic_partitions", "lexicon", "morphology", "constructions", "history", "utterance_traces", "communication", "phonology", "generation_trace", "adapter_contract"],
+  "properties": {
+    "schema": {"const": "losica-causal-language/1"},
+    "version": {"const": "0.29.0"},
+    "seed": {"type": "integer"},
+    "language_id": {"type": "string", "pattern": "^losica:"},
+    "causal_inputs": {"type": "object"},
+    "normalizers": {"type": "array", "minItems": 1},
+    "events": {"type": "array", "minItems": 1},
+    "semantic_regions": {"type": "array", "minItems": 1},
+    "semantic_partitions": {"type": "array", "minItems": 1},
+    "lexicon": {"type": "array", "minItems": 1},
+    "morphology": {"type": "object"},
+    "constructions": {"type": "array", "minItems": 1},
+    "history": {"type": "object"},
+    "utterance_traces": {"type": "array", "minItems": 1},
+    "communication": {"type": "object"},
+    "phonology": {"type": "object"},
+    "generation_trace": {"type": "object"},
+    "adapter_contract": {"type": "object"}
+  }
+}

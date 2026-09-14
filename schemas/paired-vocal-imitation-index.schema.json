@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset": {
+      "type": "object"
+    },
+    "pairs": {
+      "items": {
+        "properties": {
+          "imitation_id": {
+            "type": "string"
+          },
+          "imitation_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "imitation_waveform": {
+            "type": "string"
+          },
+          "pair_id": {
+            "type": "string"
+          },
+          "referent_id": {
+            "type": "string"
+          },
+          "referent_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "referent_waveform": {
+            "type": "string"
+          },
+          "speaker_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "pair_id",
+          "referent_id",
+          "referent_waveform",
+          "imitation_id",
+          "imitation_waveform",
+          "speaker_id"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "losica-paired-vocal-imitation-index/1"
+    }
+  },
+  "required": [
+    "schema",
+    "dataset",
+    "pairs"
+  ],
+  "title": "Paired vocal imitation index",
+  "type": "object"
+}

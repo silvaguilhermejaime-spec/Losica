@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "dataset": {
+      "const": "VocalSketch"
+    },
+    "downloaded_referent_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "pair_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "pairs": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "requested_referent_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "schema": {
+      "const": "losica-vocalsketch-fetch/1"
+    },
+    "source": {
+      "type": "string"
+    },
+    "unavailable_referents": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "dataset",
+    "source",
+    "requested_referent_count",
+    "downloaded_referent_count",
+    "pair_count",
+    "unavailable_referents",
+    "pairs"
+  ],
+  "title": "VocalSketch fetch manifest",
+  "type": "object"
+}

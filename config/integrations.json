@@ -1,0 +1,39 @@
+{
+  "schema": "losica-integrations/2",
+  "typology": {
+    "grambank": {"version": "1.0", "adapter": "importers.import_grambank", "distribution": "external CLDF"},
+    "wals": {"version": "2020.4", "adapter": "importers.import_wals", "distribution": "external CLDF"},
+    "phoible": {"version": "2.0", "adapter": "importers.import_phoible", "distribution": "external CSV"}
+  },
+  "lexicon": {
+    "concepticon": {"version": "3.4.0", "adapter": "importers.import_concepticon", "doi": "10.5281/zenodo.21373838"},
+    "clics4": {"version": "1.0", "adapter": "importers.import_clics", "doi": "10.5281/zenodo.16900179"},
+    "unimorph": {"adapter": "importers.import_unimorph", "distribution": "external language datasets"}
+  },
+  "syntax": {
+    "universal_dependencies": {"version": "2.18", "adapter": "importers.import_conllu"},
+    "grammar_matrix": {"adapter": "adapters_v021.compare_grammar_coverage", "runtime": "optional external comparison"},
+    "grammary": {"version": "2026", "adapter": "adapters_v021.compare_grammar_coverage", "runtime": "optional external comparison"},
+    "babel_fcg": {"adapter": "adapters_v021.export_babel_constructions", "runtime": "optional external experiment"}
+  },
+  "acoustic": {
+    "qbv": {"environment_variable": "LOSICA_QBV_COMMAND", "adapter": "importers.bind_qbv_ranking", "runtime": "external checkpoint"},
+    "rwcp_ssd_onomatopoeia": {"adapter": "rwcp_onomatopoeia.build_index", "runtime": "local dataset import"},
+    "esc50_voice": {"adapter": "importers.import_esc50_voice", "doi": "10.5281/zenodo.11385662"},
+    "vocalsketch": {"adapter": "importers.import_vocalsketch", "runtime": "local dataset import"},
+    "vocal_imitation_set": {"adapter": "importers.import_vocal_imitation_set", "doi": "10.5281/zenodo.1340763"},
+    "allosaurus": {"adapter": "importers.import_allosaurus_hypotheses", "runtime": "optional model"}
+  },
+  "history": {
+    "canonical_default": "Lexurgy",
+    "lexurgy": {"command": "lexurgy", "contract": "lexurgy", "distribution": "external install", "license": "GPL-3.0"},
+    "brassica": {"command": "brassica", "contract": "generic", "distribution": "external install"},
+    "language_evolution": {"engine": "SakanaAI/LanguageEvolution", "entrypoint": "run.py", "environment_variable": "LOSICA_LANGUAGEEVOLUTION_DIR", "adapter": "languageevolution_adapter"},
+    "egg": {"adapter": "adapters_v021.export_egg_experiment", "runtime": "optional external experiment"},
+    "iterated_transmission": {"adapter": "adapters_v021.export_iterated_transmission", "basis": "Kirby, Cornish & Smith 2008"}
+  },
+  "sound_change": {"command": "lexurgy", "contract": "lexurgy", "distribution": "external_install", "engine": "Lexurgy", "license": "GPL-3.0", "rules": null},
+  "population_evolution": {"engine": "SakanaAI/LanguageEvolution", "entrypoint": "run.py", "environment_variable": "LOSICA_LANGUAGEEVOLUTION_DIR", "runtime": "external_checkout"},
+  "vocal_retrieval": {"engine": "QBV", "environment_variable": "LOSICA_QBV_COMMAND", "output_schema": "losica-vocal-retrieval-ranking/1", "runtime": "external_command"},
+  "empirical_calibration": {"rwcp_ssd_onomatopoeia": {"runtime": "local_dataset_import"}, "vocalsketch": {"runtime": "local_dataset_import"}}
+}

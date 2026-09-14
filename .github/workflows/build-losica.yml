@@ -1,0 +1,87 @@
+name: Build Losica
+
+on:
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: Generation seed
+        required: true
+        default: "19020"
+      vocabulary_scale:
+        description: Vocabulary scale
+        required: true
+        default: large
+        type: choice
+        options:
+          - core
+          - intermediate
+          - large
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install engine and test dependencies
+        run: python -m pip install -e ".[test]"
+
+      - name: Run causal acceptance tests
+        run: python -m pytest -q tests/test_causal_engine.py
+
+      - name: Generate and validate language
+        env:
+          LOSICA_SEED: ${{ github.event.inputs.seed || '19020' }}
+          LOSICA_SCALE: ${{ github.event.inputs.vocabulary_scale || 'large' }}
+        run: |
+          mkdir -p dist
+          python FINALIZE_LANGUAGE.py \
+            --seed "$LOSICA_SEED" \
+            --vocabulary-scale "$LOSICA_SCALE" \
+            --out dist/language.json | tee dist/build-report.json
+          python VALIDATE_COMPLETE_LANGUAGE.py dist/language.json | tee dist/validation-report.json
+
+      - name: Package result
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          root = Path.cwd()
+          target = root / "dist" / "losica-generated-language.zip"
+          included = [
+              "dist/language.json",
+              "dist/build-report.json",
+              "dist/validation-report.json",
+              "README.md",
+              "CAUSAL_ARCHITECTURE.md",
+              "METHODOLOGY.md",
+              "inputs.lock.json",
+          ]
+          with ZipFile(target, "w", ZIP_DEFLATED, compresslevel=9) as archive:
+              for name in included:
+                  archive.write(root / name, name.removeprefix("dist/"))
+          print(target)
+          PY
+
+      - name: Publish downloadable result
+        uses: actions/upload-artifact@v4
+        with:
+          name: losica-generated-language
+          path: dist/losica-generated-language.zip
+          if-no-files-found: error
+          retention-days: 30
+

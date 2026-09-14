@@ -1,0 +1,77 @@
+{
+  "paths": [
+    {
+      "attested_development": "demonstratives can grammaticalize into definite articles/determiners",
+      "id": "P_DEM_DEF",
+      "provenance": [
+        "Heine & Kuteva 2002, World Lexicon of Grammaticalization"
+      ],
+      "source_relation": "demonstrative construction",
+      "target_relation": "definiteness marker"
+    },
+    {
+      "attested_development": "pronouns can become clitics and agreement morphology",
+      "id": "P_PRON_AGR",
+      "provenance": [
+        "Givón 1976, Topic, Pronoun and Grammatical Agreement; Hopper & Traugott 2003"
+      ],
+      "source_relation": "independent or clitic personal pronoun",
+      "target_relation": "person-indexing agreement marker"
+    },
+    {
+      "attested_development": "motion verbs including GO can develop future functions",
+      "id": "P_MOTION_FUT",
+      "provenance": [
+        "Bybee, Perkins & Pagliuca 1994, The Evolution of Grammar"
+      ],
+      "source_relation": "motion construction",
+      "target_relation": "future marker"
+    },
+    {
+      "attested_development": "completion verbs can grammaticalize as aspect markers",
+      "id": "P_FINISH_PFV",
+      "provenance": [
+        "Heine & Kuteva 2002, World Lexicon of Grammaticalization"
+      ],
+      "source_relation": "completion construction",
+      "target_relation": "perfective/completive marker"
+    },
+    {
+      "attested_development": "posture/location constructions can develop progressive aspect",
+      "id": "P_STAY_PROG",
+      "provenance": [
+        "Bybee, Perkins & Pagliuca 1994, The Evolution of Grammar"
+      ],
+      "source_relation": "posture/location construction",
+      "target_relation": "progressive/durative marker"
+    },
+    {
+      "attested_development": "transfer verbs can develop dative/benefactive adpositions or case markers",
+      "id": "P_GIVE_DAT",
+      "provenance": [
+        "Heine & Kuteva 2002, World Lexicon of Grammaticalization"
+      ],
+      "source_relation": "transfer/GIVE construction",
+      "target_relation": "recipient/benefactive marker"
+    },
+    {
+      "attested_development": "spatial nouns and adpositions can develop locative case morphology",
+      "id": "P_SPATIAL_LOC",
+      "provenance": [
+        "Heine & Kuteva 2002, World Lexicon of Grammaticalization"
+      ],
+      "source_relation": "spatial relational noun/adposition",
+      "target_relation": "locative marker"
+    },
+    {
+      "attested_development": "quantifying expressions can develop plural marking",
+      "id": "P_MANY_PL",
+      "provenance": [
+        "Heine & Kuteva 2002, World Lexicon of Grammaticalization"
+      ],
+      "source_relation": "quantifying/multitude expression",
+      "target_relation": "plural marker"
+    }
+  ],
+  "schema": "losica-grammaticalization-registry/2"
+}

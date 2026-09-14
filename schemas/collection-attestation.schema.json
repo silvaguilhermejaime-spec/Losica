@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://losica.local/schemas/collection-attestation.schema.json",
+  "title": "Losica collection attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source_sha256", "input_kind", "selection_basis", "generation_projection", "reviewer_record"],
+  "properties": {
+    "schema": {"const": "losica-collection-attestation/1"},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "input_kind": {"enum": ["general_optical_array", "general_acoustic_array", "general_mechanical_array", "general_electrical_array", "mixed_general_transducers"]},
+    "selection_basis": {"const": "physical_channel_without_named_target"},
+    "generation_projection": {"const": "samples_controls_time_offsets_only"},
+    "reviewer_record": {"type": "string", "minLength": 1}
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "language": "Pre-Proto-Losica",
+  "phonology": {
+    "consonants": [
+      "p",
+      "t",
+      "k",
+      "kʼ",
+      "m",
+      "n",
+      "l",
+      "r"
+    ],
+    "vowels": [
+      "i",
+      "a",
+      "u"
+    ],
+    "onsets": [
+      "",
+      "p",
+      "t",
+      "k",
+      "kʼ",
+      "m",
+      "n",
+      "l",
+      "r"
+    ],
+    "codas": [
+      "",
+      "p",
+      "t",
+      "k",
+      "m",
+      "n",
+      "r"
+    ],
+    "syllable": "(C)V(C)"
+  },
+  "prosody": {
+    "lexical_prominence": "exactly_one_syllable"
+  }
+}

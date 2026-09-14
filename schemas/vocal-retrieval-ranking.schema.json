@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "backend": {
+      "type": "object"
+    },
+    "ranking": {
+      "items": {
+        "properties": {
+          "imitation_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "referent_id": {},
+          "score": {
+            "type": "number"
+          },
+          "speaker_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "imitation_id",
+          "score"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "losica-vocal-retrieval-ranking/1"
+    }
+  },
+  "required": [
+    "schema",
+    "ranking"
+  ],
+  "title": "Losica vocal retrieval ranking",
+  "type": "object"
+}

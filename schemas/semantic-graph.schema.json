@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "losica-semantic-graph/1",
+  "oneOf": [
+    {"type": "object", "required": ["type", "predicate", "arguments"], "properties": {"type": {"const": "clause"}, "predicate": {"type": "string"}, "arguments": {"type": "object"}, "features": {"type": "object"}}},
+    {"type": "object", "required": ["type", "members"], "properties": {"type": {"const": "coordination"}, "members": {"type": "array", "minItems": 2}}},
+    {"type": "object", "required": ["type", "head"], "properties": {"type": {"const": "phrase"}, "head": {"type": "object"}}}
+  ]
+}

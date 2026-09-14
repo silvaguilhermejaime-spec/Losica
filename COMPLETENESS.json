@@ -1,0 +1,47 @@
+{
+  "schema": "losica-causal-completeness/1",
+  "release": "0.29.0",
+  "entrypoint": "FINALIZE_LANGUAGE.py",
+  "generated_artifact": "language.json",
+  "capabilities": [
+    "strict_causal_stream_projection",
+    "external_collection_attestation",
+    "persistent_multistep_events",
+    "heldout_sample_reconstruction",
+    "communication_supported_semantic_regions",
+    "generated_semantic_partitions",
+    "generated_ordered_constructions",
+    "generated_productive_morphology",
+    "compositional_realization_and_analysis",
+    "usage_driven_fusion",
+    "synchronic_historical_analysis_separation",
+    "internal_lexical_identity",
+    "membership_replay",
+    "generation_replay",
+    "post_generation_external_alignment",
+    "source_time_grounded_external_alignment",
+    "cross_situation_phrase_learning",
+    "bidirectional_adapter_use"
+  ],
+  "generation_exclusions": [
+    "human_language_labels",
+    "external_concept_inventories",
+    "authored_outcomes",
+    "supplied_event_boundaries",
+    "simulator_oracle_state",
+    "target_specific_sensors",
+    "pretrained_semantic_representations"
+  ],
+  "release_counts": {
+    "events": 1022,
+    "semantic_regions": 1024,
+    "root_lexemes": 1024,
+    "historical_lexemes": 16,
+    "lexemes": 1040,
+    "constructions": 39,
+    "morphology_dimensions": 8,
+    "morphology_cells": 16,
+    "utterance_traces": 1022,
+    "membership_replays": 209135
+  }
+}

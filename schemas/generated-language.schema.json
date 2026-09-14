@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "generated_forms": {
+      "type": "array"
+    },
+    "historical_engine": {},
+    "lexicon": {
+      "type": "array"
+    },
+    "marker_states": {
+      "type": "array"
+    },
+    "morphotactics": {
+      "type": "object"
+    },
+    "phonotactics": {
+      "type": "object"
+    },
+    "productive_affixes": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "losica-generated-language/3"
+    },
+    "usage_event_count": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema",
+    "lexicon",
+    "usage_event_count",
+    "marker_states",
+    "productive_affixes",
+    "phonotactics",
+    "morphotactics",
+    "generated_forms"
+  ],
+  "title": "Losica generated language v3",
+  "type": "object"
+}

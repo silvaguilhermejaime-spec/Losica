@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "accepted_transcription_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "pair_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "retrieval_backend": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "losica-end-to-end-run/2"
+    },
+    "word_candidate_count": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema",
+    "pair_count",
+    "accepted_transcription_count",
+    "retrieval_backend",
+    "word_candidate_count",
+    "artifacts"
+  ],
+  "title": "Losica empirical word-generation run v2",
+  "type": "object"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "losica-causal-release/1",
+  "release": "0.29.0",
+  "status": "PASS",
+  "language_id": "losica:19020:55e7ec980436",
+  "seed": 19020,
+  "language_json_sha256": "c55d5ca93aa936f757573c296836282441d1d1b1560bdf518a150738185f4d99",
+  "events": 1022,
+  "semantic_regions": 1024,
+  "root_lexemes": 1024,
+  "historical_lexemes": 16,
+  "lexemes": 1040,
+  "constructions": 39,
+  "morphology_dimensions": 8,
+  "morphology_cells": 16,
+  "utterance_traces": 1022,
+  "membership_replays": 209135,
+  "communication_trials": 205,
+  "communication_wins": 198,
+  "message_squared_error_sum": 126.480167704555,
+  "global_baseline_squared_error_sum": 219.453763987248
+}

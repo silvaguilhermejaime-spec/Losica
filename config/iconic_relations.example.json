@@ -1,0 +1,41 @@
+{
+  "relations": [
+    {
+      "id": "EX_R001",
+      "stimulus_predicate": {
+        "quantity_id": "event_rate_s_1",
+        "unit": "s-1",
+        "operator": "ge",
+        "value": 5.0
+      },
+      "candidate_property": {
+        "type": "morphological_process",
+        "value": "reduplication"
+      },
+      "provenance": {
+        "status": "synthetic_example",
+        "source": "Synthetic example demonstrating explicit quantitative predicate syntax and form-association registration."
+      }
+    },
+    {
+      "id": "EX_R002",
+      "stimulus_predicate": {
+        "quantity_id": "spectral_centroid_Hz",
+        "unit": "Hz",
+        "operator": "le",
+        "value": 250.0
+      },
+      "candidate_property": {
+        "type": "contains_any",
+        "segments": [
+          "m",
+          "n"
+        ]
+      },
+      "provenance": {
+        "status": "synthetic_example",
+        "source": "Synthetic example demonstrating explicit quantitative predicate syntax and form-association registration."
+      }
+    }
+  ]
+}

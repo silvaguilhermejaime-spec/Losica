@@ -1,0 +1,70 @@
+{
+  "id": "losica-agglutinative-sov-1",
+  "morphology": {
+    "derivation": [
+      "CAUS",
+      "NMLZ",
+      "ADJZ"
+    ],
+    "dominant_attachment": "suffix",
+    "noun": {
+      "case": [
+        "NOM",
+        "ACC",
+        "GEN",
+        "DAT",
+        "LOC",
+        "ABL",
+        "INS"
+      ],
+      "number": [
+        "SG",
+        "PL"
+      ]
+    },
+    "strategy": "agglutinative",
+    "verb": {
+      "aspect": [
+        "IPFV",
+        "PFV"
+      ],
+      "mood": [
+        "IND",
+        "IMP"
+      ],
+      "polarity": [
+        "POS",
+        "NEG"
+      ],
+      "tense": [
+        "NPST",
+        "PST",
+        "FUT"
+      ]
+    }
+  },
+  "schema": "losica-language-profile/1",
+  "syntax": {
+    "adposition_order": "postposition",
+    "clause_order": "SOV",
+    "demonstrative_order": "DEM-N",
+    "genitive_order": "GEN-N",
+    "numeral_order": "NUM-N",
+    "property_order": "ADJ-N",
+    "question_particle_position": "clause_final"
+  },
+  "typological_provenance": [
+    {
+      "features": [
+        "81A",
+        "85A",
+        "86A",
+        "87A",
+        "89A"
+      ],
+      "source": "WALS",
+      "statement": "SOV, postpositions, Genitive-Noun, Adjective-Noun and Numeral-Noun occur together in attested languages.",
+      "url": "https://wals.info/combinations/87A_86A_81A_85A"
+    }
+  ]
+}

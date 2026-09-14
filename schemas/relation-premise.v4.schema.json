@@ -1,0 +1,30 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Losica relation premise registry entry v4",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["relation_id","stimulus_predicate","candidate_property","premise_provenance"],
+  "properties":{
+    "relation_id":{"type":"string","minLength":1,"maxLength":128},
+    "stimulus_predicate":{
+      "type":"object",
+      "additionalProperties":false,
+      "required":["quantity_id","unit","operator"],
+      "properties":{
+        "quantity_id":{"type":"string","minLength":1,"maxLength":128},
+        "unit":{"type":"string","minLength":1,"maxLength":128},
+        "operator":{"enum":["lt","le","gt","ge","eq","between"]},
+        "value":{"type":"number"},
+        "lower":{"type":"number"},
+        "upper":{"type":"number"},
+        "component_index":{"type":"integer","minimum":0}
+      }
+    },
+    "candidate_property":{"type":"object"},
+    "premise_provenance":{
+      "type":"object","additionalProperties":false,
+      "required":["status","source"],
+      "properties":{"status":{"type":"string","minLength":1,"maxLength":128},"source":{"type":"string","minLength":1,"maxLength":2048}}
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Losica quantitative-premise instantiation v4",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["relation_id","match_type","predicate_prevalence"],
+  "properties":{
+    "relation_id":{"type":"string","minLength":1,"maxLength":128},
+    "match_type":{"const":"premise_instantiation"},
+    "predicate_prevalence":{
+      "type":"object","additionalProperties":false,
+      "required":["predicate_count","category_size","fraction"],
+      "properties":{
+        "predicate_count":{"type":"integer","minimum":1},
+        "category_size":{"type":"integer","minimum":1},
+        "fraction":{"type":"string","pattern":"^[1-9][0-9]*/[1-9][0-9]*$"}
+      }
+    }
+  }
+}

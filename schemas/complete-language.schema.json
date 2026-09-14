@@ -1,0 +1,167 @@
+{
+  "$id": "losica-complete-language/2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "capability_probes": {
+      "items": {
+        "properties": {
+          "semantic_coverage": {
+            "const": true
+          }
+        },
+        "required": [
+          "probe_id",
+          "semantic_graph",
+          "realization",
+          "analysis",
+          "semantic_coverage"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "constructions": {
+      "minItems": 18,
+      "type": "array"
+    },
+    "examples": {
+      "minItems": 18,
+      "type": "array"
+    },
+    "history": {
+      "required": [
+        "current_generation",
+        "canonical_sound_change_engine",
+        "stages"
+      ],
+      "type": "object"
+    },
+    "lexicon": {
+      "items": {
+        "required": [
+          "lexeme_id",
+          "lemma",
+          "class",
+          "underlying_form",
+          "form",
+          "prominence",
+          "formation",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "minItems": 300,
+      "type": "array"
+    },
+    "metadata": {
+      "required": [
+        "id",
+        "name",
+        "vocabulary_scale",
+        "concept_target"
+      ],
+      "type": "object"
+    },
+    "morphology": {
+      "required": [
+        "unimorph",
+        "noun",
+        "verb",
+        "derivation",
+        "allomorphy",
+        "paradigm_gaps"
+      ],
+      "type": "object"
+    },
+    "paradigms": {
+      "required": [
+        "sample_noun",
+        "sample_verb"
+      ],
+      "type": "object"
+    },
+    "phonology": {
+      "properties": {
+        "syllable": {
+          "const": "(C)V(C)"
+        }
+      },
+      "required": [
+        "consonants",
+        "vowels",
+        "syllable",
+        "onsets",
+        "codas",
+        "distinctive_features"
+      ],
+      "type": "object"
+    },
+    "profile": {
+      "required": [
+        "syntax",
+        "morphology",
+        "prosody",
+        "sampling_decisions",
+        "feature_executions",
+        "reference_system",
+        "agreement_system",
+        "numeral_system"
+      ],
+      "type": "object"
+    },
+    "provenance_graph": {
+      "required": [
+        "schema",
+        "categories",
+        "nodes"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "losica-complete-language/2"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "semantic_schema": {
+      "required": [
+        "types",
+        "roles"
+      ],
+      "type": "object"
+    },
+    "translation_interface": {
+      "required": [
+        "structured_meaning",
+        "controlled_source",
+        "state_semantics",
+        "analysis"
+      ],
+      "type": "object"
+    },
+    "version": {
+      "const": "0.26.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "seed",
+    "metadata",
+    "phonology",
+    "profile",
+    "lexicon",
+    "morphology",
+    "constructions",
+    "paradigms",
+    "examples",
+    "history",
+    "provenance_graph",
+    "semantic_schema",
+    "translation_interface",
+    "capability_probes"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "attachment": {
+      "enum": [
+        "independent",
+        "clitic",
+        "affix"
+      ]
+    },
+    "construction_id": {
+      "type": "string"
+    },
+    "count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "function_id": {
+      "type": "string"
+    },
+    "generation": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "host_lexeme_id": {
+      "type": "string"
+    },
+    "marker_form": {
+      "type": "string"
+    },
+    "marker_lexeme_id": {
+      "type": "string"
+    },
+    "order": {
+      "enum": [
+        "before",
+        "after"
+      ]
+    },
+    "pathway_id": {
+      "type": "string"
+    },
+    "position": {
+      "type": "integer"
+    },
+    "provenance": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "losica-usage-event/1"
+    }
+  },
+  "required": [
+    "schema",
+    "event_id",
+    "generation",
+    "construction_id",
+    "host_lexeme_id",
+    "marker_lexeme_id",
+    "function_id",
+    "order",
+    "attachment",
+    "marker_form",
+    "count",
+    "position"
+  ],
+  "title": "Losica usage event",
+  "type": "object"
+}

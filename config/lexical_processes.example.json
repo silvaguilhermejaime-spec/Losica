@@ -1,0 +1,14 @@
+{
+  "processes": [
+    {
+      "id": "EX_REDUP",
+      "type": "reduplication",
+      "target_category": "C001",
+      "source_lexeme_ids": [
+        "L_EX_BASE"
+      ],
+      "prominence_rule": "first_copy",
+      "provenance": "example schema"
+    }
+  ]
+}
