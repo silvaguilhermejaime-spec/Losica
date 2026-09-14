@@ -11,6 +11,10 @@
 The artifact contains the generated `language.json`, build report, validation
 report, input lock, and architecture documents.
 
+The run also uploads `losica-complete-release`. That artifact contains the
+exact 0.29 source bundle, its generated language, and the external-source
+catalog. Download it when you need the complete reproducible release.
+
 ## Google Colab
 
 Open `Losica_Colab.ipynb` in Colab and choose **Runtime → Run all**. The final

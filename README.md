@@ -65,3 +65,5 @@ acceptance gates. The earlier typological generator remains available through
 - [Google Colab runner](Losica_Colab.ipynb)
 - **Actions → Build Losica → Run workflow** creates a validated downloadable
   language artifact without installing the engine on the phone.
+- The same workflow publishes `losica-complete-release`, containing the exact
+  0.29 engine, generated language, and external-source catalog.

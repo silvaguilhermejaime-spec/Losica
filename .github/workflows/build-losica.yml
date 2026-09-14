@@ -85,3 +85,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Reconstruct complete external-source release
+        run: |
+          python tools/reconstruct_release.py \
+            --out dist/losica-0.29-causal-with-external-sources.zip
+
+      - name: Publish complete release
+        uses: actions/upload-artifact@v4
+        with:
+          name: losica-complete-release
+          path: dist/losica-0.29-causal-with-external-sources.zip
+          if-no-files-found: error
+          retention-days: 30
