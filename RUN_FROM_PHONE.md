@@ -23,3 +23,10 @@ cell downloads the same generated-language ZIP to the phone.
 The generator consumes numeric observations and controls. External human-language
 expressions remain in separately built adapter files and do not choose Losica's
 internal meanings.
+
+## Real recordings
+
+Open **Actions → Build Real-Media Losica → Run workflow**. The workflow fetches
+pinned real ESC-10 audio and an OpenCV sample video, generates a language from
+their acoustic and optical signals, aligns the upstream category wording afterward, and publishes
+`losica-real-media-demo` for download.

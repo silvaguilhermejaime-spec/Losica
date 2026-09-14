@@ -27,3 +27,7 @@
 - Removed adapter records that manually assign generated region identities.
 - Added source-time alignment from descriptions to recorded experience.
 - Added cross-situation phrase learning and an explicit 80% translation coverage gate.
+- Added pinned real-audio and real-video ingestion with fixed label-free features.
+- Added training-only message decoding for held-out physical-signal reconstruction.
+- Added compact learned expression signatures with a compositional surface inverse.
+- Added a phone workflow that produces a real-media language and bidirectional alignment report.

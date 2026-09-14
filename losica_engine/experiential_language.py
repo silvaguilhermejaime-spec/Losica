@@ -331,19 +331,33 @@ def derive_constructions(events: list[dict], regions: list[dict], *, limit: int 
 
 
 def _communication_report(events: list[dict], regions: list[dict], codes: dict[str, list[str]]) -> dict:
-    by_region = {region["region_id"]: region for region in regions}
-    train_future = [event["future"] for event in events if event["split"] == "train"]
+    train_events = [event for event in events if event["split"] == "train"]
+    train_future = [event["future"] for event in train_events]
     global_future = _mean(train_future)
+    decoder_rows: dict[tuple[str, ...], list[dict]] = defaultdict(list)
+    for event in train_events:
+        message = tuple(codes[event["event_id"]])
+        if message:
+            decoder_rows[message].append(event)
+    decoder = {
+        message: {
+            "message_region_ids": list(message),
+            "train_event_ids": [event["event_id"] for event in rows],
+            "future_sample_prototype": [round(value, 12) for value in _mean([event["future"] for event in rows])],
+        }
+        for message, rows in decoder_rows.items()
+    }
     holdout = [event for event in events if event["split"] == "holdout"]
     model_total = baseline_total = 0.0
     wins = encoded = 0
     for event in holdout:
-        message = codes[event["event_id"]]
-        if not message:
-            predicted = global_future
-        else:
-            predicted = _mean([by_region[region_id]["future_sample_prototype"] for region_id in message])
+        message = tuple(codes[event["event_id"]])
+        entry = decoder.get(message)
+        if entry is not None:
+            predicted = entry["future_sample_prototype"]
             encoded += 1
+        else:
+            predicted = global_future
         model = _sse(event["future"], predicted)
         baseline = _sse(event["future"], global_future)
         model_total += model
@@ -356,7 +370,13 @@ def _communication_report(events: list[dict], regions: list[dict], codes: dict[s
         "reconstruction_win_count": wins,
         "message_squared_error_sum": round(model_total, 12),
         "global_baseline_squared_error_sum": round(baseline_total, 12),
-        "decision_rule": "language succeeds when message squared-error sum is lower than the global baseline on the same held-out events",
+        "decoder": {
+            "algorithm_id": "exact-message-training-prototype-v1",
+            "unseen_message_policy": "global_training_prototype",
+            "global_training_prototype": [round(value, 12) for value in global_future],
+            "entries": [decoder[key] for key in sorted(decoder)],
+        },
+        "decision_rule": "training-only message prototypes have lower squared-error sum than the global training prototype on held-out events",
         "succeeded": model_total < baseline_total,
     }
 

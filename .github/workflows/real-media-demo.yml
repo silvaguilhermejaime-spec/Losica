@@ -1,0 +1,49 @@
+name: Build Real-Media Losica
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "GENERATE_REAL_LANGUAGE.py"
+      - "losica_engine/media_stream.py"
+      - "tools/fetch_esc10_sample.py"
+      - "tests/test_media_stream.py"
+      - ".github/workflows/real-media-demo.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-real-media-language:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install engine
+        run: python -m pip install -e ".[test]"
+      - name: Test media boundary
+        run: python -m pytest -q tests/test_media_stream.py tests/test_causal_engine.py
+      - name: Fetch pinned real recordings
+        run: python tools/fetch_esc10_sample.py --out work/esc10 --clips-per-category 2 --include-video
+      - name: Generate and align real-data language
+        run: |
+          python GENERATE_REAL_LANGUAGE.py work/esc10/manifest.json \
+            --namespace esc10 \
+            --vocabulary-scale core \
+            --out-dir dist/real-media
+      - name: Package result
+        run: |
+          cd dist
+          zip -qr losica-real-media-demo.zip real-media
+      - name: Publish phone download
+        uses: actions/upload-artifact@v4
+        with:
+          name: losica-real-media-demo
+          path: dist/losica-real-media-demo.zip
+          if-no-files-found: error
+          retention-days: 30

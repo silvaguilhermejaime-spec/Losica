@@ -9,7 +9,7 @@ import jsonschema
 import pytest
 
 from losica_engine.causal_adapter import build_alignment, external_to_losica, losica_to_external
-from losica_engine.causal_grammar import analyze_utterance
+from losica_engine.causal_grammar import analyze_utterance, realize_regions
 from losica_engine.causal_attestation import verify_collection_attestation
 from losica_engine.causal_stream import CausalBoundaryError, causal_stream_sha256, validate_causal_stream
 from losica_engine.causal_validation import validate_causal_language
@@ -92,6 +92,12 @@ def test_receiver_reconstructs_samples_instead_of_region_ids(language):
     assert report["message_squared_error_sum"] < report["global_baseline_squared_error_sum"]
     assert 0 <= report["reconstruction_win_count"] <= report["holdout_trial_count"]
     assert report["message_available_count"] <= report["holdout_trial_count"]
+    train_ids = {event["event_id"] for event in language["events"] if event["split"] == "train"}
+    assert report["decoder"]["algorithm_id"] == "exact-message-training-prototype-v1"
+    assert all(
+        set(entry["train_event_ids"]) <= train_ids
+        for entry in report["decoder"]["entries"]
+    )
 
 
 def test_generated_utterance_uses_only_internal_lexemes(language):
@@ -100,6 +106,14 @@ def test_generated_utterance_uses_only_internal_lexemes(language):
     assert result["morphemes"]
     assert result["utterance"] == " ".join(result["words"])
     assert analyze_utterance(language, result["utterance"])["region_ids"] == result["region_ids"]
+
+
+def test_generated_root_form_has_compositional_inverse(language):
+    region_id = language["semantic_regions"][0]["region_id"]
+    realization = realize_regions(language, [region_id])
+    analysis = analyze_utterance(language, realization["utterance"])
+    assert analysis["region_ids"] == [region_id]
+    assert analysis["analysis_basis"] == "compositional_generated_forms"
 
 
 def test_vocabulary_identity_and_size_are_internal(language):
@@ -215,6 +229,22 @@ def test_external_translation_uses_separate_adapter(language):
     assert canonical_causal_language(language) == before
     with pytest.raises(KeyError, match="1/3 tokens covered; at least 80% required"):
         external_to_losica(language, adapter, "shared unseen wording")
+
+
+def test_repeated_exact_expression_uses_compact_learned_region(language):
+    adapter = build_alignment(language, [
+        {"external_id": "repeat:1", "expression": "repeated signal", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "repeat:2", "expression": "repeated signal", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "contrast:1", "expression": "contrast wording", "source_offset_ranges": [[1000, 1000]]},
+        {"external_id": "contrast:2", "expression": "contrast wording", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test")
+    result = external_to_losica(language, adapter, "repeated signal")
+    assert result["coverage"]["measurement_rule"] == "repeated time-aligned one-to-four-token units"
+    assert len(result["realizations"]) == 1
+    assert 1 <= len(result["realizations"][0]["region_ids"]) <= 2
+    assert result["realizations"][0]["external_ids"] == ["repeat:1", "repeat:2"]
+    inverse = losica_to_external(language, adapter, result["realizations"][0]["utterance"])
+    assert inverse["external_candidates"][0]["expression"] == "repeated signal"
 
 
 def test_generation_replays_exactly(language, stream):

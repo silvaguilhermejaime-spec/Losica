@@ -113,12 +113,46 @@ def analyze_utterance(language: dict, utterance: str, *, candidate_limit: int = 
     """Recover internal regions and the listener's predicted future samples."""
     exact = next((row for row in language["utterance_traces"] if row["utterance"] == utterance), None)
     if exact is None:
-        raise ValueError("surface is outside the generated evidence-supported utterance inventory")
+        roots = {
+            row["orthographic"]: [row["semantic_region_id"]]
+            for row in language["lexicon"] if row.get("formation") == "learned_region_root"
+        }
+        fossils = {
+            row["orthographic"]: list(row["historical_analysis"]["source_region_ids"])
+            for row in language["lexicon"] if row.get("formation") == "historical_lexicalization"
+        }
+        generated = {}
+        markers = marker_index(language["morphology"])
+        region_ids = [row["region_id"] for row in language["semantic_regions"]]
+        for left in region_ids:
+            for right in region_ids:
+                marker = markers.get(left)
+                if marker is None:
+                    break
+                realized = realize_regions(language, [left, right])
+                if len(realized["words"]) == 1:
+                    generated.setdefault(realized["words"][0], [left, right])
+        parsed = []
+        for word in utterance.split():
+            candidates = [mapping[word] for mapping in (roots, fossils, generated) if word in mapping]
+            unique = {tuple(candidate) for candidate in candidates}
+            if len(unique) != 1:
+                raise ValueError("surface is outside the generated compositional inventory")
+            parsed.extend(next(iter(unique)))
+        realized = realize_regions(language, parsed)
+        if realized["utterance"] != utterance:
+            raise ValueError("surface does not round-trip through generated morphology")
+        exact = {"region_ids": parsed, "morphemes": realized["morphemes"]}
+        analysis_basis = "compositional_generated_forms"
+    else:
+        analysis_basis = "attested_event"
     regions = {row["region_id"]: row for row in language["semantic_regions"]}
-    prototypes = [regions[region_id]["future_sample_prototype"] for region_id in exact["region_ids"] if region_id in regions]
-    if not prototypes:
-        raise ValueError("utterance has no recoverable region prototype")
-    predicted = [sum(row[i] for row in prototypes) / len(prototypes) for i in range(len(prototypes[0]))]
+    decoder = language["communication"]["decoder"]
+    decoded = next((
+        row for row in decoder["entries"]
+        if row["message_region_ids"] == exact["region_ids"]
+    ), None)
+    predicted = decoded["future_sample_prototype"] if decoded is not None else decoder["global_training_prototype"]
     scored = []
     for event in language["events"]:
         error = sum((a - b) ** 2 for a, b in zip(event["future"], predicted))
@@ -127,6 +161,8 @@ def analyze_utterance(language: dict, utterance: str, *, candidate_limit: int = 
         "utterance": utterance,
         "region_ids": exact["region_ids"],
         "current_morphological_analysis": exact["morphemes"],
+        "analysis_basis": analysis_basis,
+        "decoder_basis": "trained_message" if decoded is not None else decoder["unseen_message_policy"],
         "predicted_future_samples": [round(value, 12) for value in predicted],
         "nearest_event_ids": [event_id for _, event_id in sorted(scored)[:candidate_limit]],
         "nearest_squared_errors": [round(error, 12) for error, _ in sorted(scored)[:candidate_limit]],

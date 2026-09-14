@@ -55,6 +55,17 @@ an exact aligned record or at least 80% learned token coverage.
 `--stream PATH` accepts a strict `losica-causal-stream/1` file. With no stream,
 the command uses a deterministic numeric fixture for installation tests.
 
+Generate from real audio or video, while keeping external wording outside the
+causal generator:
+
+```bash
+python GENERATE_REAL_LANGUAGE.py media/manifest.json --out-dir dist/real-media
+```
+
+`losica_engine.media_stream` extracts fixed label-free acoustic and visual
+measurements. An optional external catalog is joined afterward by recording ID
+and time range. Changing every annotation leaves the causal stream byte-identical.
+
 See `CAUSAL_ARCHITECTURE.md` for the input schema, ordered computation, and
 acceptance gates. The earlier typological generator remains available through
 `GENERATE_LEGACY_LANGUAGE.py` and `FINALIZE_LEGACY_LANGUAGE.py`.
@@ -67,3 +78,7 @@ acceptance gates. The earlier typological generator remains available through
   language artifact without installing the engine on the phone.
 - The same workflow publishes `losica-complete-release`, containing the exact
   0.29 engine, generated language, and external-source catalog.
+- **Actions → Build Real-Media Losica → Run workflow** downloads pinned real
+  ESC-10 audio and an OpenCV sample video, generates a language from their raw
+  signals, and publishes bidirectional alignment results as
+  `losica-real-media-demo`.

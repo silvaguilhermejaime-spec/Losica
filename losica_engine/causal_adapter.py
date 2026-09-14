@@ -184,9 +184,10 @@ def _learned_regions(adapter: dict, expression: str) -> tuple[list[str], dict]:
             position += 1
             continue
         width, unit = match
-        region_id = unit["associations"][0]["region_id"]
-        if region_id not in regions:
-            regions.append(region_id)
+        for association in unit["associations"][:2]:
+            region_id = association["region_id"]
+            if region_id not in regions:
+                regions.append(region_id)
         covered += width
         position += width
     return regions, {
@@ -203,20 +204,34 @@ def external_to_losica(language: dict, adapter: dict, expression: str) -> dict:
     matches = [row for row in adapter["records"] if row["expression"] == expression]
     choices = []
     if matches:
-        for row in matches:
-            realization = realize_regions(language, row["region_ids"])
+        learned_regions, learned_coverage = _learned_regions(adapter, expression)
+        if len(matches) >= 2 and learned_coverage["coverage_ratio"] >= 0.8:
+            event_ids = sorted({event_id for row in matches for event_id in row["evidence_event_ids"]})
             choices.append({
-                "external_id": row["external_id"],
-                "evidence_event_ids": row["evidence_event_ids"],
-                **realization,
+                "external_id": matches[0]["external_id"],
+                "external_ids": [row["external_id"] for row in matches],
+                "evidence_event_ids": event_ids,
+                **realize_regions(language, learned_regions),
             })
-        token_count = len(_tokens(expression))
-        coverage = {
-            "covered_token_count": token_count,
-            "total_token_count": token_count,
-            "coverage_ratio": 1.0,
-            "measurement_rule": "exact time-aligned record",
-        }
+            coverage = {
+                **learned_coverage,
+                "measurement_rule": "repeated time-aligned one-to-four-token units",
+            }
+        else:
+            for row in matches:
+                realization = realize_regions(language, row["region_ids"])
+                choices.append({
+                    "external_id": row["external_id"],
+                    "evidence_event_ids": row["evidence_event_ids"],
+                    **realization,
+                })
+            token_count = len(_tokens(expression))
+            coverage = {
+                "covered_token_count": token_count,
+                "total_token_count": token_count,
+                "coverage_ratio": 1.0,
+                "measurement_rule": "exact time-aligned record",
+            }
     else:
         region_ids, coverage = _learned_regions(adapter, expression)
         if not region_ids or coverage["coverage_ratio"] < 0.8:
@@ -238,9 +253,15 @@ def losica_to_external(language: dict, adapter: dict, utterance: str) -> dict:
     _verify_adapter(language, adapter)
     analysis = analyze_utterance(language, utterance)
     observed = set(analysis["region_ids"])
+    unit_index = {row["unit"]: row for row in adapter.get("learned_units", [])}
     ranked = []
     for row in adapter["records"]:
-        aligned = set(row["region_ids"])
+        full_unit = " ".join(_tokens(row["expression"]))
+        learned = unit_index.get(full_unit)
+        aligned = (
+            {association["region_id"] for association in learned["associations"][:2]}
+            if learned is not None else set(row["region_ids"])
+        )
         union = observed | aligned
         overlap = len(observed & aligned)
         ranked.append({
@@ -249,6 +270,7 @@ def losica_to_external(language: dict, adapter: dict, utterance: str) -> dict:
             "shared_region_count": overlap,
             "combined_region_count": len(union),
             "overlap_ratio": overlap / len(union) if union else 0.0,
+            "alignment_basis": "learned_expression_signature" if learned is not None else "time_aligned_record",
         })
     ranked.sort(key=lambda row: (-row["overlap_ratio"], -row["shared_region_count"], row["external_id"]))
     return {"namespace": adapter["namespace"], "analysis": analysis, "external_candidates": ranked}
