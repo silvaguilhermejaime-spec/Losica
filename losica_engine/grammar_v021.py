@@ -358,6 +358,8 @@ def _reference_display(ref: dict) -> str:
         return "you"
     if s == "required" and card.get("minimum", 0) >= 2:
         return "we"
+    if s == "forbidden" and a == "forbidden" and card.get("exact") == 1:
+        return "it"
     return "they"
 
 
