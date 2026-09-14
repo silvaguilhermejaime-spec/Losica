@@ -339,6 +339,7 @@ def generate_complete_language(
         "phonology": {
             "language": cfg.language_metadata, "consonants": list(cfg.consonants), "vowels": list(cfg.vowels), "syllable": cfg.syllable,
             "onsets": list(cfg.onsets), "codas": list(cfg.codas), "distinctive_features": phonological_audit["segment_features"],
+            "rules": {"identical_consonant_degemination": True},
             "morphophonological_pipeline": ["morpheme_sequence", "segment_representation", "morpheme_internal_syllabification", "morphophonology", "resyllabification", "prosody", "surface_form"],
         },
         "phonological_audit": phonological_audit, "profile": profile, "lexicon": lexicon, "morphology": morphology,

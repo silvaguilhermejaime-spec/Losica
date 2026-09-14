@@ -46,6 +46,10 @@ numbers reach generation. The attestation itself is not a generation material.
    No adapter input accepts a region identity.
 10. Repeated external word sequences are associated with repeated generated
     regions. Generalized translation requires at least 80% token coverage.
+11. An optional build-time UD analysis may normalize observed inflections. A
+    normalization is stored only when one lemma has at least 80% of that surface
+    form's observed evidence. This changes the external interface, never the
+    language's generated regions, roots, or grammar.
 
 ## Commands
 

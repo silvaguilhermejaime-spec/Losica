@@ -108,7 +108,12 @@ def sample_typological_profile(seed: int, evidence: str | Path | dict = DEFAULT_
             "subject_index": [cell["cell_id"] for cell in agreement_system["cells"]],
         },
         "derivation": ["CAUS", "APPL", "PASS", "ANTIP", "NMLZ", "ADJZ", "ADVZ"],
-        "morphophonology": {"epenthetic_vowel": "a", "identical_vowel_fusion": True, "nasal_place_assimilation": True},
+        "morphophonology": {
+            "epenthetic_vowel": "a",
+            "identical_consonant_degemination": True,
+            "identical_vowel_fusion": True,
+            "nasal_place_assimilation": True,
+        },
     }
 
     wals_decision = _decision(
@@ -146,6 +151,7 @@ def sample_typological_profile(seed: int, evidence: str | Path | dict = DEFAULT_
         "morphology.verb.voice": "morphology.verb_bundles", "morphology.verb.evidentiality": "morphology.verb_bundles",
         "morphology.verb.subject_index": "morphology.realize_agreement", "morphology.derivation": "morphology.derive_lexeme",
         "morphology.morphophonology.epenthetic_vowel": "morphophonology.realize_morphemes",
+        "morphology.morphophonology.identical_consonant_degemination": "morphophonology.realize_morphemes",
         "morphology.morphophonology.identical_vowel_fusion": "morphophonology.realize_morphemes",
         "morphology.morphophonology.nasal_place_assimilation": "morphophonology.realize_morphemes",
         "prosody.word_prominence_rule": "morphophonology.prominence_index", "prosody.prominent_syllables_per_word": "validation.validate_complete_language",

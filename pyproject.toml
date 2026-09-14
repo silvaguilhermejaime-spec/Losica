@@ -11,6 +11,7 @@ dependencies = ["numpy>=1.26", "scipy>=1.11", "soundfile>=0.12", "pycldf>=2.1,<3
 
 [project.optional-dependencies]
 transcription = ["allosaurus>=1.0"]
+nlp = ["stanza>=1.10,<2"]
 test = ["pytest>=9", "hypothesis>=6", "jsonschema>=4"]
 
 [project.scripts]

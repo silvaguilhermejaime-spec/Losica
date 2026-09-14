@@ -9,7 +9,7 @@ import jsonschema
 import pytest
 
 from losica_engine.causal_adapter import build_alignment, external_to_losica, losica_to_external
-from losica_engine.causal_grammar import analyze_utterance, realize_regions
+from losica_engine.causal_grammar import _degeminate_boundary, analyze_utterance, realize_regions
 from losica_engine.causal_attestation import verify_collection_attestation
 from losica_engine.causal_stream import CausalBoundaryError, causal_stream_sha256, validate_causal_stream
 from losica_engine.causal_validation import validate_causal_language
@@ -21,6 +21,7 @@ from losica_engine.experiential_language import (
     replay_causal_generation,
     replay_region_membership,
 )
+from losica_engine.phonology import tokenize_surface
 
 
 @pytest.fixture(scope="module")
@@ -124,6 +125,31 @@ def test_vocabulary_identity_and_size_are_internal(language):
     assert all(row["lexeme_id"].startswith("lx:") for row in language["lexicon"])
     assert all(row["semantic_region_id"].startswith("sr:") for row in language["lexicon"])
     assert not any("concepticon_id" in row or "concept_mappings" in row for row in language["lexicon"])
+
+
+def test_generated_forms_have_no_unsimplified_double_consonants(language):
+    consonants = tuple(language["phonology"]["consonants"])
+    vowels = tuple(language["phonology"]["vowels"])
+    generated_forms = [
+        row["orthographic"]
+        for row in language["lexicon"]
+        if row["formation"] == "learned_region_root"
+    ] + [
+        cell["marker_form"]
+        for dimension in language["morphology"]["dimensions"]
+        for cell in dimension["cells"]
+    ]
+    for form in generated_forms:
+        tokens = tokenize_surface(form, consonants, vowels)
+        assert not any(a == b and a in consonants for a, b in zip(tokens, tokens[1:]))
+    assert language["phonology"]["rules"]["identical_consonant_degemination"] is True
+
+
+def test_degemination_distinguishes_k_from_glottalized_k(language):
+    consonants = language["phonology"]["consonants"]
+    vowels = language["phonology"]["vowels"]
+    assert _degeminate_boundary("uk", "ka", consonants, vowels) == ("uk", "a")
+    assert _degeminate_boundary("uk", "kʼa", consonants, vowels) == ("uk", "kʼa")
 
 
 def test_generated_partitions_feed_constructions_and_lexical_distribution(language):
@@ -245,6 +271,58 @@ def test_repeated_exact_expression_uses_compact_learned_region(language):
     assert result["realizations"][0]["external_ids"] == ["repeat:1", "repeat:2"]
     inverse = losica_to_external(language, adapter, result["realizations"][0]["utterance"])
     assert inverse["external_candidates"][0]["expression"] == "repeated signal"
+
+
+def test_build_time_lemmas_generalize_without_a_runtime_parser(language):
+    def analyzer(expression):
+        lemmas = {"went": "go", "houses": "house"}
+        return [
+            {"surface": token, "lemma": lemmas.get(token, token), "upos": "X", "deprel": "dep", "head": 0}
+            for token in expression.split()
+        ]
+
+    adapter = build_alignment(language, [
+        {"external_id": "motion:1", "expression": "went houses", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "motion:2", "expression": "went houses", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "contrast:1", "expression": "still objects", "source_offset_ranges": [[1000, 1000]]},
+        {"external_id": "contrast:2", "expression": "still objects", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test", analyzer=analyzer, analyzer_id="test-ud")
+    result = external_to_losica(language, adapter, "go house")
+    assert result["coverage"]["coverage_ratio"] == 1.0
+    assert adapter["normalization_lexicon"]["went"] == "go"
+    assert adapter["normalization_lexicon"]["houses"] == "house"
+    assert adapter["external_analysis"]["runtime"].startswith("stored surface-to-lemma")
+
+
+def test_build_time_parser_skips_punctuation_and_rejects_ambiguous_lemmas(language):
+    analyses = {
+        "Saw.": [
+            {"surface": "Saw", "lemma": "see", "upos": "VERB", "deprel": "root", "head": 0},
+            {"surface": ".", "lemma": ".", "upos": "PUNCT", "deprel": "punct", "head": 1},
+        ],
+        "A saw.": [
+            {"surface": "A", "lemma": "a", "upos": "DET", "deprel": "det", "head": 2},
+            {"surface": "saw", "lemma": "saw", "upos": "NOUN", "deprel": "root", "head": 0},
+            {"surface": ".", "lemma": ".", "upos": "PUNCT", "deprel": "punct", "head": 2},
+        ],
+    }
+    adapter = build_alignment(language, [
+        {"external_id": "verb:1", "expression": "Saw.", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "noun:1", "expression": "A saw.", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test", analyzer=analyses.__getitem__, analyzer_id="test-ud")
+    assert "saw" not in adapter["normalization_lexicon"]
+    assert all(token["surface"] != "." for row in adapter["records"] for token in row["linguistic_analysis"])
+
+
+def test_version_two_adapter_remains_readable(language):
+    adapter = build_alignment(language, [
+        {"external_id": "motion:1", "expression": "moving object", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "motion:2", "expression": "moving object", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "contrast:1", "expression": "still object", "source_offset_ranges": [[1000, 1000]]},
+        {"external_id": "contrast:2", "expression": "still object", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test")
+    adapter["schema"] = "losica-external-alignment/2"
+    assert external_to_losica(language, adapter, "moving object")["coverage"]["coverage_ratio"] == 1.0
 
 
 def test_generation_replays_exactly(language, stream):

@@ -65,6 +65,15 @@ python GENERATE_REAL_LANGUAGE.py media/manifest.json --out-dir dist/real-media
 `losica_engine.media_stream` extracts fixed label-free acoustic and visual
 measurements. An optional external catalog is joined afterward by recording ID
 and time range. Changing every annotation leaves the causal stream byte-identical.
+For broader surface-form coverage, install `.[nlp]`, download the required Stanza
+model once on the build machine, and add `--external-parser stanza`. Only the
+observed analysis and an ambiguity-filtered surface-to-lemma table enter the
+adapter; neither Stanza nor its model is required when translating on a phone.
+
+`external_sources/build_catalog.py --include-egocom` adds 24,334 utterances
+reconstructed exactly from EgoCom's timestamped human word stream. After the
+official 240p media download, `external_sources/build_egocom_manifest.py` selects
+one stable first-person view per segment for the real-media command above.
 
 See `CAUSAL_ARCHITECTURE.md` for the input schema, ordered computation, and
 acceptance gates. The earlier typological generator remains available through

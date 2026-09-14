@@ -31,3 +31,4 @@
 - Added training-only message decoding for held-out physical-signal reconstruction.
 - Added compact learned expression signatures with a compositional surface inverse.
 - Added a phone workflow that produces a real-media language and bidirectional alignment report.
+- Added automatic identical-consonant degemination in generated roots and across morpheme boundaries.

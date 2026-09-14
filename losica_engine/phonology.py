@@ -38,6 +38,16 @@ def tokenize_surface(text: str, consonants: tuple[str, ...], vowels: tuple[str, 
             raise ValueError(f"tokenization stopped at offset {i} in {text!r}")
     return tuple(out)
 
+def degeminate_consonants(segments: Sequence[str], consonants: Sequence[str]) -> tuple[str, ...]:
+    """Collapse adjacent identical consonants to one surface segment."""
+    consonant_set = set(consonants)
+    out = []
+    for segment in segments:
+        if out and segment == out[-1] and segment in consonant_set:
+            continue
+        out.append(segment)
+    return tuple(out)
+
 def legal_syllables(cfg: PhonologyConfig) -> tuple[str, ...]:
     return tuple(
         f"{o}{v}{c}"
@@ -46,29 +56,55 @@ def legal_syllables(cfg: PhonologyConfig) -> tuple[str, ...]:
 
 def estimate_root_count(cfg: PhonologyConfig, syllable_counts: Sequence[int], cap: int | None = None) -> int:
     """Count lexical representations; `cap + 1` marks a result above `cap`."""
-    N = cfg.legal_syllable_count
     total = 0
     for n in sorted(set(syllable_counts)):
         if n < 1:
             raise ValueError("syllable count must be >= 1")
-        power = 1
         if cap is not None and n > cap:
             return cap + 1
-        for _ in range(n):
-            power *= N
-            if cap is not None and power > cap:
-                return cap + 1
-        total += n * power
+        # Track the previous coda because a matching following onset would
+        # degeminate and duplicate a representation already in the pool.
+        by_coda = {
+            coda: len(cfg.onsets) * len(cfg.vowels)
+            for coda in cfg.codas
+        }
+        for _ in range(1, n):
+            next_by_coda = {coda: 0 for coda in cfg.codas}
+            for previous_coda, count in by_coda.items():
+                onset_count = len(cfg.onsets) - int(
+                    bool(previous_coda) and previous_coda in cfg.onsets
+                )
+                extension_count = count * onset_count * len(cfg.vowels)
+                for coda in cfg.codas:
+                    next_by_coda[coda] += extension_count
+                    if cap is not None:
+                        next_by_coda[coda] = min(next_by_coda[coda], cap + 1)
+            by_coda = next_by_coda
+        representation_count = sum(by_coda.values())
+        total += n * representation_count
         if cap is not None and total > cap:
             return cap + 1
     return total
 
 def generate_roots(cfg: PhonologyConfig, syllable_counts: Sequence[int]) -> Iterable[Root]:
     syllables = legal_syllables(cfg)
+    margins = {}
+    consonants = set(cfg.consonants)
+    for syllable in syllables:
+        segments = tokenize_surface(syllable, cfg.consonants, cfg.vowels)
+        margins[syllable] = (
+            segments[0] if segments[0] in consonants else "",
+            segments[-1] if segments[-1] in consonants else "",
+        )
     for n in sorted(set(syllable_counts)):
         if n < 1:
             raise ValueError("syllable count must be >= 1")
         for seq in product(syllables, repeat=n):
+            if any(
+                margins[left][1] and margins[left][1] == margins[right][0]
+                for left, right in zip(seq, seq[1:])
+            ):
+                continue
             for prominence in range(n):
                 yield Root(tuple(seq), prominence)
 
@@ -94,6 +130,8 @@ def syllabify_surface(text: str, cfg: PhonologyConfig) -> tuple[str, ...]:
     if not surface:
         raise ValueError("surface form must contain at least one segment")
     segments = tokenize_surface(surface, cfg.consonants, cfg.vowels)
+    if degeminate_consonants(segments, cfg.consonants) != segments:
+        raise ValueError(f"surface form {surface!r} contains an unsimplified double consonant")
     patterns = []
     for onset in cfg.onsets:
         for vowel in cfg.vowels:

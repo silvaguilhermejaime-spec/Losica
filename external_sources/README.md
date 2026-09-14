@@ -8,6 +8,14 @@ No expression was written, expanded, or paraphrased for Losica.
 
 The catalog is `source_labels.jsonl`. `inputs.lock.json` records repository revisions, file hashes, fields, roles, access limits, and the complete comparison. `build_catalog.py` reconstructs the catalog. `verify_catalog.py` checks the digest, record identities, counts, and target-sentence audit.
 
+The GitHub follow-up added an optional EgoCom path. Its exact word stream yields
+24,334 speaker utterances with time ranges, raising a rebuilt extended catalog to
+313,814 records. It is not silently added to the locked five-source snapshot:
+pass `--include-egocom`, obtain the official media release, and use
+`build_egocom_manifest.py` to select one deterministic first-person view per
+segment. The transcript is still external metadata and has no route into causal
+generation.
+
 ## Search scope
 
 The search covered six evidence needs: everyday first-person activity; object/action state change under recorded controls; visible object, attribute, relation, and reference grounding; sound grounding; intention, failure, and future-event wording; multilingual renderings. It inspected checked-out files at exact revisions for 18 GitHub repositories and exact release schemas for Video Localized Narratives, YouCook2, and VATEX. Twenty-three candidates passed into the comparison; five had annotation snapshots with usable distribution terms already present and became the normalized catalog.
@@ -37,7 +45,11 @@ The catalog never supplies a region ID, lexical class, semantic primitive, gramm
 | AudioCaps | 49,810 | human captioner; human-corrected | video ID and ten-second audio interval | sound description |
 | **Total** | **289,480** |  |  |  |
 
-These are record counts, not unique-word counts. A record is one JSON line in `source_labels.jsonl`. The total is the sum of the six source counts.
+These are record counts, not unique-word counts. A record is one JSON line in `source_labels.jsonl`. The locked total is the sum of the five source counts.
+
+| Optional source | Added records | Expression author | Observation pointer | Role |
+|---|---:|---|---|---|
+| EgoCom | 24,334 | human transcriber | conversation segment, speaker, word-level seconds | embodied conversation |
 
 The EPIC action files in the inspected commit contain 67,217 training rows and 9,668 validation rows after their header rows. The EPIC-SOUNDS source contains 68,090 categorized train/validation descriptions and 39,187 uncategorized rows; 199 uncategorized rows have empty descriptions and are omitted, leaving 107,078 expressions. These rules explain every difference between source row counts and catalog counts.
 
@@ -54,6 +66,7 @@ Admission also has a hard gate: grounding labels require human free wording and 
 | Score | Source | Placement | Exact inspected structure | Limitation |
 |---:|---|---|---|---|
 | 10 | [Ego4D](https://github.com/facebookresearch/Ego4d/tree/4bd10ed40b4f8d8ad26344afc2c8526f7d1dedeb) | primary | official downloader, annotation notebook, Narrations, Goal-Step, Forecasting, synchronized Ego-Exo video | annotations and media require the official license flow |
+| 10 | [EgoCom](https://github.com/facebookresearch/EgoCom-Dataset/tree/67f439fcb306acdcfcb8597e2acdf1c3afb8f684) | optional primary conversation | synchronized first-person video/audio, speaker, exact word start/end time | 240p media is a separate 9.5 GB official release |
 | 10 | [Clotho through aac-datasets](https://github.com/Labbeti/aac-datasets/tree/631524fb86eef351c1848e42196fbe5cf62442e4) | primary audio | audio file plus five human captions per clip | corpus download is separate from loader code |
 | 9 | [EPIC-KITCHENS-100](https://github.com/epic-kitchens/epic-kitchens-100-annotations/tree/ea8b40457a400c3fffa1c7f406ef3dc169cc2522) | primary | `narration_id`, participant/video IDs, narration time, action start/stop, frames, participant narration | kitchen setting |
 | 9 | [EPIC-SOUNDS](https://github.com/epic-kitchens/epic-sounds-annotations/tree/57a922f0d352e9429f1ef8a37eee21758dd3a33c) | primary audio | annotation/video IDs, times, exact audio samples, human description | kitchen audio; CC BY-NC 4.0 |
@@ -125,6 +138,9 @@ python verify_catalog.py \
   --repos ../../research_repos \
   --out verification.json
 ```
+
+Add `--include-egocom` to build the 313,814-record extended catalog. This is an
+extension, so do not verify it against the unchanged five-source lock digest.
 
 Expected result:
 

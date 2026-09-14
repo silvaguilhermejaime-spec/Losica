@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .config import load_phonology
 from .grammar_evolution import active_affixes, infer_marker_states, realize
-from .phonology import syllabify_surface
+from .phonology import degeminate_consonants, syllabify_surface, tokenize_surface
 from .sound_change_external import apply_external_sound_change, load_integration_config
 from .usage_history import UsageEvent, load_usage_events
 
@@ -120,13 +120,15 @@ def _host_current_affix_forms(events: list[UsageEvent], states) -> dict[tuple[st
 
 
 def _canonical_preproto(surface: str, cfg) -> str:
-    return ".".join(syllabify_surface(surface, cfg))
+    tokens = tokenize_surface(surface.replace(".", ""), cfg.consonants, cfg.vowels)
+    simplified = "".join(degeminate_consonants(tokens, cfg.consonants))
+    return ".".join(syllabify_surface(simplified, cfg))
 
 
 def _validate_lexicon_phonotactics(lexicon: dict[str, dict], cfg) -> None:
     for lid, row in lexicon.items():
         try:
-            _canonical_preproto(row["preproto_form"].replace(".", ""), cfg)
+            syllabify_surface(row["preproto_form"].replace(".", ""), cfg)
         except ValueError as exc:
             raise ValueError(
                 f"lexeme {lid!r} has phonotactically illegal Pre-Proto form "
@@ -266,7 +268,8 @@ def generate_language(
             "onsets": list(phonology.onsets),
             "vowels": list(phonology.vowels),
             "codas": list(phonology.codas),
-            "realization_policy": "attested current allomorph + legal syllabification",
+            "rules": {"identical_consonant_degemination": True},
+            "realization_policy": "attested current allomorph + degemination + legal syllabification",
         },
         "morphotactics": {
             "source": "current observed affix positions",

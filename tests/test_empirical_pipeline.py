@@ -39,4 +39,6 @@ class EmpiricalPipelineTests(unittest.TestCase):
             self.assertEqual(load_lexicon(lex,CFG)['L_TEST'].root.form,out['candidates'][0]['preproto_form'])
     def test_syllabification(self):
         self.assertIn(('ma',),syllabify_tokens(['m','a'],CFG)); self.assertEqual(syllabify_tokens(['m','m'],CFG),[])
+        forms=syllabify_tokens(['u','k','k','u','k'],CFG)
+        self.assertTrue(forms); self.assertTrue(all(''.join(x)=='ukuk' for x in forms))
 if __name__=='__main__': unittest.main()

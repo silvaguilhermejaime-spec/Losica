@@ -31,6 +31,23 @@ def _repair(tokens: list[str], cfg: PhonologyConfig, rules: dict) -> tuple[list[
     operations: list[dict] = []
     vowels, consonants = set(cfg.vowels), set(cfg.consonants)
 
+    # Identical consonants share one surface realization. Apply this before
+    # general cluster repair so /kk/ becomes /k/, not /kak/.
+    if rules.get("identical_consonant_degemination", True):
+        i = 1
+        while i < len(out):
+            if out[i] == out[i - 1] and out[i] in consonants:
+                operations.append({
+                    "rule": "MPH-DEGEMINATION-01",
+                    "operation": "degemination",
+                    "input": out[i - 1:i + 1],
+                    "output": [out[i]],
+                    "position": i - 1,
+                })
+                del out[i]
+            else:
+                i += 1
+
     # Identical-vowel fusion is a boundary-general rule.
     if rules.get("identical_vowel_fusion", True):
         i = 1

@@ -14,8 +14,10 @@ from .experiential_language import canonical_causal_language
 from .causal_grammar import analyze_utterance, realize_regions
 
 
-ADAPTER_SCHEMA = "losica-external-alignment/2"
+ADAPTER_SCHEMA = "losica-external-alignment/3"
+SUPPORTED_ADAPTER_SCHEMAS = frozenset({"losica-external-alignment/2", ADAPTER_SCHEMA})
 RECORD_FIELDS = frozenset({"external_id", "expression", "source_offset_ranges"})
+NORMALIZATION_MIN_DOMINANCE = 0.8
 
 
 def _tokens(expression: str) -> list[str]:
@@ -38,6 +40,85 @@ def _phrases(tokens: list[str], limit: int = 4) -> set[str]:
         for start in range(len(tokens))
         for width in range(1, min(limit, len(tokens) - start) + 1)
     }
+
+
+def _surface_analysis(expression: str) -> list[dict]:
+    return [
+        {"surface": token, "lemma": token, "upos": None, "deprel": None, "head": None}
+        for token in _tokens(expression)
+    ]
+
+
+def stanza_analyzer(language: str = "en"):
+    """Create a build-time UD analyzer without making it a phone dependency."""
+    try:
+        import stanza
+    except ImportError as exc:
+        raise RuntimeError(
+            "Stanza analysis requires the optional nlp dependencies: pip install -e '.[nlp]'"
+        ) from exc
+    pipeline = stanza.Pipeline(
+        lang=language,
+        processors="tokenize,mwt,pos,lemma,depparse",
+        tokenize_no_ssplit=True,
+        verbose=False,
+    )
+
+    def analyze(expression: str) -> list[dict]:
+        document = pipeline(expression)
+        return [
+            {
+                "surface": word.text,
+                "lemma": word.lemma or word.text,
+                "upos": word.upos,
+                "deprel": word.deprel,
+                "head": word.head,
+            }
+            for sentence in document.sentences
+            for word in sentence.words
+        ]
+
+    return analyze
+
+
+def _normalize_analysis(expression: str, analyzer) -> list[dict]:
+    analysis = analyzer(expression) if analyzer is not None else _surface_analysis(expression)
+    if not isinstance(analysis, list) or not analysis:
+        raise ValueError("external parser returned no tokens")
+    result = []
+    for index, row in enumerate(analysis):
+        if not isinstance(row, dict) or not isinstance(row.get("surface"), str):
+            raise ValueError(f"external parser token {index} requires surface text")
+        surface_tokens = _tokens(row["surface"])
+        lemma_tokens = _tokens(str(row.get("lemma") or row["surface"]))
+        if not surface_tokens and not lemma_tokens:
+            continue
+        if len(surface_tokens) != 1 or len(lemma_tokens) != 1:
+            raise ValueError(f"external parser token {index} must normalize to one token")
+        result.append({
+            "parser_index": index + 1,
+            "surface": surface_tokens[0],
+            "lemma": lemma_tokens[0],
+            "upos": row.get("upos"),
+            "deprel": row.get("deprel"),
+            "head": row.get("head"),
+        })
+    if not result:
+        raise ValueError("external parser returned no lexical tokens")
+    return result
+
+
+def _normalization_lexicon(aligned: list[dict]) -> dict[str, str]:
+    candidates: dict[str, Counter] = defaultdict(Counter)
+    for row in aligned:
+        for token in row["linguistic_analysis"]:
+            candidates[token["surface"]][token["lemma"]] += 1
+    lexicon = {}
+    for surface, counts in sorted(candidates.items()):
+        lemma, winning_count = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[0]
+        if winning_count / sum(counts.values()) >= NORMALIZATION_MIN_DOMINANCE:
+            lexicon[surface] = lemma
+    return lexicon
 
 
 def _ranges(value, index: int) -> list[list[int]]:
@@ -84,7 +165,7 @@ def _learn_units(aligned: list[dict]) -> list[dict]:
     phrase_counts, region_counts = Counter(), Counter()
     joint: dict[str, Counter] = defaultdict(Counter)
     for row in aligned:
-        phrases = _phrases(row["tokens"])
+        phrases = _phrases(row["normalized_tokens"])
         regions = set(row["region_ids"])
         phrase_counts.update(phrases)
         region_counts.update(regions)
@@ -117,13 +198,20 @@ def _learn_units(aligned: list[dict]) -> list[dict]:
 
 def _verify_adapter(language: dict, adapter: dict) -> None:
     digest = hashlib.sha256(canonical_causal_language(language)).hexdigest()
-    if adapter.get("schema") != ADAPTER_SCHEMA:
+    if adapter.get("schema") not in SUPPORTED_ADAPTER_SCHEMAS:
         raise ValueError("unsupported external alignment schema")
     if adapter.get("language_id") != language.get("language_id") or adapter.get("canonical_language_sha256") != digest:
         raise ValueError("adapter does not identify this generated language")
 
 
-def build_alignment(language: dict, records: list[dict], *, namespace: str) -> dict:
+def build_alignment(
+    language: dict,
+    records: list[dict],
+    *,
+    namespace: str,
+    analyzer=None,
+    analyzer_id: str = "surface",
+) -> dict:
     """Derive external mappings from descriptions aligned to source time ranges."""
     before = hashlib.sha256(canonical_causal_language(language)).hexdigest()
     traces = {row["event_id"]: row for row in language["utterance_traces"]}
@@ -134,7 +222,9 @@ def build_alignment(language: dict, records: list[dict], *, namespace: str) -> d
                 f"alignment record {index} must contain external_id, expression, and source_offset_ranges; region_ids are derived"
             )
         expression = str(row["expression"])
-        tokens = _tokens(expression)
+        linguistic_analysis = _normalize_analysis(expression, analyzer)
+        tokens = [row["surface"] for row in linguistic_analysis]
+        normalized_tokens = [row["lemma"] for row in linguistic_analysis]
         if not tokens:
             raise ValueError(f"alignment record {index} expression has no tokens")
         ranges = _ranges(row["source_offset_ranges"], index)
@@ -148,11 +238,14 @@ def build_alignment(language: dict, records: list[dict], *, namespace: str) -> d
             "external_id": str(row["external_id"]),
             "expression": expression,
             "tokens": tokens,
+            "normalized_tokens": normalized_tokens,
+            "linguistic_analysis": linguistic_analysis,
             "source_offset_ranges": ranges,
             "evidence_event_ids": event_ids,
             "region_ids": region_ids,
             "derivation": "source ranges -> overlapping learned events -> regions used by those events",
         })
+    normalization_lexicon = _normalization_lexicon(aligned)
     adapter = {
         "schema": ADAPTER_SCHEMA,
         "algorithm_id": "cross-situation-time-alignment-v1",
@@ -161,6 +254,13 @@ def build_alignment(language: dict, records: list[dict], *, namespace: str) -> d
         "canonical_language_sha256": before,
         "records": copy.deepcopy(aligned),
         "learned_units": _learn_units(aligned),
+        "external_analysis": {
+            "build_time_analyzer": analyzer_id,
+            "runtime": "stored surface-to-lemma lexicon; no parser or model required",
+            "normalization_min_dominance": NORMALIZATION_MIN_DOMINANCE,
+            "ambiguity_rule": "leave a surface form unchanged unless one observed lemma has at least 80% of its evidence",
+        },
+        "normalization_lexicon": normalization_lexicon,
     }
     after = hashlib.sha256(canonical_causal_language(language)).hexdigest()
     if before != after:
@@ -169,7 +269,9 @@ def build_alignment(language: dict, records: list[dict], *, namespace: str) -> d
 
 
 def _learned_regions(adapter: dict, expression: str) -> tuple[list[str], dict]:
-    tokens = _tokens(expression)
+    surface_tokens = _tokens(expression)
+    normalization = adapter.get("normalization_lexicon", {})
+    tokens = [normalization.get(token, token) for token in surface_tokens]
     index = {row["unit"]: row for row in adapter.get("learned_units", [])}
     regions, covered = [], 0
     position = 0
@@ -192,8 +294,8 @@ def _learned_regions(adapter: dict, expression: str) -> tuple[list[str], dict]:
         position += width
     return regions, {
         "covered_token_count": covered,
-        "total_token_count": len(tokens),
-        "coverage_ratio": covered / len(tokens) if tokens else 0.0,
+        "total_token_count": len(surface_tokens),
+        "coverage_ratio": covered / len(surface_tokens) if surface_tokens else 0.0,
         "measurement_rule": "tokens covered by the longest learned one-to-four-token units",
     }
 
@@ -256,7 +358,7 @@ def losica_to_external(language: dict, adapter: dict, utterance: str) -> dict:
     unit_index = {row["unit"]: row for row in adapter.get("learned_units", [])}
     ranked = []
     for row in adapter["records"]:
-        full_unit = " ".join(_tokens(row["expression"]))
+        full_unit = " ".join(row.get("normalized_tokens", _tokens(row["expression"])))
         learned = unit_index.get(full_unit)
         aligned = (
             {association["region_id"] for association in learned["associations"][:2]}
@@ -284,6 +386,8 @@ def main(argv=None):
     build.add_argument("records")
     build.add_argument("--namespace", required=True)
     build.add_argument("--out", required=True)
+    build.add_argument("--external-parser", choices=["surface", "stanza"], default="surface")
+    build.add_argument("--parser-language", default="en")
     outward = sub.add_parser("external-to-losica")
     outward.add_argument("adapter")
     outward.add_argument("expression")
@@ -294,7 +398,14 @@ def main(argv=None):
     language = json.loads(Path(args.language).read_text(encoding="utf-8"))
     if args.command == "build":
         records = json.loads(Path(args.records).read_text(encoding="utf-8"))
-        adapter = build_alignment(language, records, namespace=args.namespace)
+        analyzer = stanza_analyzer(args.parser_language) if args.external_parser == "stanza" else None
+        adapter = build_alignment(
+            language,
+            records,
+            namespace=args.namespace,
+            analyzer=analyzer,
+            analyzer_id=(f"stanza:{args.parser_language}" if analyzer is not None else "surface"),
+        )
         Path(args.out).write_text(json.dumps(adapter, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         result = {
             "status": "PASS",

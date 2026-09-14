@@ -3,6 +3,22 @@ from __future__ import annotations
 
 from collections import defaultdict
 
+from .phonology import tokenize_surface
+
+
+def _degeminate_boundary(
+    left: str,
+    right: str,
+    consonants: list[str],
+    vowels: list[str],
+) -> tuple[str, str]:
+    """Let identical consonants at a morpheme boundary share one segment."""
+    left_tokens = tokenize_surface(left, tuple(consonants), tuple(vowels))
+    right_tokens = tokenize_surface(right, tuple(consonants), tuple(vowels))
+    if left_tokens[-1] == right_tokens[0] and left_tokens[-1] in consonants:
+        return left, "".join(right_tokens[1:])
+    return left, right
+
 
 def derive_morphology(regions: list[dict], event_codes: dict[str, list[str]], *, dimension_limit: int = 16) -> dict:
     """Retain recurrent region ranges that occur across many lexical hosts."""
@@ -92,7 +108,14 @@ def realize_regions(language: dict, region_ids: list[str]) -> dict:
             host = roots[region_ids[index + 1]]
             marker_form = marker["marker_form"]
             host_form = host["orthographic"]
-            surface = marker_form + "-" + host_form if marker["attachment"] == "before" else host_form + "-" + marker_form
+            left, right = (marker_form, host_form) if marker["attachment"] == "before" else (host_form, marker_form)
+            left, right = _degeminate_boundary(
+                left,
+                right,
+                language["phonology"]["consonants"],
+                language["phonology"]["vowels"],
+            )
+            surface = left + "-" + right
             output.append(surface)
             morphemes.append({
                 "morphology_cell_id": marker["morphology_cell_id"],
