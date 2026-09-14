@@ -25,6 +25,8 @@ G_EXIST = "g:0702"
 G_ADP_LOC = "g:0801"
 G_ADP_SOURCE = "g:0802"
 G_ADP_INSTR = "g:0803"
+G_TIME_ALWAYS = "g:0901"
+G_MANNER_PROX = "g:0902"
 
 FUNCTION_SPECS = [
     (G_DEM_PROX, "demonstrative", {"deixis": "PROX"}, None),
@@ -46,6 +48,8 @@ FUNCTION_SPECS = [
     (G_ADP_LOC, "adposition", {"case_role": "LOC"}, None),
     (G_ADP_SOURCE, "adposition", {"case_role": "SOURCE"}, None),
     (G_ADP_INSTR, "adposition", {"case_role": "INSTRUMENT"}, None),
+    (G_TIME_ALWAYS, "adverb", {"temporal_quantification": "ALWAYS"}, None),
+    (G_MANNER_PROX, "property", {"manner": "PROXIMAL_SAME_STATE"}, None),
 ]
 
 # These are Losica-internal candidate lexical frames. Generation samples among them
