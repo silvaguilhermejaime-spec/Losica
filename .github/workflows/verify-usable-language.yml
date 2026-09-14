@@ -1,9 +1,7 @@
 name: Verify usable Losica
 
 on:
-  push:
-    branches:
-      - fix/consonant-degemination
+  workflow_dispatch:
 
 permissions:
   contents: read
