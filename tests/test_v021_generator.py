@@ -191,6 +191,19 @@ def test_final_kn_boundary_receives_general_legal_repair():
     assert any(x["operation"] == "epenthesis" for x in out["operations"])
 
 
+def test_identical_consonants_degeminate_before_cluster_repair():
+    out = realize_morphemes([Morpheme("A", "uk", "A"), Morpheme("B", "kuk", "B")], CFG)
+    assert out["underlying_form"] == "ukkuk"
+    assert out["surface_phonemic"].replace(".", "") == "ukuk"
+    assert not is_legal_surface("ukkuk", CFG)
+    assert is_legal_surface("ukuk", CFG)
+    assert any(x["operation"] == "degemination" for x in out["operations"])
+    assert not any(
+        x["operation"] == "epenthesis" and x["input"] == ["k", "k"]
+        for x in out["operations"]
+    )
+
+
 def test_raw_morpheme_sequence_enters_composition_pipeline():
     out = realize_morphemes([{"morpheme_id": "ROOT", "form": "tak", "gloss": "root"}, {"morpheme_id": "SUFFIX", "form": "na", "gloss": "suffix"}], CFG)
     assert out["underlying_form"] == "takna"

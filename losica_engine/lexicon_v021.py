@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .config import PhonologyConfig
 from .morphophonology import prominence_index
-from .phonology import legal_syllables, syllabify_surface
+from .phonology import degeminate_consonants, legal_syllables, syllabify_surface, tokenize_surface
 from .semantic_core import FUNCTION_SPECS, frame_structure, lexical_item_id
 from .semantic_network import generate_semantic_regions, region_class
 from .numeral_system import numeral_semantic_id
@@ -27,7 +27,9 @@ class FormAllocator:
         syllables = list(legal_syllables(cfg))
         forms = set(syllables)
         for a, b in product(syllables, repeat=2):
-            forms.add(".".join(syllabify_surface(a + b, cfg)))
+            segments = tokenize_surface(a + b, cfg.consonants, cfg.vowels)
+            surface = "".join(degeminate_consonants(segments, cfg.consonants))
+            forms.add(".".join(syllabify_surface(surface, cfg)))
             if len(forms) >= 4096:
                 break
         forms = sorted(forms)

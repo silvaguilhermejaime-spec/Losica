@@ -9,7 +9,7 @@ import jsonschema
 import pytest
 
 from losica_engine.causal_adapter import build_alignment, external_to_losica, losica_to_external
-from losica_engine.causal_grammar import analyze_utterance, realize_regions
+from losica_engine.causal_grammar import _degeminate_boundary, analyze_utterance, realize_regions
 from losica_engine.causal_attestation import verify_collection_attestation
 from losica_engine.causal_stream import CausalBoundaryError, causal_stream_sha256, validate_causal_stream
 from losica_engine.causal_validation import validate_causal_language
@@ -21,6 +21,7 @@ from losica_engine.experiential_language import (
     replay_causal_generation,
     replay_region_membership,
 )
+from losica_engine.phonology import tokenize_surface
 
 
 @pytest.fixture(scope="module")
@@ -124,6 +125,31 @@ def test_vocabulary_identity_and_size_are_internal(language):
     assert all(row["lexeme_id"].startswith("lx:") for row in language["lexicon"])
     assert all(row["semantic_region_id"].startswith("sr:") for row in language["lexicon"])
     assert not any("concepticon_id" in row or "concept_mappings" in row for row in language["lexicon"])
+
+
+def test_generated_forms_have_no_unsimplified_double_consonants(language):
+    consonants = tuple(language["phonology"]["consonants"])
+    vowels = tuple(language["phonology"]["vowels"])
+    generated_forms = [
+        row["orthographic"]
+        for row in language["lexicon"]
+        if row["formation"] == "learned_region_root"
+    ] + [
+        cell["marker_form"]
+        for dimension in language["morphology"]["dimensions"]
+        for cell in dimension["cells"]
+    ]
+    for form in generated_forms:
+        tokens = tokenize_surface(form, consonants, vowels)
+        assert not any(a == b and a in consonants for a, b in zip(tokens, tokens[1:]))
+    assert language["phonology"]["rules"]["identical_consonant_degemination"] is True
+
+
+def test_degemination_distinguishes_k_from_glottalized_k(language):
+    consonants = language["phonology"]["consonants"]
+    vowels = language["phonology"]["vowels"]
+    assert _degeminate_boundary("uk", "ka", consonants, vowels) == ("uk", "a")
+    assert _degeminate_boundary("uk", "kʼa", consonants, vowels) == ("uk", "kʼa")
 
 
 def test_generated_partitions_feed_constructions_and_lexical_distribution(language):

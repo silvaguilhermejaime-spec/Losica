@@ -452,7 +452,14 @@ def generate_causal_language(
             "historical_lexemes": len(historical_lexemes),
         },
     }
-    partial = {"lexicon": lexicon, "morphology": morphology}
+    partial = {
+        "lexicon": lexicon,
+        "morphology": morphology,
+        "phonology": {
+            "consonants": list(cfg.consonants),
+            "vowels": list(cfg.vowels),
+        },
+    }
     utterances = []
     for event_id, message in sorted(codes.items()):
         realized = realize_regions(partial, message)
@@ -473,7 +480,12 @@ def generate_causal_language(
         "history": history,
         "utterance_traces": utterances,
         "communication": report,
-        "phonology": {"consonants": list(cfg.consonants), "vowels": list(cfg.vowels), "syllable": cfg.syllable},
+        "phonology": {
+            "consonants": list(cfg.consonants),
+            "vowels": list(cfg.vowels),
+            "syllable": cfg.syllable,
+            "rules": {"identical_consonant_degemination": True},
+        },
         "generation_trace": trace,
         "adapter_contract": {
             "load_order": "after_generation",

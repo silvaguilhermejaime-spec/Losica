@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .config import load_phonology
 from .external_retrieval import load_ranking, run_external_backend
+from .phonology import degeminate_consonants
 from .world_audio import world_acoustic_to_wav
 
 SCHEMA = "losica-word-candidates/3"
@@ -37,7 +38,7 @@ def syllable_patterns(cfg):
 
 
 def syllabify_tokens(tokens: list[str] | tuple[str, ...], cfg, max_syllables: int = 12):
-    tokens = tuple(tokens)
+    tokens = degeminate_consonants(tokens, cfg.consonants)
     patterns = syllable_patterns(cfg)
     out = []
 

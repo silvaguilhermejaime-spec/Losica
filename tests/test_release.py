@@ -1,7 +1,7 @@
 import json, subprocess, sys, tempfile, unittest
 from pathlib import Path
 from losica_engine.config import load_phonology, load_transition
-from losica_engine.phonology import Root, estimate_root_count
+from losica_engine.phonology import Root, estimate_root_count, generate_roots
 from losica_engine.legacy_history_v018 import proto_forms, historical_branch_count
 from losica_engine.project_data import load_stimuli, load_categories, measurement_catalog
 from losica_engine.relations import load_relations, matched_relations, predicate_matches
@@ -22,6 +22,9 @@ class ReleaseTests(unittest.TestCase):
         root=Root(('a','i','u'),0)
         self.assertGreaterEqual(historical_branch_count(root,CFG,TR),1)
         self.assertTrue(proto_forms(root,CFG,TR))
+
+    def test_root_count_excludes_degeminated_duplicate_representations(self):
+        self.assertEqual(len(list(generate_roots(CFG, [2]))), estimate_root_count(CFG, [2]))
 
     def test_example_quantitative_inputs(self):
         s=load_stimuli(ROOT/'data/stimuli.example.jsonl')
