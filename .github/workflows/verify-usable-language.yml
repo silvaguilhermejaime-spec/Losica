@@ -1,7 +1,9 @@
 name: Verify usable Losica
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - fix/consonant-degemination
 
 permissions:
   contents: read
@@ -34,6 +36,11 @@ jobs:
             translate "I always been like this" \
             > dist/usable/translation.json
           cat dist/usable/translation.json
+          python USE_LEGACY_LANGUAGE.py \
+            dist/usable/language.json \
+            translate "It's always been like this" \
+            > dist/usable/translation-it.json
+          cat dist/usable/translation-it.json
           cp README.md dist/usable/
           cd dist
           zip -qr losica-usable-language.zip usable
