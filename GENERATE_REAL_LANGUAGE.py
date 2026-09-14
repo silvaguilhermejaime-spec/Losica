@@ -6,7 +6,12 @@ import argparse
 import json
 from pathlib import Path
 
-from losica_engine.causal_adapter import build_alignment, external_to_losica, losica_to_external
+from losica_engine.causal_adapter import (
+    build_alignment,
+    external_to_losica,
+    losica_to_external,
+    stanza_analyzer,
+)
 from losica_engine.causal_finalize import finalize_causal_language
 from losica_engine.media_stream import import_real_media
 
@@ -23,6 +28,8 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=19020)
     parser.add_argument("--vocabulary-scale", choices=["core", "intermediate", "large"], default="core")
     parser.add_argument("--fps", type=float, default=40.0)
+    parser.add_argument("--external-parser", choices=["surface", "stanza"], default="surface")
+    parser.add_argument("--parser-language", default="en")
     parser.add_argument("--out-dir", type=Path, default=Path("dist/real-media"))
     args = parser.parse_args()
     out = args.out_dir.resolve()
@@ -39,7 +46,14 @@ def main() -> None:
         out=out / "language.json",
     )
     language = json.loads((out / "language.json").read_text(encoding="utf-8"))
-    adapter = build_alignment(language, records, namespace=args.namespace)
+    analyzer = stanza_analyzer(args.parser_language) if args.external_parser == "stanza" else None
+    adapter = build_alignment(
+        language,
+        records,
+        namespace=args.namespace,
+        analyzer=analyzer,
+        analyzer_id=(f"stanza:{args.parser_language}" if analyzer is not None else "surface"),
+    )
     write(out / "adapter.json", adapter)
     expressions = sorted({row["expression"] for row in records})
     outward = [external_to_losica(language, adapter, expression) for expression in expressions]

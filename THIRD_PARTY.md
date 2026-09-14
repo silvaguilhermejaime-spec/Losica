@@ -11,6 +11,8 @@ The bundled snapshot records upstream versions and commit identities. Full datas
 | CLICS4 | 1.0 | CC-BY 4.0; DOI `10.5281/zenodo.16900179` | supplies structural colexification evidence through language, parameter, Concepticon-ID, and form relations |
 | PHOIBLE | 2.0 | Data files carry the MIT license; repository code carries GPL-3.0 | supplies distinctive features and inventory counts |
 | Universal Dependencies | 2.18 interface | Treebank-specific licenses | imports CoNLL-U construction templates |
+| Stanza | optional build-time dependency | Apache-2.0; downloaded models follow their upstream terms | stores observed lemmas and UD analyses in the external adapter; never changes generated Losica meanings |
+| EgoCom | repository revision `67f439fcb306acdcfcb8597e2acdf1c3afb8f684`; media release v1.0 | Modified MIT repository license; media remains external | copies exact timestamped human transcripts and connects them to synchronized first-person audio/video |
 | DELPH-IN Grammar Matrix | external checkout | Upstream license | supplies an optional typed-coverage comparison |
 | DELPH-IN Grammary | 2026 interface | Upstream grammar licenses | supplies optional implemented-grammar comparisons |
 | CLDF / pycldf | current / 2.1 | Apache-2.0 / upstream package license | writes and validates interoperable tables |

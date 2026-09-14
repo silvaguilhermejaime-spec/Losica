@@ -34,6 +34,21 @@
       "losica_use": "primary real-world source; convert raw video/audio to numeric frames and narration timestamps to source ranges"
     },
     {
+      "source_id": "egocom",
+      "repository": "https://github.com/facebookresearch/EgoCom-Dataset",
+      "revision": "67f439fcb306acdcfcb8597e2acdf1c3afb8f684",
+      "local_repository_dir": "egocom",
+      "source_files": ["egocom_dataset/ground_truth_transcriptions.csv", "egocom_dataset/video_info.csv", "egocom_dataset/download_egocom.sh"],
+      "identity_fields": ["conversation_id", "speaker_id", "startTime", "endTime"],
+      "expression_field": "exact concatenation of the supplied word and whitespace stream between sentence boundaries",
+      "wording_origin": "human word-level transcription",
+      "optional_catalog_record_count": 24334,
+      "catalog_status": "optional extension; media is obtained from the official v1.0 release",
+      "score_components": [2, 2, 2, 2, 2],
+      "score": 10,
+      "losica_use": "embodied conversational evidence; select one synchronized first-person view per segment and map transcript times to generated offsets"
+    },
+    {
       "source_id": "epic-kitchens-100",
       "repository": "https://github.com/epic-kitchens/epic-kitchens-100-annotations",
       "revision": "ea8b40457a400c3fffa1c7f406ef3dc169cc2522",

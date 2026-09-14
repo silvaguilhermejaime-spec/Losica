@@ -273,6 +273,58 @@ def test_repeated_exact_expression_uses_compact_learned_region(language):
     assert inverse["external_candidates"][0]["expression"] == "repeated signal"
 
 
+def test_build_time_lemmas_generalize_without_a_runtime_parser(language):
+    def analyzer(expression):
+        lemmas = {"went": "go", "houses": "house"}
+        return [
+            {"surface": token, "lemma": lemmas.get(token, token), "upos": "X", "deprel": "dep", "head": 0}
+            for token in expression.split()
+        ]
+
+    adapter = build_alignment(language, [
+        {"external_id": "motion:1", "expression": "went houses", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "motion:2", "expression": "went houses", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "contrast:1", "expression": "still objects", "source_offset_ranges": [[1000, 1000]]},
+        {"external_id": "contrast:2", "expression": "still objects", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test", analyzer=analyzer, analyzer_id="test-ud")
+    result = external_to_losica(language, adapter, "go house")
+    assert result["coverage"]["coverage_ratio"] == 1.0
+    assert adapter["normalization_lexicon"]["went"] == "go"
+    assert adapter["normalization_lexicon"]["houses"] == "house"
+    assert adapter["external_analysis"]["runtime"].startswith("stored surface-to-lemma")
+
+
+def test_build_time_parser_skips_punctuation_and_rejects_ambiguous_lemmas(language):
+    analyses = {
+        "Saw.": [
+            {"surface": "Saw", "lemma": "see", "upos": "VERB", "deprel": "root", "head": 0},
+            {"surface": ".", "lemma": ".", "upos": "PUNCT", "deprel": "punct", "head": 1},
+        ],
+        "A saw.": [
+            {"surface": "A", "lemma": "a", "upos": "DET", "deprel": "det", "head": 2},
+            {"surface": "saw", "lemma": "saw", "upos": "NOUN", "deprel": "root", "head": 0},
+            {"surface": ".", "lemma": ".", "upos": "PUNCT", "deprel": "punct", "head": 2},
+        ],
+    }
+    adapter = build_alignment(language, [
+        {"external_id": "verb:1", "expression": "Saw.", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "noun:1", "expression": "A saw.", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test", analyzer=analyses.__getitem__, analyzer_id="test-ud")
+    assert "saw" not in adapter["normalization_lexicon"]
+    assert all(token["surface"] != "." for row in adapter["records"] for token in row["linguistic_analysis"])
+
+
+def test_version_two_adapter_remains_readable(language):
+    adapter = build_alignment(language, [
+        {"external_id": "motion:1", "expression": "moving object", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "motion:2", "expression": "moving object", "source_offset_ranges": [[0, 0]]},
+        {"external_id": "contrast:1", "expression": "still object", "source_offset_ranges": [[1000, 1000]]},
+        {"external_id": "contrast:2", "expression": "still object", "source_offset_ranges": [[1000, 1000]]},
+    ], namespace="human-test")
+    adapter["schema"] = "losica-external-alignment/2"
+    assert external_to_losica(language, adapter, "moving object")["coverage"]["coverage_ratio"] == 1.0
+
+
 def test_generation_replays_exactly(language, stream):
     replayed = replay_causal_generation(language["generation_trace"], stream)
     assert canonical_causal_language(replayed) == canonical_causal_language(language)

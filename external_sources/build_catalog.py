@@ -7,6 +7,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 
 
 def emit(handle, row: dict) -> None:
@@ -182,11 +183,85 @@ def audiocaps(root: Path, handle) -> int:
     return count
 
 
+def _optional_seconds(value: str) -> float | None:
+    value = value.strip()
+    return float(value) if value else None
+
+
+def egocom(root: Path, handle) -> int:
+    """Copy EgoCom's word stream into timestamped, speaker-specific utterances."""
+    path = root / "egocom" / "egocom_dataset" / "ground_truth_transcriptions.csv"
+    streams: dict[tuple[str, str], dict] = {}
+    count = 0
+
+    def flush(key: tuple[str, str]) -> None:
+        nonlocal count
+        state = streams.get(key)
+        if state is None:
+            return
+        expression = "".join(state["pieces"]).strip()
+        streams.pop(key, None)
+        if not expression or not re.search(r"\w", expression, flags=re.UNICODE):
+            return
+        if state["start"] is None or state["end"] is None:
+            return
+        conversation_id, speaker_id = key
+        start_millis = round(state["start"] * 1000)
+        end_millis = round(state["end"] * 1000)
+        emit(handle, {
+            "schema": "losica-external-source-record/1",
+            "source_id": "egocom",
+            "external_id": f"{conversation_id}:{speaker_id}:{start_millis}:{end_millis}",
+            "expression": expression,
+            "expression_origin": "human_word_level_transcription",
+            "evidence_role": "embodied_conversation_utterance",
+            "observation_ref": {
+                "recording_id": conversation_id,
+                "speaker_id": speaker_id,
+                "start_seconds": state["start"],
+                "end_seconds": state["end"],
+            },
+            "source_file": str(path.relative_to(root)),
+        })
+        count += 1
+
+    with path.open(encoding="utf-8", newline="") as source:
+        for row in csv.DictReader(source):
+            conversation_id = row["conversation_id"]
+            speaker_id = row["speaker_id"]
+            key = (conversation_id, speaker_id)
+            word = row["word"]
+            start = _optional_seconds(row["startTime"])
+            end = _optional_seconds(row["endTime"])
+            state = streams.get(key)
+            if state is not None and state["pending_terminal"] and re.search(r"\w", word, flags=re.UNICODE):
+                flush(key)
+                state = None
+            if state is None:
+                state = {"pieces": [], "start": None, "end": None, "pending_terminal": False}
+                streams[key] = state
+            state["pieces"].append(word)
+            if start is not None and state["start"] is None:
+                state["start"] = start
+            if end is not None:
+                state["end"] = end
+            if word in {".", "?", "!"}:
+                state["pending_terminal"] = True
+    for key in list(streams):
+        flush(key)
+    return count
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repos", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--summary", type=Path, required=True)
+    parser.add_argument(
+        "--include-egocom",
+        action="store_true",
+        help="append exact EgoCom utterances; omitted by default to preserve the locked five-source catalog",
+    )
     args = parser.parse_args()
     args.out.parent.mkdir(parents=True, exist_ok=True)
     counts = {}
@@ -196,6 +271,8 @@ def main() -> None:
         counts["activitynet-entities"] = activitynet_entities(args.repos, handle)
         counts["talk2car"] = talk2car(args.repos, handle)
         counts["audiocaps"] = audiocaps(args.repos, handle)
+        if args.include_egocom:
+            counts["egocom"] = egocom(args.repos, handle)
     summary = {
         "schema": "losica-external-source-catalog-summary/1",
         "record_counts": counts,

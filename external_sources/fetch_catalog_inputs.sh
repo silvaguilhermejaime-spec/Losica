@@ -25,5 +25,6 @@ fetch_one epic_sounds https://github.com/epic-kitchens/epic-sounds-annotations.g
 fetch_one activitynet_entities https://github.com/facebookresearch/ActivityNet-Entities.git eb455f7cdd9847cb6dca9f099c84070e2a85f614
 fetch_one talk2car https://github.com/talk2car/Talk2Car.git 3fde52aee3341312196ab9b2f999337eff0693a0
 fetch_one aac_datasets https://github.com/Labbeti/aac-datasets.git 631524fb86eef351c1848e42196fbe5cf62442e4
+fetch_one egocom https://github.com/facebookresearch/EgoCom-Dataset.git 67f439fcb306acdcfcb8597e2acdf1c3afb8f684
 
-echo "fetched 5 locked repositories into $target"
+echo "fetched 6 locked repositories into $target"
