@@ -35,6 +35,7 @@ jobs:
             dist/usable/language.json \
             translate "I always been like this" \
             > dist/usable/translation.json
+          cat dist/usable/translation.json
           cp README.md dist/usable/
           cd dist
           zip -qr losica-usable-language.zip usable
