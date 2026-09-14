@@ -1,4 +1,4 @@
-name: Verify usable Losica
+name: Verify consonant degemination
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  generate:
+  verify:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -18,34 +18,23 @@ jobs:
           cache: pip
       - name: Install engine
         run: python -m pip install -e ".[test]"
-      - name: Test persistent-state translation
+      - name: Test degemination
         run: |
           python -m pytest -q \
             tests/test_v021_generator.py::test_identical_consonants_degeminate_before_cluster_repair \
-            tests/test_v021_generator.py::test_always_been_like_this_translates_compositionally
-      - name: Generate usable language
+            tests/test_causal_engine.py::test_generated_forms_have_no_unsimplified_double_consonants \
+            tests/test_causal_engine.py::test_degemination_distinguishes_k_from_glottalized_k
+      - name: Generate causal language
         run: |
-          mkdir -p dist/usable
-          python FINALIZE_LEGACY_LANGUAGE.py \
+          mkdir -p dist
+          python FINALIZE_LANGUAGE.py \
             --seed 19020 \
-            --out dist/usable/language.json
-          python USE_LEGACY_LANGUAGE.py \
-            dist/usable/language.json \
-            translate "I always been like this" \
-            > dist/usable/translation.json
-          cat dist/usable/translation.json
-          python USE_LEGACY_LANGUAGE.py \
-            dist/usable/language.json \
-            translate "It's always been like this" \
-            > dist/usable/translation-it.json
-          cat dist/usable/translation-it.json
-          cp README.md dist/usable/
-          cd dist
-          zip -qr losica-usable-language.zip usable
-      - name: Upload usable language
+            --vocabulary-scale large \
+            --out dist/language.json
+      - name: Upload verified language
         uses: actions/upload-artifact@v4
         with:
-          name: losica-usable-language
-          path: dist/losica-usable-language.zip
+          name: losica-degeminated-language
+          path: dist/language.json
           if-no-files-found: error
           retention-days: 30
