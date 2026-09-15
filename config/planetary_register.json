@@ -1,0 +1,66 @@
+{
+  "schema": "losica-planetary-seed/1",
+  "version": "0.31.0",
+  "source": {
+    "archive": "losica_planet_physical_climate_core.zip",
+    "archive_sha256": "8cf16f9cb6220dd5759da752c8f719d1561bba97bf63bd56f141716b45c0b0e1",
+    "document": "world_physical_state.json",
+    "document_schema": "losica-planet-physical-climate-core/1.0",
+    "world_id": "losica-131757842",
+    "physical_release": "0.9.1",
+    "seed": 131757842,
+    "scope": "Physical scalar claims only; no biosphere, people, culture, language, acoustics or sensory categories are inferred."
+  },
+  "subjects": [
+    {"id": "subject:star", "label": "host star", "source_pointer": "/star"},
+    {"id": "subject:planet", "label": "target planet", "source_pointer": "/target_planet"}
+  ],
+  "units": [
+    {"id": "unit:none", "symbol": "1", "meaning": "dimensionless or no numeric unit"},
+    {"id": "unit:solar_mass", "symbol": "M_sun", "meaning": "solar mass"},
+    {"id": "unit:solar_luminosity", "symbol": "L_sun", "meaning": "solar luminosity"},
+    {"id": "unit:kelvin", "symbol": "K", "meaning": "kelvin"},
+    {"id": "unit:kilogram", "symbol": "kg", "meaning": "kilogram"},
+    {"id": "unit:meter", "symbol": "m", "meaning": "meter"},
+    {"id": "unit:meter_per_second_squared", "symbol": "m s-2", "meaning": "meter per second squared"},
+    {"id": "unit:astronomical_unit", "symbol": "AU", "meaning": "astronomical unit"},
+    {"id": "unit:degree", "symbol": "deg", "meaning": "degree"},
+    {"id": "unit:hour", "symbol": "h", "meaning": "hour"},
+    {"id": "unit:earth_day", "symbol": "d_earth", "meaning": "Earth day"},
+    {"id": "unit:earth_flux", "symbol": "S_earth", "meaning": "Earth mean stellar flux"},
+    {"id": "unit:kilopascal", "symbol": "kPa", "meaning": "kilopascal"},
+    {"id": "unit:cubic_meter", "symbol": "m3", "meaning": "cubic meter"}
+  ],
+  "models": [
+    {"id": "model:LEGACY", "label": "retained legacy draw; original sampling law unknown"},
+    {"id": "model:STAR1", "label": "stellar luminosity and temperature model"},
+    {"id": "model:BULK1", "label": "bulk planet equation-of-state and Newtonian derivation"},
+    {"id": "model:ORB1", "label": "Keplerian two-body derivation and phase draw"},
+    {"id": "model:GEO1", "label": "geology, isostasy and water-loading model"},
+    {"id": "model:CLIM1", "label": "seasonal two-dimensional energy-balance climate model"}
+  ],
+  "facts": [
+    {"id": "fact:star_mass", "subject_id": "subject:star", "quantity_id": "quantity:star_mass", "quantity_label": "stellar mass", "value": "1.069853", "unit_id": "unit:solar_mass", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/star/mass_solar"},
+    {"id": "fact:star_luminosity", "subject_id": "subject:star", "quantity_id": "quantity:star_luminosity", "quantity_label": "stellar luminosity", "value": "1.370705221397405", "unit_id": "unit:solar_luminosity", "evidence_id": "evidence:modeled", "model_id": "model:STAR1", "source_pointer": "/star/luminosity_solar"},
+    {"id": "fact:star_temperature", "subject_id": "subject:star", "quantity_id": "quantity:star_effective_temperature", "quantity_label": "stellar effective temperature", "value": "6079.006436154715", "unit_id": "unit:kelvin", "evidence_id": "evidence:derived", "model_id": "model:STAR1", "source_pointer": "/star/effective_temperature_K"},
+    {"id": "fact:formation_cloud_unknown", "subject_id": "subject:star", "quantity_id": "quantity:formation_cloud", "quantity_label": "stellar formation-cloud state", "value": null, "unit_id": "unit:none", "evidence_id": "evidence:uncertain", "model_id": "model:LEGACY", "source_pointer": "/star/formation_cloud"},
+    {"id": "fact:planet_mass", "subject_id": "subject:planet", "quantity_id": "quantity:planet_mass", "quantity_label": "planet mass", "value": "8.3904512796e+24", "unit_id": "unit:kilogram", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/target_planet/bulk/mass_kg"},
+    {"id": "fact:planet_radius", "subject_id": "subject:planet", "quantity_id": "quantity:planet_radius", "quantity_label": "planet radius", "value": "6945864.357980859", "unit_id": "unit:meter", "evidence_id": "evidence:derived", "model_id": "model:BULK1", "source_pointer": "/target_planet/bulk/radius_m"},
+    {"id": "fact:surface_gravity", "subject_id": "subject:planet", "quantity_id": "quantity:surface_gravity", "quantity_label": "surface gravity", "value": "11.607493461190078", "unit_id": "unit:meter_per_second_squared", "evidence_id": "evidence:derived", "model_id": "model:BULK1", "source_pointer": "/target_planet/bulk/gravity_m_s2"},
+    {"id": "fact:semimajor_axis", "subject_id": "subject:planet", "quantity_id": "quantity:semimajor_axis", "quantity_label": "orbital semimajor axis", "value": "1.1625000000000003", "unit_id": "unit:astronomical_unit", "evidence_id": "evidence:conditioned", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/semimajor_axis_AU"},
+    {"id": "fact:eccentricity", "subject_id": "subject:planet", "quantity_id": "quantity:eccentricity", "quantity_label": "orbital eccentricity", "value": "0.446989", "unit_id": "unit:none", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/target_planet/orbit/eccentricity"},
+    {"id": "fact:obliquity", "subject_id": "subject:planet", "quantity_id": "quantity:obliquity", "quantity_label": "axial obliquity", "value": "44.6351", "unit_id": "unit:degree", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/target_planet/orbit/obliquity_deg"},
+    {"id": "fact:rotation_period", "subject_id": "subject:planet", "quantity_id": "quantity:rotation_period", "quantity_label": "sidereal rotation period", "value": "8.5499", "unit_id": "unit:hour", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/target_planet/orbit/rotation_period_hours"},
+    {"id": "fact:orbital_period", "subject_id": "subject:planet", "quantity_id": "quantity:orbital_period", "quantity_label": "orbital period", "value": "442.60798884880126", "unit_id": "unit:earth_day", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/orbital_period_earth_days"},
+    {"id": "fact:mean_solar_day", "subject_id": "subject:planet", "quantity_id": "quantity:mean_solar_day", "quantity_label": "mean solar day", "value": "8.556787177492277", "unit_id": "unit:hour", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/mean_solar_day_hours"},
+    {"id": "fact:days_per_orbit", "subject_id": "subject:planet", "quantity_id": "quantity:mean_solar_days_per_orbit", "quantity_label": "mean solar days per orbit", "value": "1241.4229210132553", "unit_id": "unit:none", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/mean_solar_days_per_orbit"},
+    {"id": "fact:mean_flux", "subject_id": "subject:planet", "quantity_id": "quantity:mean_stellar_flux", "quantity_label": "orbit-mean stellar flux", "value": "1.1338579362898928", "unit_id": "unit:earth_flux", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/mean_flux_earth"},
+    {"id": "fact:periapsis_flux", "subject_id": "subject:planet", "quantity_id": "quantity:periapsis_flux", "quantity_label": "periapsis stellar flux", "value": "3.31658096641033", "unit_id": "unit:earth_flux", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/periapsis_flux_earth"},
+    {"id": "fact:apoapsis_flux", "subject_id": "subject:planet", "quantity_id": "quantity:apoapsis_flux", "quantity_label": "apoapsis stellar flux", "value": "0.484426268035681", "unit_id": "unit:earth_flux", "evidence_id": "evidence:derived", "model_id": "model:ORB1", "source_pointer": "/target_planet/orbit/apoapsis_flux_earth"},
+    {"id": "fact:ocean_volume", "subject_id": "subject:planet", "quantity_id": "quantity:liquid_ocean_volume", "quantity_label": "liquid ocean volume", "value": "7.969104340117428e+17", "unit_id": "unit:cubic_meter", "evidence_id": "evidence:modeled", "model_id": "model:GEO1", "source_pointer": "/target_planet/volatiles/liquid_ocean_volume_m3"},
+    {"id": "fact:surface_pressure", "subject_id": "subject:planet", "quantity_id": "quantity:surface_pressure", "quantity_label": "surface atmospheric pressure", "value": "50.521417", "unit_id": "unit:kilopascal", "evidence_id": "evidence:sampled", "model_id": "model:LEGACY", "source_pointer": "/target_planet/atmosphere/surface_pressure_kPa"},
+    {"id": "fact:ocean_fraction", "subject_id": "subject:planet", "quantity_id": "quantity:ocean_area_fraction", "quantity_label": "ocean area fraction", "value": "0.936488251324532", "unit_id": "unit:none", "evidence_id": "evidence:derived", "model_id": "model:GEO1", "source_pointer": "/target_planet/geology/ocean_area_fraction"},
+    {"id": "fact:land_fraction", "subject_id": "subject:planet", "quantity_id": "quantity:land_area_fraction", "quantity_label": "land area fraction", "value": "0.06351174867546805", "unit_id": "unit:none", "evidence_id": "evidence:derived", "model_id": "model:GEO1", "source_pointer": "/target_planet/geology/land_area_fraction"},
+    {"id": "fact:annual_temperature", "subject_id": "subject:planet", "quantity_id": "quantity:annual_mean_surface_temperature", "quantity_label": "annual area-mean surface temperature", "value": "321.73608763919214", "unit_id": "unit:kelvin", "evidence_id": "evidence:modeled", "model_id": "model:CLIM1", "source_pointer": "/target_planet/climate/annual_area_mean_surface_temperature_K"}
+  ]
+}

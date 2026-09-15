@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "losica-lexicon-engine"
-version = "0.30.0"
+version = "0.31.0"
 requires-python = ">=3.11"
 description = "Causal-stream Losica language generator with replayable lexical and construction learning"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "soundfile>=0.12", "pycldf>=2.1,<3"]
@@ -33,6 +33,8 @@ losica-align-language = "losica_engine.causal_adapter:main"
 losica-use-legacy-language = "losica_engine.use_language:main"
 losica-working-language = "losica_engine.working_language:main"
 losica-semantic-language = "losica_engine.semantic_kernel:main"
+losica-planetary-register = "losica_engine.planetary_register:main"
+losica-use-planetary-register = "losica_engine.planetary_register:use_main"
 losica-languageevolution = "losica_engine.languageevolution_adapter:main"
 losica-check-integrations = "losica_engine.integration_check:main"
 

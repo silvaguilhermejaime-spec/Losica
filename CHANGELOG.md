@@ -41,3 +41,13 @@
 - Added a compact SOV semantic translator with explicit Concepticon graphs and fail-closed unknown-word behavior.
 - Added reverse token analysis, dictionary lookup, Termux commands, acceptance tests, and a downloadable GitHub Actions artifact.
 - Repaired legacy WALS, CLICS, CLDF, schema, provenance, and compatibility checks; continuous verification now runs the complete test suite.
+
+# 0.31.0
+
+- Added a finite planetary register for 22 scalar claims copied from the pinned physical-climate world state.
+- Made provenance status obligatory and claim-initial: sampled, derived, modeled, conditioned, or uncertain.
+- Added compact exact-decimal notation and an optional fully spoken, character-by-character numeral form.
+- Added an inverse decoder that recovers evidence, subject, quantity, exact value, unit, and model.
+- Added per-word IPA, stable semantic IDs, fixed syntactic roles, semantic-burden explanations, and source JSON pointers.
+- Added validation against semantic-kernel/Concepticon form collisions and retained the existing three grammatical classes.
+- Added tests for all compact and spoken round trips, null values, category swaps, float rejection, display-label independence, and artifact mutation.
