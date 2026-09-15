@@ -23,7 +23,11 @@ jobs:
       - name: Install Losica
         run: python -m pip install -e ".[test]"
       - name: Test working-language layer
-        run: python -m pytest -q tests/test_working_language.py
+        run: python -m pytest -q tests/test_working_language.py tests/test_semantic_kernel.py
+      - name: Build semantic kernel and expansion
+        run: |
+          python BUILD_SEMANTIC_LANGUAGE.py --kernel-only --out semantic-kernel.json
+          python BUILD_SEMANTIC_LANGUAGE.py --out semantic-language.json
       - name: Build compact working language
         run: python BUILD_WORKING_LANGUAGE.py --out working-language.json
       - name: Verify example translations
@@ -35,5 +39,14 @@ jobs:
         with:
           name: losica-working-language
           path: working-language.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload semantic kernel and expansion
+        uses: actions/upload-artifact@v4
+        with:
+          name: losica-semantic-language
+          path: |
+            semantic-kernel.json
+            semantic-language.json
           if-no-files-found: error
           retention-days: 30

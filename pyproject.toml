@@ -32,6 +32,7 @@ losica-use-language = "losica_engine.causal_use:main"
 losica-align-language = "losica_engine.causal_adapter:main"
 losica-use-legacy-language = "losica_engine.use_language:main"
 losica-working-language = "losica_engine.working_language:main"
+losica-semantic-language = "losica_engine.semantic_kernel:main"
 losica-languageevolution = "losica_engine.languageevolution_adapter:main"
 losica-check-integrations = "losica_engine.integration_check:main"
 

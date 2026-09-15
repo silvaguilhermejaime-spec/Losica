@@ -1,5 +1,36 @@
 # Losica Language Generator 0.30.0
 
+## Build the minimal semantic kernel and expand it
+
+Losica can now build a deterministic 69-form semantic kernel: the 65 meanings
+in the 2022 condensed Natural Semantic Metalanguage inventory plus four overt
+structural forms for patient, recipient/beneficiary, location/time, and
+questions.  NSM is recorded in the artifact as a research proposal rather than
+as a proved universal minimum.
+
+All semantic meanings use one category-neutral `root` class. Reference,
+predicate, entity-modifier, and event-modifier behavior comes from construction
+position. Only `relator` and `clause_operator` remain as closed grammatical
+classes.
+
+Build only the kernel:
+
+```bash
+python BUILD_SEMANTIC_LANGUAGE.py --kernel-only --out semantic-kernel.json
+```
+
+Build the kernel and expand it with all 4,033 pinned Concepticon concepts:
+
+```bash
+python BUILD_SEMANTIC_LANGUAGE.py --out semantic-language.json
+```
+
+Concepticon provides definitions and identifiers rather than verified NSM
+decompositions for these concepts. The expanded entries are therefore labelled
+`lexicalized_source_concept` with `prime_decomposition: not_asserted`. Losica
+creates a prime analysis only when backed by a cited source; English glosses
+remain display-only. Forms depend only on the seed and stable semantic IDs.
+
 ## Build and use the working language
 
 Losica 0.30 adds a compact usable layer with 4,033 stable semantic IDs from the
