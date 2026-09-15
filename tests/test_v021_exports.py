@@ -45,6 +45,6 @@ def test_export_checksum_manifest_matches_every_listed_file(tmp_path):
 
 def test_primary_command_runs_from_a_clean_external_directory(tmp_path):
     out = tmp_path / "generated.json"
-    proc = subprocess.run([sys.executable, str(ROOT / "GENERATE_COMPLETE_LANGUAGE.py"), "--seed", "7", "--vocabulary-scale", "core", "--out", str(out)], cwd=tmp_path, env={**os.environ, "PYTHONPATH": str(ROOT)}, capture_output=True, text=True)
+    proc = subprocess.run([sys.executable, str(ROOT / "GENERATE_LEGACY_LANGUAGE.py"), "--seed", "7", "--vocabulary-scale", "core", "--out", str(out)], cwd=tmp_path, env={**os.environ, "PYTHONPATH": str(ROOT)}, capture_output=True, text=True)
     assert proc.returncode == 0, proc.stderr
     assert out.exists() and (tmp_path / "generated_resources/cldf/Wordlist-metadata.json").exists()

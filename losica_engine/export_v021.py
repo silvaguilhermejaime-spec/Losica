@@ -5,9 +5,17 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 
 from .config import load_phonology
 from .phonology import tokenize_surface
+
+
+def _cldf_id(*parts: object) -> str:
+    """Return a CLDF identifier while retaining the source ID in comments."""
+    value = "-".join(str(part) for part in parts)
+    value = re.sub(r"[^A-Za-z0-9_.-]+", "_", value)
+    return value if value[:1].isalnum() or value.startswith("_") else f"X_{value}"
 
 
 def _has_english_display(state: dict) -> bool:
@@ -67,9 +75,9 @@ def _export_cldf_fallback(state: dict, root: Path) -> Path:
     for lexeme in state["lexicon"]:
         mappings = lexeme.get("concept_mappings") or [{"concepticon_id": None, "concept": lexeme.get("concept", lexeme["lexeme_id"])}]
         for j, mapping in enumerate(mappings, 1):
-            pid = mapping.get("concepticon_id") or f"GRAM-{lexeme['lexeme_id']}"
+            pid = mapping.get("concepticon_id") or _cldf_id("GRAM", lexeme["lexeme_id"])
             params.setdefault(pid, {"ID": pid, "Name": _parameter_name(lexeme, mapping, english), "Description": _parameter_description(mapping, english), "ColumnSpec": ""})
-            forms.append({"ID": f"{lexeme['lexeme_id']}-{j}", "Language_ID": "losica", "Parameter_ID": pid, "Form": lexeme.get("orthographic", lexeme["form"].replace(".", "")), "Segments": " ".join(tokenize_surface(lexeme["form"].replace(".", ""), cfg.consonants, cfg.vowels)), "Comment": lexeme["form"], "Source": "Concepticon340" if mapping.get("concepticon_id") else ""})
+            forms.append({"ID": _cldf_id(lexeme["lexeme_id"], j), "Language_ID": "losica", "Parameter_ID": pid, "Form": lexeme.get("orthographic", lexeme["form"].replace(".", "")), "Segments": " ".join(tokenize_surface(lexeme["form"].replace(".", ""), cfg.consonants, cfg.vowels)), "Comment": lexeme["form"], "Source": "Concepticon340" if mapping.get("concepticon_id") else ""})
     _write_csv = lambda name, fields, data: _write_delimited(root / name, fields, data, ",")
     _write_csv("forms.csv", ["ID", "Language_ID", "Parameter_ID", "Form", "Segments", "Comment", "Source"], forms)
     languages = [{"ID": "losica", "Name": state["metadata"]["name"], "Macroarea": "Losica world"}]
@@ -156,10 +164,10 @@ def export_cldf(state: dict, directory: str | Path) -> Path:
     for lexeme in state["lexicon"]:
         mappings = lexeme.get("concept_mappings") or [{"concepticon_id": None, "concept": lexeme.get("concept", lexeme["lexeme_id"])}]
         for j, mapping in enumerate(mappings, 1):
-            pid = mapping.get("concepticon_id") or f"GRAM-{lexeme['lexeme_id']}"
+            pid = mapping.get("concepticon_id") or _cldf_id("GRAM", lexeme["lexeme_id"])
             parameters.setdefault(pid, {"ID": pid, "Name": _parameter_name(lexeme, mapping, english), "Description": _parameter_description(mapping, english)})
             forms.append({
-                "ID": f"{lexeme['lexeme_id']}-{j}", "Language_ID": "losica", "Parameter_ID": pid,
+                "ID": _cldf_id(lexeme["lexeme_id"], j), "Language_ID": "losica", "Parameter_ID": pid,
                 "Form": lexeme.get("orthographic", lexeme["form"].replace(".", "")),
                 "Segments": list(tokenize_surface(lexeme["form"].replace(".", ""), cfg.consonants, cfg.vowels)),
                 "Comment": json.dumps({"lexeme_id": lexeme["lexeme_id"], "phonemic": lexeme["form"], "formation": lexeme["formation"]}, ensure_ascii=False, sort_keys=True),

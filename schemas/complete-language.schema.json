@@ -52,7 +52,7 @@
         ],
         "type": "object"
       },
-      "minItems": 300,
+      "minItems": 128,
       "type": "array"
     },
     "metadata": {

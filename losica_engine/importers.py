@@ -36,6 +36,8 @@ def import_grambank(cldf_dir: str | Path, parameter_ids: set[str] | None = None,
 def import_wals(cldf_dir: str | Path, feature_ids: set[str] | None = None, *, version="2020.4") -> dict:
     root = Path(cldf_dir)
     params = {r["ID"]: {"ID": r["ID"], "Chapter_ID": r.get("Chapter_ID")} for r in _rows(root / "parameters.csv") if feature_ids is None or r["ID"] in feature_ids}
+    codes_path = root / "codes.csv"
+    codes = {r["ID"]: r.get("Name") or r.get("Description") for r in _rows(codes_path)} if codes_path.exists() else {}
     languages = {r["ID"]: r for r in _rows(root / "languages.csv")}
     observations = []
     for r in _rows(root / "values.csv"):
@@ -43,6 +45,7 @@ def import_wals(cldf_dir: str | Path, feature_ids: set[str] | None = None, *, ve
             lang = languages[r["Language_ID"]]
             observations.append({
                 "observation_id": r["ID"], "feature_id": r["Parameter_ID"], "code_id": r.get("Code_ID"),
+                "value": codes.get(r.get("Code_ID")) or r.get("Value"),
                 "source_value": r.get("Value"), "language_id": r["Language_ID"], "family_id": lang.get("Family"),
                 "genus_id": lang.get("Genus"), "macroarea_id": lang.get("Macroarea"), "source_id": r.get("Source"),
             })
@@ -81,6 +84,27 @@ def _zip_rows(path: Path):
 def import_clics(path: str | Path, *, version="1.0", minimum_languages=1) -> dict:
     """Import CLICS through CLDF ID references and multilingual form identity."""
     root = Path(path)
+    if root.is_file():
+        edges = []
+        for row in _rows(root):
+            language_count = int(row.get("Language_Count") or row.get("language_count") or 0)
+            if language_count < minimum_languages:
+                continue
+            edges.append({
+                "edge_id": row.get("ID") or row.get("edge_id"),
+                "source_concepticon_id": row.get("Source_Concept") or row.get("source_concepticon_id"),
+                "target_concepticon_id": row.get("Target_Concept") or row.get("target_concepticon_id"),
+                "form_count": int(row.get("Form_Count") or row.get("form_count") or 0),
+                "variety_count": int(row.get("Variety_Count") or row.get("variety_count") or 0),
+                "language_count": language_count,
+                "family_count": int(row.get("Family_Count") or row.get("family_count") or 0),
+                "family_weight": float(row.get("Family_Weight") or row.get("family_weight") or 0.0),
+            })
+        return {
+            "schema": "losica-clics-edge-import/1", "source": "CLICS4", "version": version,
+            "probe_count": len({value for edge in edges for value in (edge["source_concepticon_id"], edge["target_concepticon_id"])}),
+            "edges": edges,
+        }
     cldf = root / "cldf" if (root / "cldf").is_dir() else root
     concept_path = cldf / "concepts.csv.zip"
     form_path = cldf / "forms.csv.zip"

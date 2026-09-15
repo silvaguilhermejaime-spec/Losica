@@ -267,7 +267,7 @@ def _capability_probes(language: dict) -> list[dict]:
 SOURCE_LEDGER = [
     ("Grambank", "1.0", "joint structural profile evidence"), ("WALS Online", "2020.4", "word-order joint profiles and audits"),
     ("UniMorph", "23 dimensions / 212+ features", "morphological feature vocabulary and paradigm evidence"),
-    ("Concepticon", "3.4.0", "stable semantic-probe identifiers"), ("Concepticon CLICS-derived list", "2018-1105", "network rank and community topology"), ("CLICS3", "3", "cross-family colexification edges"),
+    ("Concepticon", "3.4.0", "stable semantic-probe identifiers"), ("Concepticon CLICS-derived list", "2018-1105", "network rank and community topology"), ("CLICS4", "1.0", "cross-family colexification edges"),
     ("PHOIBLE", "2.0", "distinctive features and inventory audit"), ("Universal Dependencies", "2.18", "dependency relations and construction templates"),
     ("DELPH-IN Grammar Matrix", "external current", "typed-choice/executable-grammar architecture"), ("DELPH-IN Grammary", "2026", "optional construction coverage comparison"),
     ("CLDF", "current", "interoperable export validated with pycldf"), ("QBV", "Greif et al. 2024", "dual-encoder environmental/vocal retrieval contract"),

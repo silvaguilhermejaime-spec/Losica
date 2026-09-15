@@ -58,7 +58,7 @@ def _distribution(cls: str) -> dict:
     }[cls]
 
 
-def _select_concepts(snapshot: dict, scale: str, seed: int) -> list[dict]:
+def _select_concepts(snapshot: dict, scale: str, seed: int = 19020) -> list[dict]:
     """Compatibility view of the structural probe selection."""
     from .semantic_network import select_probes
     return select_probes(snapshot, concept_target(snapshot, scale), seed)

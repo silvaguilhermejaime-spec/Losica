@@ -34,11 +34,13 @@ def test_multi_atom_numerals_survive_written_surface_analysis():
         assert any(semantic_equivalent(graph, candidate) for candidate in parsed["analyses"])
 
 
-def test_entity_semantics_use_generated_probe_ids():
+def test_entity_semantics_use_generated_region_ids_with_probe_anchors():
     state = generate_complete_language(seed=19020, vocabulary_scale="core")
     plain = entity(_noun_probe(state))
     assert set(plain) == {"type", "number", "modifiers", "possessor", "deixis", "numeral", "quantifier", "concept"}
-    assert plain["concept"].startswith("c:")
+    assert plain["concept"].startswith("sr:")
+    lexeme = next(row for row in state["lexicon"] if row["concept"] == plain["concept"])
+    assert all(mapping["probe_id"].startswith("c:") for mapping in lexeme["concept_mappings"])
 
 
 def test_final_scale_contains_512_seeded_probes_and_capabilities():
