@@ -7,7 +7,7 @@ The bundled snapshot records upstream versions and commit identities. Full datas
 | Grambank | 1.0 | CC-BY 4.0 | imports original parameter/observation IDs and control metadata |
 | WALS Online | 2020.4 | CC-BY 4.0 | imports chapters/features and builds joint order profiles |
 | UniMorph | schema + language datasets | Dataset-specific upstream licenses | imports feature-bundle paradigms |
-| Concepticon | 3.4.0 | CC-BY 4.0; DOI `10.5281/zenodo.21373838` | supplies stable semantic-probe identifiers and downstream display annotations |
+| Concepticon | 3.4.0, commit `918bc44e123952a6ab5733be36c2d463799c23b4` | CC-BY 4.0; DOI `10.5281/zenodo.21373838` | supplies stable semantic-probe identifiers, the bundled 4,033-concept working inventory, and downstream English display annotations |
 | CLICS4 | 1.0 | CC-BY 4.0; DOI `10.5281/zenodo.16900179` | supplies structural colexification evidence through language, parameter, Concepticon-ID, and form relations |
 | PHOIBLE | 2.0 | Data files carry the MIT license; repository code carries GPL-3.0 | supplies distinctive features and inventory counts |
 | Universal Dependencies | 2.18 interface | Treebank-specific licenses | imports CoNLL-U construction templates |
@@ -33,6 +33,12 @@ The bundled snapshot records upstream versions and commit identities. Full datas
 | ConlangCrafter | ACL 2026 Oral | External benchmark/code terms | supplies the completeness comparison boundary |
 
 The compact snapshot contains attributed derived subsets and aggregates selected by `tools/build_empirical_snapshot.py`. Audio examples in `data/` are Losica fixtures. The archive packages adapter code and fixture data; full external audio corpora and learned checkpoints remain separately distributed.
+
+`data/concepticon_inventory_v0_30.json` is a normalized copy of
+`concepticondata/concepticon.tsv` at the pinned commit above. Its recorded source
+SHA-256 is `f96a72b8dc18053098378cee1e18b13ba923d3380340b4164e8a7db415c5d4b8`.
+The working-language form allocator reads numeric Concepticon IDs; it does not
+read English glosses when assigning Losica forms.
 
 ## Publication ledger
 

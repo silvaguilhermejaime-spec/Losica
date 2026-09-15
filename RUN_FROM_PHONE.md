@@ -1,5 +1,18 @@
 # Run Losica from a phone
 
+## Working translator in Termux
+
+```bash
+pkg install python git -y
+git clone https://github.com/silvaguilhermejaime-spec/Losica.git
+cd Losica
+python BUILD_WORKING_LANGUAGE.py --out working-language.json
+python USE_WORKING_LANGUAGE.py translate working-language.json "Can you buy bread for me today?"
+```
+
+For a download without building, open **Actions → Build working Losica → Run
+workflow**, run it, and download `losica-working-language` when it finishes.
+
 ## GitHub Actions
 
 1. Open the repository's **Actions** tab.

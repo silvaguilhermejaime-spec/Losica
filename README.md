@@ -1,4 +1,33 @@
-# Losica Language Generator 0.29.0
+# Losica Language Generator 0.30.0
+
+## Build and use the working language
+
+Losica 0.30 adds a compact usable layer with 4,033 stable semantic IDs from the
+pinned Concepticon 3.4.0 inventory. Every lexical and grammatical form is
+generated from seed `19020`; English glosses are used only by the input/display
+adapter. Losica form assignment reads the seed and numeric semantic IDs.
+
+```bash
+python BUILD_WORKING_LANGUAGE.py --out working-language.json
+python USE_WORKING_LANGUAGE.py translate working-language.json "Can you buy bread for me today?"
+python USE_WORKING_LANGUAGE.py translate working-language.json "It's always been like this"
+python USE_WORKING_LANGUAGE.py lookup working-language.json always
+python USE_WORKING_LANGUAGE.py analyze working-language.json "LOSICA OUTPUT"
+```
+
+The translator emits the source-backed semantic graph, Losica sentence,
+phonemic forms, interlinear token meanings, and exact Concepticon IDs. Unknown
+source words fail instead of receiving invented meanings. The compact grammar
+currently handles ordinary single-clause statements and questions, pronouns,
+patients, recipients/beneficiaries, properties, common time modifiers,
+past/future/perfective, negation, potential mood, and proximal/distal reference.
+It is a controlled semantic translator, not a claim of unrestricted natural-
+language understanding.
+
+On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
+same `losica-working-language` artifact for phone download.
+
+## Causal observation engine
 
 Losica's default engine generates a language from unnamed numeric transducer
 streams, opaque controls, time, and recurrence. It learns multi-step events,
@@ -36,7 +65,7 @@ python ALIGN_LANGUAGE.py language.json build records.json --namespace en --out e
 python ALIGN_LANGUAGE.py language.json external-to-losica en.adapter.json "external sentence"
 ```
 
-`records.json` links descriptions to recording positions, never to meanings:
+`records.json` links descriptions exclusively to recording positions:
 
 ```json
 [
@@ -79,15 +108,17 @@ See `CAUSAL_ARCHITECTURE.md` for the input schema, ordered computation, and
 acceptance gates. The earlier typological generator remains available through
 `GENERATE_LEGACY_LANGUAGE.py` and `FINALIZE_LEGACY_LANGUAGE.py`.
 
-## Run without a local computer
+## Run from a phone
 
 - [Phone instructions](RUN_FROM_PHONE.md)
 - [Google Colab runner](Losica_Colab.ipynb)
 - **Actions → Build Losica → Run workflow** creates a validated downloadable
-  language artifact without installing the engine on the phone.
+  language artifact; the phone only needs a browser.
 - The same workflow publishes `losica-complete-release`, containing the exact
   0.29 engine, generated language, and external-source catalog.
 - **Actions → Build Real-Media Losica → Run workflow** downloads pinned real
   ESC-10 audio and an OpenCV sample video, generates a language from their raw
   signals, and publishes bidirectional alignment results as
   `losica-real-media-demo`.
+- **Actions → Build working Losica → Run workflow** publishes the compact 4,033-
+  concept dictionary and translator state used by `USE_WORKING_LANGUAGE.py`.
