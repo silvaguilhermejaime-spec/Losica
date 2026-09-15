@@ -32,3 +32,11 @@
 - Added compact learned expression signatures with a compositional surface inverse.
 - Added a phone workflow that produces a real-media language and bidirectional alignment report.
 - Added automatic identical-consonant degemination in generated roots and across morpheme boundaries.
+
+# 0.30.0
+
+- Added an offline inventory of all 4,033 concepts in pinned Concepticon 3.4.0.
+- Added deterministic one-to-one Losica forms keyed only by seed and numeric semantic ID.
+- Added generated reference, role, tense, aspect, polarity, mood, question, and deixis markers.
+- Added a compact SOV semantic translator with explicit Concepticon graphs and fail-closed unknown-word behavior.
+- Added reverse token analysis, dictionary lookup, Termux commands, acceptance tests, and a downloadable GitHub Actions artifact.
