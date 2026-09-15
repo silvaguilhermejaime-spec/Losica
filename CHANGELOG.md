@@ -40,3 +40,4 @@
 - Added generated reference, role, tense, aspect, polarity, mood, question, and deixis markers.
 - Added a compact SOV semantic translator with explicit Concepticon graphs and fail-closed unknown-word behavior.
 - Added reverse token analysis, dictionary lookup, Termux commands, acceptance tests, and a downloadable GitHub Actions artifact.
+- Repaired legacy WALS, CLICS, CLDF, schema, provenance, and compatibility checks; continuous verification now runs the complete test suite.

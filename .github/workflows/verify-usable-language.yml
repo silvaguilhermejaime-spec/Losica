@@ -22,12 +22,8 @@ jobs:
           cache: pip
       - name: Install engine
         run: python -m pip install -e ".[test]"
-      - name: Test causal engine, adapter, sources, and degemination
-        run: |
-          python -m pytest -q \
-            tests/test_causal_engine.py \
-            tests/test_external_source_catalog.py \
-            tests/test_v021_generator.py::test_identical_consonants_degeminate_before_cluster_repair
+      - name: Run complete test suite
+        run: python -m pytest -q
       - name: Generate causal language
         run: |
           mkdir -p dist

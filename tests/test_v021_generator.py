@@ -11,7 +11,7 @@ from losica_engine.grammar_v021 import LanguageExecutor, semantic_equivalent
 from losica_engine.lexicon_v021 import VOCABULARY_SCALES, _select_concepts
 from losica_engine.morphophonology import Morpheme, phonemic_from_orthography, realize_morphemes
 from losica_engine.phonology import is_legal_surface, legal_syllables
-from losica_engine.translation import translate
+from losica_engine.translation import _english_index, _normalize_word, translate
 from losica_engine.independence import canonical_linguistic_hash
 from losica_engine.typology import load_snapshot
 
@@ -134,8 +134,8 @@ def test_constituent_order_is_observable_in_realization(language):
 def test_attachment_direction_is_observable_in_morpheme_sequence(language):
     cell = next(x for x in language["paradigms"]["sample_noun"] if x["number"] == "PL" and x["case"] == "ACC")
     ids = [x["morpheme_id"] for x in cell["morpheme_sequence"]]
-    if language["morphology"]["attachment"] == "suffix": assert ids[0].startswith("LEX_")
-    else: assert ids[-1].startswith("LEX_")
+    if language["morphology"]["attachment"] == "suffix": assert ids[0].startswith("lx:")
+    else: assert ids[-1].startswith("lx:")
 
 
 def test_profile_override_metadata_changes_the_executor_output(tmp_path):
@@ -150,18 +150,15 @@ def test_profile_override_metadata_changes_the_executor_output(tmp_path):
     core = ["V" if x["deprel"] == "root" else "S" if x["semantic_role"] == "AGENT" else "O" if x["semantic_role"] == "PATIENT" else "" for x in example["token_details"]]
     assert "".join(core) == "SVO"
     cell = next(x for x in state["paradigms"]["sample_noun"] if x["number"] == "PL" and x["case"] == "ACC")
-    assert cell["morpheme_sequence"][-1]["morpheme_id"].startswith("LEX_")
+    assert cell["morpheme_sequence"][-1]["morpheme_id"].startswith("lx:")
     assert next(x for x in state["profile"]["feature_executions"] if x["property_path"] == "syntax.clause_order")["value"] == "SVO"
 
 
-def test_acoustic_evidence_is_unique_and_bound(language):
-    rows = [x for x in language["lexicon"] if x["formation"] == "empirical_vocal_imitation"]
-    assert rows
-    evidence = rows[0]["provenance"]["acoustic"]
-    keys = [(x["query_wav_sha256"], x["imitation_id"], x["speaker_id"]) for x in evidence["ranking"]]
-    assert len(keys) == len(set(keys))
-    assert all(len(x[0]) == 64 for x in keys)
-    assert evidence["model"]["checkpoint_id"] and evidence["corpus_index"]["identity"]
+def test_acoustic_evidence_enters_through_the_separate_bound_adapter(language):
+    assert all(x["formation"] != "empirical_vocal_imitation" for x in language["lexicon"])
+    integrations = language["external_integrations"]
+    assert "separately distributed" in integrations["full_data_policy"]
+    assert "losica_engine.importers" in integrations["adapter_modules"]
 
 
 def test_allomorph_condition_generalizes_by_phonological_feature(language):
@@ -222,7 +219,13 @@ def test_controlled_translation_is_read_only(language):
     state = copy.deepcopy(language)
     before_count = len(state["lexicon"])
     before_hash = canonical_linguistic_hash(state)
-    result = translate(state, "the person sees the child")
+    index = _english_index(state)
+    def usable(row):
+        label = row.get("display", {}).get("en", "")
+        return label.isalpha() and index.get(_normalize_word(label)) == row["concept"]
+    predicate = next(x for x in state["lexicon"] if x["class"] == "verb" and (x.get("argument_structure") or {}).get("frame_id") == "f:patient2" and usable(x))
+    nouns = [x for x in state["lexicon"] if x["class"] == "noun" and usable(x)]
+    result = translate(state, f"the {nouns[0]['display']['en']} {predicate['display']['en']} the {nouns[1]['display']['en']}")
     assert len(state["lexicon"]) == before_count
     assert canonical_linguistic_hash(state) == before_hash
     assert result["tokens"]
