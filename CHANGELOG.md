@@ -51,3 +51,13 @@
 - Added per-word IPA, stable semantic IDs, fixed syntactic roles, semantic-burden explanations, and source JSON pointers.
 - Added validation against semantic-kernel/Concepticon form collisions and retained the existing three grammatical classes.
 - Added tests for all compact and spoken round trips, null values, category swaps, float rejection, display-label independence, and artifact mutation.
+
+# 0.32.0
+
+- Retired the 22 opaque words that v0.31 assigned to advanced physical quantities.
+- Replaced each quantity word with a reversible prefix expression of reusable atoms and fixed-arity operators.
+- Reused 19 existing Losica forms and added 37 missing general-purpose expression forms rather than 22 database-column labels.
+- Expanded source-only molecules before rendering, keeping shortcuts out of the surface vocabulary.
+- Made the decoder recover and validate the exact quantity syntax tree as well as the evidence, subject, decimal, unit, and model.
+- Added researched decompositions grounded in NSM reductive paraphrase, metrology, JPL orbital terminology, and NASA time/temperature definitions.
+- Reserved every retired v0.31 form against reassignment and added tests for composition, reuse, nested definitions, and grammatical-but-ungrounded trees.

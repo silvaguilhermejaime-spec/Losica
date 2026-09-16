@@ -1,29 +1,35 @@
-# Losica Language Generator 0.31.0
+# Losica Language Generator 0.32.0
 
 ## Build and use the reversible planetary register
 
-Losica 0.31 adds a deliberately small scientific register grounded in the
-`losica-131757842` physical-climate release. It covers 22 scalar claims about
-the star and target planet. Its scope is exclusively physical; culture,
-perception, metaphor, people, biology, and acoustics remain outside the model.
+Losica 0.32 corrects the planetary register introduced in 0.31. The 22
+advanced physical quantities are no longer 22 indivisible words. Each is now a
+prefix expression made from reusable standalone atoms and fixed-arity
+operators, while the quantity ID remains metadata for exact source recovery.
+The register is grounded in the `losica-131757842` physical-climate release.
+Its scope is exclusively physical; culture, perception, metaphor, people,
+biology, and acoustics remain outside the model.
 
-Every claim has the fixed order `CLAIM EVIDENCE SUBJECT QUANTITY NUMBER UNIT
-MODEL END`. The unusual part is useful rather than decorative: `sampled`,
-`derived`, `modeled`, `conditioned`, or `uncertain` must be said first. Exact
-decimal strings, explicit units, and model IDs are recoverable by the decoder.
+Every claim has the order `CLAIM EVIDENCE SUBJECT QUANTITY-EXPRESSION NUMBER
+UNIT MODEL END`; the expression is variable-length but exactly parseable from
+operator arities. `Sampled`, `derived`, `modeled`, `conditioned`, or
+`uncertain` must be said first. Exact expression trees, decimal strings, units,
+model IDs, and source fields are recoverable by the decoder.
 
 ```bash
 python BUILD_PLANETARY_REGISTER.py --out planetary-register.json
+python USE_PLANETARY_REGISTER.py planetary-register.json expression quantity:semimajor_axis
 python USE_PLANETARY_REGISTER.py planetary-register.json say fact:mean_solar_day
 python USE_PLANETARY_REGISTER.py planetary-register.json say fact:mean_solar_day --spoken-numbers
 python USE_PLANETARY_REGISTER.py planetary-register.json analyze "LOSICA CLAIM"
 ```
 
-Compact writing uses one decimal token, so a normal claim is eight tokens. The
-optional spoken form expands each numeric character into a Losica word and
-preserves every digit. Both satisfy `decode(encode(record)) == record`. Every analysis lists
-each word's IPA, stable semantic ID, syntactic role, semantic burden, and exact
-source pointer. See [PLANETARY_REGISTER.md](PLANETARY_REGISTER.md).
+Compact writing uses one decimal token. Claim length varies with the quantity
+tree; the optional spoken form expands each numeric character into a Losica
+word and preserves every digit. Both satisfy `decode(encode(record)) ==
+record`. Every analysis lists each word's IPA, stable semantic ID, operator
+arity, syntactic role, semantic burden, and exact source pointer. See
+[PLANETARY_REGISTER.md](PLANETARY_REGISTER.md).
 
 ## Build the minimal semantic kernel and expand it
 
