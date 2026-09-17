@@ -5,6 +5,8 @@
 - Made unmarked predicates explicitly tenseless and assigned temporal location to time expressions and discourse.
 - Added the Late Pre-Proto-Losica reference grammar, maritime community, three-solar-turn rhythm, and clan organization.
 - Reframed README descriptions as positive capability statements and added a regression check for contrastive negation frames.
+- Added a validated Losican family-history register linking the implemented Proto-Losica transition to documented Komuheft and Tegofarela evidence.
+- Recorded branch-specific reflexes, relative chronology, comparison examples, and explicit gaps in the intermediate-form reconstruction.
 
 # Losica 0.26.0
 
