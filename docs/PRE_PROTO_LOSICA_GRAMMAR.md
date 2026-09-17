@@ -139,7 +139,12 @@ The next audited layer covers:
 3. coordination, complement, relative, conditional, and quotation clauses;
 4. topic, focus, correction, certainty, and turn-taking conventions;
 5. productive compounds and conventional lexical extensions;
-6. ordered changes from Late Pre-Proto-Losica into Proto-Losica.
+6. the remaining lexical evidence for ordered changes from Late
+   Pre-Proto-Losica into Proto-Losica.
 
 Each addition records its synchronic function, source roots, historical path,
 and daughter-language reflexes.
+
+The structural bridge and presently documented daughter correspondences are
+now recorded in [LOSICAN_HISTORICAL_PHONOLOGY.md](LOSICAN_HISTORICAL_PHONOLOGY.md)
+and in the validated `config/family_history.json` evidence register.

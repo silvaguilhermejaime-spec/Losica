@@ -1,0 +1,79 @@
+{
+  "schema": "losica-family-history/1",
+  "split": {
+    "approximate_year": 1036,
+    "parent_stage": "Proto-Losica",
+    "daughter_stages": ["Komuheftic", "Sisengwigwo"]
+  },
+  "proto_reconstruction": {
+    "stage": "Proto-Losica",
+    "status": "provisional",
+    "consonants": ["p", "t", "k", "kʼ", "b", "d", "g", "kʷ", "gʷ", "ts", "β", "m", "n", "l", "r", "j", "w"],
+    "vowels": ["i", "e", "a", "o", "u"]
+  },
+  "branches": [
+    {
+      "id": "komuheftic",
+      "ancestor": "Komuheftic",
+      "descendant": "Komuheft",
+      "inventory": {
+        "consonants": ["p", "t", "k", "g", "kʷ", "m", "n", "ɲ", "ŋ", "f", "θ", "ʃ", "h", "hʷ", "l", "ʎ", "r", "j", "w"],
+        "vowels": ["i", "e", "a", "o", "u"]
+      },
+      "rules": [
+        {"id": "K01", "chain": ["p", "ɸ", "f"], "environment": "all documented positions", "chronology": "after Proto-Losica", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K02", "chain": ["t", "θ"], "environment": "all documented positions", "chronology": "after Proto-Losica", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K03", "chain": ["k", "x", "h"], "environment": "outside intervocalic position", "chronology": "before voiced-stop devoicing", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K04", "chain": ["k", "g"], "environment": "between vowels", "chronology": "before voiced-stop devoicing", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K05", "chain": ["b", "p"], "environment": "all documented positions", "chronology": "after voiceless-stop frication", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K06", "chain": ["d", "t"], "environment": "all documented positions", "chronology": "after voiceless-stop frication", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K07", "chain": ["g", "k"], "environment": "all inherited positions", "chronology": "after voiceless-stop frication", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K08", "chain": ["gʷ", "kʷ"], "environment": "all inherited positions", "chronology": "after inherited kʷ became hʷ", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K09", "chain": ["kʼ", "k"], "environment": "all documented positions", "chronology": "after voiced-stop devoicing", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K10", "chain": ["ts", "s", "h", "∅"], "environment": "all documented positions", "chronology": "before new h arose from k", "source_section": "Komuheft > Africadas e sibilantes", "status": "documented"},
+        {"id": "K11", "chain": ["kʷ", "xʷ", "hʷ"], "environment": "except the separately documented pre-e path", "chronology": "before new kʷ arose from gʷ", "source_section": "Komuheft > Oclusivas e fricativas", "status": "documented"},
+        {"id": "K12", "chain": ["kʷe", "tʃe", "ʃe"], "environment": "before e", "chronology": "before new kʷ arose from gʷ", "source_section": "Komuheft > Africadas e sibilantes", "status": "documented"},
+        {"id": "K13", "chain": ["β", "v", "u"], "environment": "all documented positions; u may later become nonsyllabic", "chronology": "after Proto-Losica", "source_section": "Komuheft > Aproximantes", "status": "documented"},
+        {"id": "K14", "chain": ["n", "nʲ", "ɲ"], "environment": "before i or j", "chronology": "before loss or alteration of some conditioning segments", "source_section": "Komuheft > Nasais", "status": "documented"},
+        {"id": "K15", "chain": ["l", "lʲ", "ʎ"], "environment": "before i or j", "chronology": "after Proto-Losica", "source_section": "Komuheft > Laterais", "status": "documented"}
+      ],
+      "examples": {
+        "igwara": ["igwara", "ikwara", "ipwara", "ibwara", "iβwara", "ivwara", "iuwara", "iwwara"]
+      }
+    },
+    {
+      "id": "sisengwigwo",
+      "ancestor": "Sisengwigwo",
+      "descendant": "Tegofarela",
+      "inventory": {
+        "consonants": ["p", "b", "t", "d", "k", "g", "ʔ", "m", "n", "ɲ", "ŋ", "s", "ɕ", "h", "l", "ʎ", "ɾ", "ʋ", "j", "ɥ", "ɰ", "w"],
+        "vowels": ["i", "ɨ", "ʉ̟", "e̞", "o̞", "ɛ", "ɔ", "ɑ̟"]
+      },
+      "rules": [
+        {"id": "S01", "chain": ["kʷ", "fʷ", "f", "p"], "environment": "all documented positions", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Consoantes", "status": "documented"},
+        {"id": "S02", "chain": ["kʼ", "ʔ"], "environment": "all documented positions", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Consoantes", "status": "documented"},
+        {"id": "S03", "chain": ["ts", "s", "h"], "environment": "all documented positions", "chronology": "before modern s was reintroduced", "source_section": "Tegofarela > Consoantes", "status": "documented"},
+        {"id": "S04", "chain": ["g", "ɣ̞", "ɰ"], "environment": "between vowels", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Vogais", "status": "documented"},
+        {"id": "S05", "chain": ["gʷ", "vʷ", "ʋ"], "environment": "consonantal reflex", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Vogais", "status": "documented"},
+        {"id": "S06", "chain": ["gʷ", "ɣ̞ʷ", "ɰʷ", "ɯʷ", "ʉ", "ʉ̟"], "environment": "vocalized reflex", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Vogais", "status": "documented"},
+        {"id": "S07", "chain": ["β#", "μ"], "environment": "word-finally", "chronology": "before modern compensatory lengthening", "source_section": "Tegofarela > Alongamento compensatório", "status": "documented"},
+        {"id": "S08", "chain": ["t#", "μ"], "environment": "word-finally", "chronology": "before modern compensatory lengthening", "source_section": "Tegofarela > Alongamento compensatório", "status": "documented"},
+        {"id": "S09", "chain": ["k#", "μ"], "environment": "word-finally", "chronology": "before modern compensatory lengthening", "source_section": "Tegofarela > Alongamento compensatório", "status": "documented"},
+        {"id": "S10", "chain": ["r", "μ"], "environment": "intervocalically in affected simple roots", "chronology": "before modern compensatory lengthening", "source_section": "Tegofarela > Róticos", "status": "documented"},
+        {"id": "S11", "chain": ["r", "ɹ", "j"], "environment": "intervocalically in morphologically extended forms", "chronology": "after the simple-root deletion window", "source_section": "Tegofarela > Róticos", "status": "documented"},
+        {"id": "S12", "chain": ["ip", "iβ̞", "ɨ"], "environment": "grouping and concentration derivational affix", "chronology": "after Proto-Losica", "source_section": "Tegofarela > Vogais", "status": "documented"}
+      ],
+      "examples": {
+        "igwara_simple": ["igwara", "iʋara", "iʋaːa"],
+        "igwaramira_extended": ["igwaramira", "iʋaramira", "iʋajamija"]
+      }
+    }
+  ],
+  "unresolved": [
+    "The absolute dates of individual branch sound changes are not yet established.",
+    "The Komuheftic and Sisengwigwo intermediate inventories are not yet independently reconstructed.",
+    "The conditioning of the two Tegofarela reflexes of Proto-Losica gʷ remains to be specified.",
+    "Modern daughter inventories do not by themselves prove retention of every unmentioned Proto-Losica segment.",
+    "Additional cognate sets are required before the provisional Proto-Losica inventory can be promoted to established."
+  ]
+}

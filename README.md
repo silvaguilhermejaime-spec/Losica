@@ -101,6 +101,14 @@ wake-sleep cycle, mobile clans, spatial system, and the boundary between the
 canonical grammar and the legacy agglutinative generator. See
 [PRE_PROTO_LOSICA_GRAMMAR.md](docs/PRE_PROTO_LOSICA_GRAMMAR.md).
 
+The historical bridge into Proto-Losica and the separately evidenced
+Komuheftic and Sisengwigwo developments are documented in
+[LOSICAN_HISTORICAL_PHONOLOGY.md](docs/LOSICAN_HISTORICAL_PHONOLOGY.md). The
+correspondence claims also have a validated machine-readable register at
+`config/family_history.json`; uncertain intermediate reconstructions remain
+explicitly marked, and modern inventories serve as evidence requiring separate
+correspondence support.
+
 On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
 same `losica-working-language` artifact for phone download.
 
