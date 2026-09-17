@@ -1,3 +1,11 @@
+# 0.33.0 (unreleased)
+
+- Defined Late Pre-Proto-Losica as the canonical first Losican stage ending around c. 800.
+- Reclassified `tam` from general future tense to the prospective aspect marker `PROSP` while preserving its surface form.
+- Made unmarked predicates explicitly tenseless and assigned temporal location to time expressions and discourse.
+- Added the Late Pre-Proto-Losica reference grammar, maritime community, three-solar-turn rhythm, and clan organization.
+- Reframed README descriptions as positive capability statements and added a regression check for contrastive negation frames.
+
 # Losica 0.26.0
 
 - Lexical semantics are generated as internal `sr:*` regions over structural multilingual colexification evidence.
