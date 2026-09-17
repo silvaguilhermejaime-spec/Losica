@@ -1,0 +1,146 @@
+{
+  "schema": "losica-comparative-lexicon/1",
+  "sources": [
+    {
+      "id": "komuheft",
+      "title": "Komuheft phonology",
+      "language": "Komuheft",
+      "file": "komuheft.md",
+      "scope": "Supplied phonological description with three full historical derivations."
+    },
+    {
+      "id": "tegofarela",
+      "title": "Tegofarela phonology",
+      "language": "Tegofarela",
+      "file": "tegofarela.md",
+      "scope": "Supplied phonological description with simple and extended igwara derivations."
+    }
+  ],
+  "entries": [
+    {
+      "id": "CG0001",
+      "reconstruction": {"form": "igwara", "stage": "Proto-Losica", "status": "provisional_mapping"},
+      "gloss": null,
+      "semantic_status": "unresolved",
+      "morphology": "simple root",
+      "related_to": null,
+      "coverage": "complete",
+      "attestations": {
+        "komuheftic": {
+          "status": "attested",
+          "source_id": "komuheft",
+          "source_section": "Desenvolvimentos históricos > *igwara",
+          "chain": [
+            {"form": "igwara", "notation": "reconstructed"},
+            {"form": "ikwara", "notation": "reconstructed"},
+            {"form": "ipwara", "notation": "reconstructed"},
+            {"form": "ibwara", "notation": "reconstructed"},
+            {"form": "iβwara", "notation": "reconstructed"},
+            {"form": "ivwara", "notation": "reconstructed"},
+            {"form": "iuwara", "notation": "reconstructed"},
+            {"form": "iwwara", "notation": "reconstructed"},
+            {"form": "iwwara", "notation": "phonemic"},
+            {"form": "iwːara", "notation": "phonetic"}
+          ]
+        },
+        "sisengwigwo": {
+          "status": "attested",
+          "source_id": "tegofarela",
+          "source_section": "Róticos",
+          "chain": [
+            {"form": "igwara", "notation": "reconstructed"},
+            {"form": "iʋara", "notation": "reconstructed"},
+            {"form": "iʋaːa", "notation": "phonemic"},
+            {"form": "ivaaa", "notation": "orthographic"}
+          ]
+        }
+      },
+      "notes": [
+        "This is the only presently supplied form with outcomes in both daughter descriptions.",
+        "The source documents do not provide a gloss."
+      ]
+    },
+    {
+      "id": "CG0002",
+      "reconstruction": {"form": "Kwaratsiβ", "stage": "Proto-Losica", "status": "provisional_mapping"},
+      "gloss": null,
+      "semantic_status": "unresolved",
+      "morphology": "unspecified lexical form",
+      "related_to": null,
+      "coverage": "partial",
+      "attestations": {
+        "komuheftic": {
+          "status": "attested",
+          "source_id": "komuheft",
+          "source_section": "Desenvolvimentos históricos > *Kwaratsiβ",
+          "chain": [
+            {"form": "Kwaratsiβ", "notation": "reconstructed"},
+            {"form": "Hwaraiβ", "notation": "reconstructed"},
+            {"form": "hwaraiβi", "notation": "reconstructed"},
+            {"form": "hwaraivi", "notation": "reconstructed"},
+            {"form": "waraivi", "notation": "reconstructed"},
+            {"form": "waraiui", "notation": "reconstructed"},
+            {"form": "waraiwi", "notation": "reconstructed"},
+            {"form": "warajwi", "notation": "phonemic"}
+          ]
+        },
+        "sisengwigwo": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []}
+      },
+      "notes": ["No Tegofarela reflex or gloss is supplied."]
+    },
+    {
+      "id": "CG0003",
+      "reconstruction": {"form": "Atsaokwo", "stage": "Proto-Losica", "status": "provisional_mapping"},
+      "gloss": null,
+      "semantic_status": "unresolved",
+      "morphology": "unspecified lexical form",
+      "related_to": null,
+      "coverage": "partial",
+      "attestations": {
+        "komuheftic": {
+          "status": "attested",
+          "source_id": "komuheft",
+          "source_section": "Desenvolvimentos históricos > *Atsaokwo",
+          "chain": [
+            {"form": "Atsaokwo", "notation": "reconstructed"},
+            {"form": "(a)aokwe", "notation": "reconstructed"},
+            {"form": "(a)aotʃe", "notation": "reconstructed"},
+            {"form": "(a)oʃe", "notation": "phonemic"}
+          ]
+        },
+        "sisengwigwo": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []}
+      },
+      "notes": [
+        "Parentheses are preserved exactly from the supplied Komuheft derivation.",
+        "No Tegofarela reflex or gloss is supplied."
+      ]
+    },
+    {
+      "id": "CG0004",
+      "reconstruction": {"form": "igwaramira", "stage": "Proto-Losica", "status": "provisional_mapping"},
+      "gloss": null,
+      "semantic_status": "unresolved",
+      "morphology": "morphologically extended form",
+      "related_to": "CG0001",
+      "coverage": "partial",
+      "attestations": {
+        "komuheftic": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []},
+        "sisengwigwo": {
+          "status": "attested",
+          "source_id": "tegofarela",
+          "source_section": "Róticos",
+          "chain": [
+            {"form": "igwaramira", "notation": "reconstructed"},
+            {"form": "iʋaramira", "notation": "reconstructed"},
+            {"form": "iʋajamija", "notation": "phonemic"},
+            {"form": "ivajamija", "notation": "orthographic"}
+          ]
+        }
+      },
+      "notes": [
+        "The source presents this form as the morphologically extended counterpart to the simple igwara root.",
+        "No Komuheft reflex or gloss is supplied."
+      ]
+    }
+  ]
+}

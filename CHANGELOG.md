@@ -7,6 +7,8 @@
 - Reframed README descriptions as positive capability statements and added a regression check for contrastive negation frames.
 - Added a validated Losican family-history register linking the implemented Proto-Losica transition to documented Komuheft and Tegofarela evidence.
 - Recorded branch-specific reflexes, relative chronology, comparison examples, and explicit gaps in the intermediate-form reconstruction.
+- Added the first evidence-bounded Losican comparative lexicon, covering all four lexical derivations supplied in the Komuheft and Tegofarela descriptions.
+- Distinguished complete comparisons, partial branch evidence, notation levels, unresolved meanings, and provisional Proto-stage assignments in validated data.
 
 # Losica 0.26.0
 
