@@ -76,8 +76,12 @@ def test_unknown_source_word_fails_instead_of_inventing_a_meaning(language):
 
 
 def test_common_tense_and_copular_patterns(language):
-    future = translate(language, "I will buy bread")
-    assert "tam:fut" in future["semantic_graph"]["features"]
+    prospective = translate(language, "I will buy bread")
+    assert "asp:pros" in prospective["semantic_graph"]["features"]
+    marker = next(row for row in language["markers"] if row["semantic_id"] == "asp:pros")
+    assert marker["orthographic"] == "tam"
+    assert all(row["semantic_id"] != "tam:fut" for row in language["markers"])
+    assert language["grammar"]["temporal_interpretation"].startswith("unmarked predicates are tenseless")
     past = translate(language, "I bought bread")
     assert "tam:pst" in past["semantic_graph"]["features"]
     copular = translate(language, "It is big")

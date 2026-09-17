@@ -37,7 +37,7 @@ MARKER_SPECS = (
     ("role:dat", "role", "recipient or beneficiary"),
     ("role:loc", "role", "location or time"),
     ("tam:pst", "tense", "past"),
-    ("tam:fut", "tense", "future"),
+    ("asp:pros", "aspect", "prospective: approaching, intended, or expected event"),
     ("asp:pfv", "aspect", "perfective or completed"),
     ("pol:neg", "polarity", "negative"),
     ("mood:pot", "mood", "potential or ability"),
@@ -180,7 +180,8 @@ def build_working_language(*, inventory_path=DEFAULT_INVENTORY, phonology_path=D
         "grammar": {
             "clause_order": "SOV",
             "roles": ["AGENT", "PATIENT", "RECIPIENT", "BENEFICIARY", "TIME", "ATTRIBUTE"],
-            "features": ["PST", "FUT", "PFV", "NEG", "POT", "Q", "PROX", "DIST"],
+            "features": ["PST", "PROSP", "PFV", "NEG", "POT", "Q", "PROX", "DIST"],
+            "temporal_interpretation": "unmarked predicates are tenseless; time words and discourse establish event time",
             "sources": ["Universal Dependencies 2.18", "UniMorph feature inventory"],
         },
         "markers": markers,
@@ -275,7 +276,7 @@ def parse_english(language: dict, text: str) -> dict:
     if "not" in words:
         features.append("pol:neg")
     if "will" in words:
-        features.append("tam:fut")
+        features.append("asp:pros")
     if any(word in PAST_FORMS or (word.endswith("ed") and len(word) > 4) for word in words):
         features.append("tam:pst")
     if any(word in {"has", "have", "had", "been"} for word in words):

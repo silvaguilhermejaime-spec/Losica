@@ -2,10 +2,9 @@
 
 ## Build and use the reversible planetary register
 
-Losica 0.32 corrects the planetary register introduced in 0.31. The 22
-advanced physical quantities are no longer 22 indivisible words. Each is now a
-prefix expression made from reusable standalone atoms and fixed-arity
-operators, while the quantity ID remains metadata for exact source recovery.
+Losica 0.32 represents each of the 22 advanced physical quantities as a prefix
+expression made from reusable standalone atoms and fixed-arity operators. The
+quantity ID remains metadata for exact source recovery.
 The register is grounded in the `losica-131757842` physical-climate release.
 Its scope is exclusively physical; culture, perception, metaphor, people,
 biology, and acoustics remain outside the model.
@@ -36,8 +35,8 @@ arity, syntactic role, semantic burden, and exact source pointer. See
 Losica can now build a deterministic 69-form semantic kernel: the 65 meanings
 in the 2022 condensed Natural Semantic Metalanguage inventory plus four overt
 structural forms for patient, recipient/beneficiary, location/time, and
-questions.  NSM is recorded in the artifact as a research proposal rather than
-as a proved universal minimum.
+questions. The artifact records NSM with research-proposal status and reserves
+universal-minimum status for future evidence.
 
 All semantic meanings use one category-neutral `root` class. Reference,
 predicate, entity-modifier, and event-modifier behavior comes from construction
@@ -56,11 +55,12 @@ Build the kernel and expand it with all 4,033 pinned Concepticon concepts:
 python BUILD_SEMANTIC_LANGUAGE.py --out semantic-language.json
 ```
 
-Concepticon provides definitions and identifiers rather than verified NSM
-decompositions for these concepts. The expanded entries are therefore labelled
-`lexicalized_source_concept` with `prime_decomposition: not_asserted`. Losica
-creates a prime analysis only when backed by a cited source; English glosses
-remain display-only. Forms depend only on the seed and stable semantic IDs.
+Concepticon provides definitions and identifiers for these concepts. Verified
+NSM decompositions come from separately cited analyses. Expanded entries carry
+the machine labels `lexicalized_source_concept` and
+`prime_decomposition: not_asserted`; the second label records the current
+evidence state. Cited sources license each prime analysis. English glosses serve
+display, while the seed and stable semantic IDs determine forms.
 
 ## Build and use the working language
 
@@ -79,12 +79,27 @@ python USE_WORKING_LANGUAGE.py analyze working-language.json "LOSICA OUTPUT"
 
 The translator emits the source-backed semantic graph, Losica sentence,
 phonemic forms, interlinear token meanings, and exact Concepticon IDs. Unknown
-source words fail instead of receiving invented meanings. The compact grammar
+source words produce an explicit lookup error. The compact grammar
 currently handles ordinary single-clause statements and questions, pronouns,
 patients, recipients/beneficiaries, properties, common time modifiers,
-past/future/perfective, negation, potential mood, and proximal/distal reference.
-It is a controlled semantic translator, not a claim of unrestricted natural-
-language understanding.
+past/prospective/perfective, negation, potential mood, and proximal/distal reference.
+Its supported domain is controlled semantic translation for these constructions.
+
+## Late Pre-Proto-Losica grammar
+
+The canonical historical stage is Late Pre-Proto-Losica, an undated first
+Losican language ending around c. 800. It is predominantly isolating, uses SOV
+clauses and postpositions, and builds compounds in modifier-head order. Free
+particles express roles, aspect, mood, polarity, deixis, and questions.
+
+Unmarked predicates are tenseless. The particle `tam` retains its established
+surface form and marks the prospective: an approaching, intended, planned, or
+expected event. Time expressions and discourse locate events independently.
+
+The reference grammar also records the maritime homeland, three-solar-turn
+wake-sleep cycle, mobile clans, spatial system, and the boundary between the
+canonical grammar and the legacy agglutinative generator. See
+[PRE_PROTO_LOSICA_GRAMMAR.md](docs/PRE_PROTO_LOSICA_GRAMMAR.md).
 
 On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
 same `losica-working-language` artifact for phone download.
@@ -143,8 +158,8 @@ The adapter derives overlapping `ev:*` records and their `sr:*` regions. Repeate
 descriptions train reusable one-to-four-word links. Translation requires either
 an exact aligned record or at least 80% learned token coverage.
 
-`--stream PATH` accepts a strict `losica-causal-stream/1` file. With no stream,
-the command uses a deterministic numeric fixture for installation tests.
+`--stream PATH` accepts a strict `losica-causal-stream/1` file. Omitting the
+option selects a deterministic numeric fixture for installation tests.
 
 Generate from real audio or video, while keeping external wording outside the
 causal generator:
@@ -154,12 +169,12 @@ python GENERATE_REAL_LANGUAGE.py media/manifest.json --out-dir dist/real-media
 ```
 
 `losica_engine.media_stream` extracts fixed label-free acoustic and visual
-measurements. An optional external catalog is joined afterward by recording ID
-and time range. Changing every annotation leaves the causal stream byte-identical.
+measurements. An optional external catalog joins afterward by recording ID and
+time range. The causal stream stays byte-identical across annotation changes.
 For broader surface-form coverage, install `.[nlp]`, download the required Stanza
 model once on the build machine, and add `--external-parser stanza`. Only the
 observed analysis and an ambiguity-filtered surface-to-lemma table enter the
-adapter; neither Stanza nor its model is required when translating on a phone.
+adapter. Phone translation uses the resulting adapter artifact.
 
 `external_sources/build_catalog.py --include-egocom` adds 24,334 utterances
 reconstructed exactly from EgoCom's timestamped human word stream. After the
