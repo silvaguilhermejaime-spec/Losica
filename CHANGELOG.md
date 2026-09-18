@@ -11,6 +11,10 @@
 - Distinguished source coverage, notation levels, meanings not supplied by the sources, and provisional Proto-stage assignments in validated data.
 - Added validated intermediate-lineage constraints for Komuheftic and Sisengwigwo, with every required segment linked to rule or worked-example evidence.
 - Kept simultaneous intermediate inventories and absolute rule dates unresolved while recording the exact Proto segments that current evidence leaves unconstrained.
+- Recorded documented `muto` as Pre-Proto `mutu` through the general incoming-form adaptation `o > u`.
+- Limited the reference inventory to documented `mutu`; other generated reference words were removed.
+- Kept possession, kin-relation syntax, clan exogamy, childcare organization, and derived clan-kin vocabulary unresolved.
+- Recorded matrilineal clan membership as the sole established clan principle in this layer.
 
 # Losica 0.26.0
 

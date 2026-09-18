@@ -64,15 +64,16 @@ display, while the seed and stable semantic IDs determine forms.
 
 ## Build and use the working language
 
-Losica 0.30 added a compact usable layer with 4,033 stable semantic IDs from the
-pinned Concepticon 3.4.0 inventory. Every lexical and grammatical form is
-generated from seed `19020`; English glosses are used only by the input/display
-adapter. Losica form assignment reads the seed and numeric semantic IDs.
+Losica 0.30 added a compact usable layer sourced from the pinned Concepticon
+3.4.0 inventory. Reference concepts receive forms only when a Pre-Proto root is
+documented; the current documented form is `mutu`. Other lexical and
+grammatical forms in the working layer use seed `19020`; English glosses are
+used only by the input/display adapter.
 
 ```bash
 python BUILD_WORKING_LANGUAGE.py --out working-language.json
-python USE_WORKING_LANGUAGE.py translate working-language.json "Can you buy bread for me today?"
-python USE_WORKING_LANGUAGE.py translate working-language.json "It's always been like this"
+python USE_WORKING_LANGUAGE.py translate working-language.json "Can I buy bread today?"
+python USE_WORKING_LANGUAGE.py translate working-language.json "Bread has always been like this"
 python USE_WORKING_LANGUAGE.py lookup working-language.json always
 python USE_WORKING_LANGUAGE.py analyze working-language.json "LOSICA OUTPUT"
 ```
@@ -80,7 +81,7 @@ python USE_WORKING_LANGUAGE.py analyze working-language.json "LOSICA OUTPUT"
 The translator emits the source-backed semantic graph, Losica sentence,
 phonemic forms, interlinear token meanings, and exact Concepticon IDs. Unknown
 source words produce an explicit lookup error. The compact grammar
-currently handles ordinary single-clause statements and questions, pronouns,
+currently handles ordinary single-clause statements and questions, documented `mutu`,
 patients, recipients/beneficiaries, properties, common time modifiers,
 past/prospective/perfective, negation, potential mood, and proximal/distal reference.
 Its supported domain is controlled semantic translation for these constructions.
@@ -100,6 +101,9 @@ The reference grammar also records the maritime homeland, three-solar-turn
 wake-sleep cycle, mobile clans, spatial system, and the boundary between the
 canonical grammar and the legacy agglutinative generator. See
 [PRE_PROTO_LOSICA_GRAMMAR.md](docs/PRE_PROTO_LOSICA_GRAMMAR.md).
+Its executable reference layer includes documented `mutu`, adapted from `muto`
+by general `o > u`. Possession, kin-relation syntax, and derived clan-kin terms
+remain unresolved; matrilineal clan membership is established.
 
 The historical bridge into Proto-Losica and the separately evidenced
 Komuheftic and Sisengwigwo developments are documented in

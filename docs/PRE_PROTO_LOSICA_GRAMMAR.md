@@ -37,10 +37,9 @@ boats form their cumulative technology. Bands follow seasonal circuits among
 recurring camps. Fresh water, sheltered coves, stone sources, and crossings
 give each camp a stable social identity.
 
-Named exogamous clans link multiple bands. Descent is matrilineal; children
-receive their mother's clan. Partnership residence is flexible, childcare is
-communal, and clans organize kinship and partner exchange. Political authority
-is situational at band scale.
+Named clans link multiple bands. Clan membership is matrilineal: children
+receive their mother's clan. Partnership rules and childcare organization are
+unresolved. Political authority is situational at band scale.
 
 Neighbouring bands meet regularly for companionship, partner exchange,
 toolstone exchange, shared activity, and route information. This network forms
@@ -56,9 +55,8 @@ irregular root pending comparative evidence.
 ## Morphological profile
 
 Late Pre-Proto-Losica is predominantly isolating. Roots and grammatical
-particles are invariant free forms. Productive compounding follows
-modifier-head order. Frequent compounds may become single phonological words;
-their junctions trigger the documented epenthesis and later sound changes.
+particles are invariant free forms. The productive status and ordering of
+compounding remain unresolved.
 
 The older `config/language_profile.json` drives the legacy typological
 generator. It describes a later agglutinative design space. This reference
@@ -66,12 +64,6 @@ grammar governs the historical Losican stage represented by the working
 language.
 
 ## Nominal phrases
-
-Nominal dependents precede their heads:
-
-```text
-possessor - demonstrative - numeral - property - noun
-```
 
 Number is expressed when discourse requires it. Independent particles mark a
 patient, recipient or beneficiary, and spatial or temporal ground:
@@ -84,10 +76,21 @@ patient, recipient or beneficiary, and spatial or temporal ground:
 | `ruk` | proximal deixis |
 | `ut` | distal deixis |
 
-Possession uses possessor-noun order. Kin expressions identify a relation and
-the relevant person or clan. The clan system supports dedicated roots for
-mother's clan, clan peer, eligible partner group, and communal caregiver during
-the audited ordinary-root phase.
+### Reference, possession, and clan evidence
+
+The documented source form `muto` denotes the current utterance source. Because
+Pre-Proto Losica has no `/o/`, the general adaptation of documented incoming
+forms maps `o` to `u`; the Pre-Proto form is therefore `mutu`. It may occur as
+an ordinary referring expression, including in the position occupied by a
+person's name.
+
+No other reference word is presently documented. English reference words in
+the input language therefore receive no invented Pre-Proto forms.
+
+The internal structure of nominal possession and kin expressions remains
+unresolved. Matrilineal clan membership is established. Clan exogamy,
+childcare organization, and derived clan-kin vocabulary remain unresolved.
+Vocabulary admission is limited to existing documented roots.
 
 ## Clause structure
 
@@ -135,11 +138,10 @@ transition to Proto-Losica.
 The next audited layer covers:
 
 1. a 1,000-1,500-root Late Pre-Proto active inventory;
-2. possession and clan-kin constructions;
-3. coordination, complement, relative, conditional, and quotation clauses;
-4. topic, focus, correction, certainty, and turn-taking conventions;
-5. productive compounds and conventional lexical extensions;
-6. the remaining lexical evidence for ordered changes from Late
+2. coordination, complement, relative, conditional, and quotation clauses;
+3. topic, focus, correction, certainty, and turn-taking conventions;
+4. additional productive compounds and conventional lexical extensions;
+5. the remaining lexical evidence for ordered changes from Late
    Pre-Proto-Losica into Proto-Losica.
 
 Each addition records its synchronic function, source roots, historical path,

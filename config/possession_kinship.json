@@ -1,0 +1,34 @@
+{
+  "schema": "losica-possession-kinship/2",
+  "stage": "Pre-Proto-Losica",
+  "status": "evidence_boundary",
+  "documented_reference_forms": [
+    {
+      "semantic_id": "ref:utterer",
+      "source_form": "muto",
+      "form": "mutu",
+      "meaning": "current utterance source",
+      "distribution_status": "ordinary_referring_expression",
+      "adaptation": {
+        "input": "o",
+        "output": "u",
+        "scope": "every documented form entering Pre-Proto-Losica"
+      }
+    }
+  ],
+  "nominal_possession": {
+    "status": "unresolved"
+  },
+  "kin_relation_syntax": {
+    "status": "unresolved"
+  },
+  "social_principles": {
+    "matrilineal_clan_membership": "established",
+    "clan_exogamy": "unresolved",
+    "communal_childcare": "unresolved"
+  },
+  "vocabulary_policy": {
+    "authorization": "existing_documented_roots_only",
+    "derived_clan_kin_terms": "unresolved"
+  }
+}
