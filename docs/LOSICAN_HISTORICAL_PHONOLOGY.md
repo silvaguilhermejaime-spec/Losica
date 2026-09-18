@@ -153,3 +153,7 @@ The current evidence does **not** yet establish:
 New historical claims should be added only when they name a source section,
 state an environment, distinguish phonemic from phonetic outcomes, and avoid
 using a modern inventory as proof of an undocumented retention.
+
+The attested lexical derivations are indexed separately in
+[LOSICAN_COMPARATIVE_LEXICON.md](LOSICAN_COMPARATIVE_LEXICON.md) and the
+validated `data/losican_cognates.json` register.

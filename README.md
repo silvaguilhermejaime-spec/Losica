@@ -109,6 +109,12 @@ correspondence claims also have a validated machine-readable register at
 explicitly marked, and modern inventories serve as evidence requiring separate
 correspondence support.
 
+The initial [comparative lexicon](docs/LOSICAN_COMPARATIVE_LEXICON.md) indexes
+every explicit lexical derivation in the supplied Komuheft and Tegofarela
+descriptions. Its validated register distinguishes the sole two-branch
+comparison from partial records and keeps every source-unspecified meaning
+unresolved.
+
 On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
 same `losica-working-language` artifact for phone download.
 
