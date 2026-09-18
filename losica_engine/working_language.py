@@ -19,6 +19,7 @@ import unicodedata
 from .config import load_phonology
 from .morphophonology import orthographic_form
 from .phonology import generate_roots, is_legal_surface, legal_syllables
+from .possession_kinship import load_possession_kinship, nominal_sequence
 
 
 SCHEMA = "losica-working-language/1"
@@ -26,13 +27,14 @@ DEFAULT_SEED = 19020
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INVENTORY = ROOT / "data" / "concepticon_inventory_v0_30.json"
 DEFAULT_PHONOLOGY = ROOT / "config" / "preproto.json"
+DEFAULT_POSSESSION_KINSHIP = ROOT / "config" / "possession_kinship.json"
 
 MARKER_SPECS = (
-    ("ref:1sg", "reference", "speaker singular"),
-    ("ref:2sg", "reference", "addressee singular"),
-    ("ref:3sg", "reference", "third person singular"),
-    ("ref:1pl", "reference", "speaker plural"),
-    ("ref:3pl", "reference", "third person plural"),
+    ("ref:utterer", "reference", "current utterance source"),
+    ("ref:interlocutor", "reference", "current utterance target"),
+    ("ref:context", "reference", "contextually identified referent"),
+    ("ref:utterer-set", "reference", "group associated with the current utterance source"),
+    ("ref:context-set", "reference", "contextually identified group"),
     ("role:acc", "role", "patient"),
     ("role:dat", "role", "recipient or beneficiary"),
     ("role:loc", "role", "location or time"),
@@ -47,12 +49,12 @@ MARKER_SPECS = (
 )
 
 PRONOUNS = {
-    "i": "ref:1sg", "me": "ref:1sg", "myself": "ref:1sg",
-    "you": "ref:2sg", "yourself": "ref:2sg",
-    "he": "ref:3sg", "him": "ref:3sg", "she": "ref:3sg", "her": "ref:3sg",
-    "it": "ref:3sg", "itself": "ref:3sg",
-    "we": "ref:1pl", "us": "ref:1pl",
-    "they": "ref:3pl", "them": "ref:3pl",
+    "i": "ref:utterer", "me": "ref:utterer", "myself": "ref:utterer",
+    "you": "ref:interlocutor", "yourself": "ref:interlocutor",
+    "he": "ref:context", "him": "ref:context", "she": "ref:context", "her": "ref:context",
+    "it": "ref:context", "itself": "ref:context",
+    "we": "ref:utterer-set", "us": "ref:utterer-set",
+    "they": "ref:context-set", "them": "ref:context-set",
 }
 
 IRREGULAR = {
@@ -127,12 +129,16 @@ def _form_pools(cfg, seed: int, count: int) -> tuple[list[str], list[str]]:
     return marker_forms, lexical[:count]
 
 
-def build_working_language(*, inventory_path=DEFAULT_INVENTORY, phonology_path=DEFAULT_PHONOLOGY, seed=DEFAULT_SEED) -> dict:
+def build_working_language(
+    *, inventory_path=DEFAULT_INVENTORY, phonology_path=DEFAULT_PHONOLOGY,
+    possession_kinship_path=DEFAULT_POSSESSION_KINSHIP, seed=DEFAULT_SEED,
+) -> dict:
     inventory = json.loads(Path(inventory_path).read_text(encoding="utf-8"))
     if inventory.get("schema") != "losica-semantic-inventory/1":
         raise ValueError("working language requires losica-semantic-inventory/1")
     concepts = sorted(inventory["concepts"], key=lambda row: int(row["concepticon_id"]))
     cfg = load_phonology(phonology_path)
+    possession_kinship = load_possession_kinship(possession_kinship_path, inventory)
     spelling = _orthography(seed, cfg)
     marker_forms, lexical_forms = _form_pools(cfg, seed, len(concepts))
     markers = []
@@ -183,6 +189,20 @@ def build_working_language(*, inventory_path=DEFAULT_INVENTORY, phonology_path=D
             "features": ["PST", "PROSP", "PFV", "NEG", "POT", "Q", "PROX", "DIST"],
             "temporal_interpretation": "unmarked predicates are tenseless; time words and discourse establish event time",
             "sources": ["Universal Dependencies 2.18", "UniMorph feature inventory"],
+            "possession_kinship": {
+                "schema": possession_kinship.schema,
+                "nominal_order": list(possession_kinship.nominal_possession["order"]),
+                "kin_order": list(possession_kinship.kin_relation["order"]),
+                "compounds": {
+                    compound_id: {
+                        "meaning": compound.meaning,
+                        "components": list(compound.components),
+                        "head": compound.head,
+                        "daughter_reflex_status": compound.daughter_reflex_status,
+                    }
+                    for compound_id, compound in possession_kinship.compounds.items()
+                },
+            },
         },
         "markers": markers,
         "lexicon": lexicon,
@@ -388,6 +408,16 @@ def _emit(language: dict, graph: dict) -> list[dict]:
             add("role:acc", role)
         elif role in {"RECIPIENT", "BENEFICIARY"}:
             add("role:dat", role)
+
+    if graph.get("type") in {"nominal_possession", "kin_relation", "clan_kin"}:
+        inventory = {"concepts": [
+            {"concepticon_id": row["semantic_id"].removeprefix("c:")}
+            for row in language["lexicon"]
+        ]}
+        grammar = load_possession_kinship(DEFAULT_POSSESSION_KINSHIP, inventory)
+        for semantic_id, role in nominal_sequence(graph, grammar):
+            add(semantic_id, role)
+        return out
 
     arguments = graph["arguments"]
     for role in ("AGENT", "THEME", "PATIENT", "RECIPIENT", "BENEFICIARY", "ATTRIBUTE"):

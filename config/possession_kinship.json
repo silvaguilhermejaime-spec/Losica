@@ -1,0 +1,55 @@
+{
+  "schema": "losica-possession-kinship/1",
+  "stage": "Late Pre-Proto-Losica",
+  "status": "constructed_internal_grammar",
+  "nominal_possession": {
+    "strategy": "juxtaposition",
+    "order": ["possessor", "head"],
+    "possessor_omission": "discourse_recoverable_only"
+  },
+  "kin_relation": {
+    "order": ["anchor", "relation"],
+    "relation_is_head": true,
+    "anchor_omission": "discourse_recoverable_only"
+  },
+  "social_principles": {
+    "descent": "matrilineal",
+    "clan_membership_source": "mother",
+    "partnership": "clan_exogamous",
+    "childcare": "communal"
+  },
+  "conventional_compounds": [
+    {
+      "id": "mother_clan",
+      "meaning": "mother's clan; the clan inherited through the mother",
+      "components": ["c:1216", "c:302"],
+      "head": "c:302",
+      "historical_path": "productive modifier-head compound; conventional social term",
+      "daughter_reflex_status": "unresolved"
+    },
+    {
+      "id": "clan_peer",
+      "meaning": "person of the same clan; clan peer",
+      "components": ["c:302", "c:1640"],
+      "head": "c:1640",
+      "historical_path": "productive modifier-head compound; conventional social term",
+      "daughter_reflex_status": "unresolved"
+    },
+    {
+      "id": "partner_group",
+      "meaning": "people considered as potential partners under clan exogamy",
+      "components": ["c:2514", "c:789"],
+      "head": "c:789",
+      "historical_path": "productive modifier-head compound; eligibility supplied by clan context",
+      "daughter_reflex_status": "unresolved"
+    },
+    {
+      "id": "communal_caregiver",
+      "meaning": "person who participates in communal childcare",
+      "components": ["c:253", "c:683"],
+      "head": "c:683",
+      "historical_path": "productive modifier-head compound; conventional social role",
+      "daughter_reflex_status": "unresolved"
+    }
+  ]
+}

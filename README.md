@@ -100,6 +100,8 @@ The reference grammar also records the maritime homeland, three-solar-turn
 wake-sleep cycle, mobile clans, spatial system, and the boundary between the
 canonical grammar and the legacy agglutinative generator. See
 [PRE_PROTO_LOSICA_GRAMMAR.md](docs/PRE_PROTO_LOSICA_GRAMMAR.md).
+Its executable nominal layer now includes unmarked possessor-head phrases,
+anchor-relation kin terms, and four culturally grounded clan-kin compounds.
 
 The historical bridge into Proto-Losica and the separately evidenced
 Komuheftic and Sisengwigwo developments are documented in

@@ -89,6 +89,45 @@ the relevant person or clan. The clan system supports dedicated roots for
 mother's clan, clan peer, eligible partner group, and communal caregiver during
 the audited ordinary-root phase.
 
+### Possession and clan-kin constructions
+
+Nominal possession uses juxtaposition: a referring expression precedes the
+possessed head. The referring expression keeps its ordinary meaning; the
+construction supplies the possessive relation. It may be omitted when discourse
+makes its referent recoverable.
+
+Kin expressions use the same head-final logic. The reference person or clan
+(the kin anchor) precedes the relation term, and the relation is the head:
+
+```text
+anchor relation
+utterer-reference mother “the utterer's mother”
+context-reference sibling “the contextually identified person's sibling”
+```
+
+These English renderings describe the complete constructions. They are not
+separate possessive meanings of the reference forms.
+
+The reference inventory is defined by its discourse functions—utterance
+source, utterance target, contextual referent, utterer-associated group, and
+contextual group. Labels from an English person-number or case paradigm belong
+only to the English input adapter and do not define Losica categories.
+
+Four modifier-head compounds conventionalize the social distinctions already
+specified for the community:
+
+| Construction | Composition | Conventional meaning |
+|---|---|---|
+| mother's clan | `mother clan` | clan inherited through the mother |
+| clan peer | `clan sibling` | person of the same clan |
+| partner group | `spouse people` | potential partners under clan exogamy |
+| communal caregiver | `care-for person` | participant in communal childcare |
+
+The partner compound does not independently mean “eligible.” Eligibility comes
+from the exogamous-clan context. These are constructed internal Losica terms,
+not reconstructions from Komuheft or Tegofarela. Their daughter reflexes remain
+unresolved.
+
 ## Clause structure
 
 The ordinary clause template is:
@@ -135,11 +174,10 @@ transition to Proto-Losica.
 The next audited layer covers:
 
 1. a 1,000-1,500-root Late Pre-Proto active inventory;
-2. possession and clan-kin constructions;
-3. coordination, complement, relative, conditional, and quotation clauses;
-4. topic, focus, correction, certainty, and turn-taking conventions;
-5. productive compounds and conventional lexical extensions;
-6. the remaining lexical evidence for ordered changes from Late
+2. coordination, complement, relative, conditional, and quotation clauses;
+3. topic, focus, correction, certainty, and turn-taking conventions;
+4. additional productive compounds and conventional lexical extensions;
+5. the remaining lexical evidence for ordered changes from Late
    Pre-Proto-Losica into Proto-Losica.
 
 Each addition records its synchronic function, source roots, historical path,

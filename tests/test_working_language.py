@@ -28,6 +28,7 @@ def test_full_source_backed_inventory_has_unique_legal_forms(language):
     assert language["semantic_inventory"]["commit"] == "918bc44e123952a6ab5733be36c2d463799c23b4"
     cfg = load_phonology(DEFAULT_PHONOLOGY)
     assert all(is_legal_surface(row["form"], cfg) for row in language["lexicon"])
+    assert language["grammar"]["possession_kinship"]["schema"] == "losica-possession-kinship/1"
 
 
 def test_english_glosses_do_not_control_form_assignment(language, tmp_path):
@@ -58,6 +59,18 @@ def test_buy_bread_sentence_is_compositional_and_source_backed(language):
     assert {"mood:pot", "clause:q"} <= set(ids["features"])
     parsed = analyze(language, result["losica"])
     assert parsed["semantic_sequence"] == [row["semantic_id"] for row in result["tokens"]]
+
+
+def test_reference_system_is_losica_internal_and_english_is_adapter_only(language):
+    references = {row["semantic_id"]: row["meaning"] for row in language["markers"] if row["class"] == "reference"}
+    assert references == {
+        "ref:utterer": "current utterance source",
+        "ref:interlocutor": "current utterance target",
+        "ref:context": "contextually identified referent",
+        "ref:utterer-set": "group associated with the current utterance source",
+        "ref:context-set": "contextually identified group",
+    }
+    assert all(not semantic_id[-3:].endswith(("sg", "pl")) for semantic_id in references)
 
 
 def test_persistent_state_sentence_uses_concepticon_not_invented_labels(language):

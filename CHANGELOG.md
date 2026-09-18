@@ -11,6 +11,9 @@
 - Distinguished source coverage, notation levels, meanings not supplied by the sources, and provisional Proto-stage assignments in validated data.
 - Added validated intermediate-lineage constraints for Komuheftic and Sisengwigwo, with every required segment linked to rule or worked-example evidence.
 - Kept simultaneous intermediate inventories and absolute rule dates unresolved while recording the exact Proto segments that current evidence leaves unconstrained.
+- Added validated possessor-head and anchor-relation nominal constructions for Late Pre-Proto-Losica.
+- Added executable mother-clan, clan-peer, partner-group, and communal-caregiver compounds with unresolved daughter reflexes.
+- Defined reference forms by Losica discourse functions rather than importing an English person-number paradigm into the grammar.
 
 # Losica 0.26.0
 
