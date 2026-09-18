@@ -37,10 +37,9 @@ boats form their cumulative technology. Bands follow seasonal circuits among
 recurring camps. Fresh water, sheltered coves, stone sources, and crossings
 give each camp a stable social identity.
 
-Named exogamous clans link multiple bands. Descent is matrilineal; children
-receive their mother's clan. Partnership residence is flexible, childcare is
-communal, and clans organize kinship and partner exchange. Political authority
-is situational at band scale.
+Named clans link multiple bands. Clan membership is matrilineal: children
+receive their mother's clan. Partnership rules and childcare organization are
+unresolved. Political authority is situational at band scale.
 
 Neighbouring bands meet regularly for companionship, partner exchange,
 toolstone exchange, shared activity, and route information. This network forms
@@ -56,9 +55,8 @@ irregular root pending comparative evidence.
 ## Morphological profile
 
 Late Pre-Proto-Losica is predominantly isolating. Roots and grammatical
-particles are invariant free forms. Productive compounding follows
-modifier-head order. Frequent compounds may become single phonological words;
-their junctions trigger the documented epenthesis and later sound changes.
+particles are invariant free forms. The productive status and ordering of
+compounding remain unresolved.
 
 The older `config/language_profile.json` drives the legacy typological
 generator. It describes a later agglutinative design space. This reference
@@ -66,12 +64,6 @@ grammar governs the historical Losican stage represented by the working
 language.
 
 ## Nominal phrases
-
-Nominal dependents precede their heads:
-
-```text
-possessor - demonstrative - numeral - property - noun
-```
 
 Number is expressed when discourse requires it. Independent particles mark a
 patient, recipient or beneficiary, and spatial or temporal ground:
@@ -84,49 +76,21 @@ patient, recipient or beneficiary, and spatial or temporal ground:
 | `ruk` | proximal deixis |
 | `ut` | distal deixis |
 
-Possession uses possessor-noun order. Kin expressions identify a relation and
-the relevant person or clan. The clan system supports dedicated roots for
-mother's clan, clan peer, eligible partner group, and communal caregiver during
-the audited ordinary-root phase.
+### Reference, possession, and clan evidence
 
-### Possession and clan-kin constructions
+The documented source form `muto` denotes the current utterance source. Because
+Pre-Proto Losica has no `/o/`, the general adaptation of documented incoming
+forms maps `o` to `u`; the Pre-Proto form is therefore `mutu`. It may occur as
+an ordinary referring expression, including in the position occupied by a
+person's name.
 
-Nominal possession uses juxtaposition: a referring expression precedes the
-possessed head. The referring expression keeps its ordinary meaning; the
-construction supplies the possessive relation. It may be omitted when discourse
-makes its referent recoverable.
+No other reference word is presently documented. English reference words in
+the input language therefore receive no invented Pre-Proto forms.
 
-Kin expressions use the same head-final logic. The reference person or clan
-(the kin anchor) precedes the relation term, and the relation is the head:
-
-```text
-anchor relation
-utterer-reference mother “the utterer's mother”
-context-reference sibling “the contextually identified person's sibling”
-```
-
-These English renderings describe the complete constructions. They are not
-separate possessive meanings of the reference forms.
-
-The reference inventory is defined by its discourse functions—utterance
-source, utterance target, contextual referent, utterer-associated group, and
-contextual group. Labels from an English person-number or case paradigm belong
-only to the English input adapter and do not define Losica categories.
-
-Four modifier-head compounds conventionalize the social distinctions already
-specified for the community:
-
-| Construction | Composition | Conventional meaning |
-|---|---|---|
-| mother's clan | `mother clan` | clan inherited through the mother |
-| clan peer | `clan sibling` | person of the same clan |
-| partner group | `spouse people` | potential partners under clan exogamy |
-| communal caregiver | `care-for person` | participant in communal childcare |
-
-The partner compound does not independently mean “eligible.” Eligibility comes
-from the exogamous-clan context. These are constructed internal Losica terms,
-not reconstructions from Komuheft or Tegofarela. Their daughter reflexes remain
-unresolved.
+The internal structure of nominal possession and kin expressions remains
+unresolved. Matrilineal clan membership is established. Clan exogamy,
+childcare organization, and derived clan-kin vocabulary remain unresolved.
+Vocabulary admission is limited to existing documented roots.
 
 ## Clause structure
 

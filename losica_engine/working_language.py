@@ -19,7 +19,7 @@ import unicodedata
 from .config import load_phonology
 from .morphophonology import orthographic_form
 from .phonology import generate_roots, is_legal_surface, legal_syllables
-from .possession_kinship import load_possession_kinship, nominal_sequence
+from .possession_kinship import load_possession_kinship
 
 
 SCHEMA = "losica-working-language/1"
@@ -29,12 +29,37 @@ DEFAULT_INVENTORY = ROOT / "data" / "concepticon_inventory_v0_30.json"
 DEFAULT_PHONOLOGY = ROOT / "config" / "preproto.json"
 DEFAULT_POSSESSION_KINSHIP = ROOT / "config" / "possession_kinship.json"
 
+# Reference concepts supplied by the external semantic inventory do not license
+# Pre-Proto word forms. Documented `mutu` is represented by ref:utterer instead.
+UNLICENSED_REFERENCE_CONCEPT_IDS = frozenset({
+    "169",   # IT
+    "262",   # HE OR SHE OR IT
+    "817",   # THEY
+    "1130",  # WE (EXCLUSIVE)
+    "1131",  # WE (INCLUSIVE)
+    "1209",  # I
+    "1211",  # HE
+    "1212",  # WE
+    "1213",  # YOU
+    "1834",  # SHE
+    "2111",  # YOU TWO
+    "2301",  # ME
+    "2304",  # THEE (OBLIQUE CASE OF YOU)
+    "2310",  # US (OBLIQUE CASE OF WE)
+    "2312",  # YOU (OBLIQUE CASE OF YOU)
+    "2473",  # HIS (GENITIVE OF HE)
+    "2474",  # HER (GENITIVE OF SHE)
+    "2634",  # WE TWO
+    "2635",  # THEY TWO
+    "2636",  # WE TWO (EXCLUSIVE)
+    "2637",  # WE TWO (INCLUSIVE)
+    "2642",  # HE OR SHE
+    "2844",  # YOU (FORMAL ADDRESS)
+    "3293",  # YOU (HONORIFIC)
+})
+
 MARKER_SPECS = (
     ("ref:utterer", "reference", "current utterance source"),
-    ("ref:interlocutor", "reference", "current utterance target"),
-    ("ref:context", "reference", "contextually identified referent"),
-    ("ref:utterer-set", "reference", "group associated with the current utterance source"),
-    ("ref:context-set", "reference", "contextually identified group"),
     ("role:acc", "role", "patient"),
     ("role:dat", "role", "recipient or beneficiary"),
     ("role:loc", "role", "location or time"),
@@ -48,13 +73,29 @@ MARKER_SPECS = (
     ("dem:dist", "deixis", "distal"),
 )
 
+# Preserve the established deterministic form slots while withholding
+# undocumented reference forms from the language artifact.
+FORM_ALLOCATION_IDS = (
+    "ref:utterer",
+    "ref:interlocutor",
+    "ref:context",
+    "ref:utterer-set",
+    "ref:context-set",
+    "role:acc",
+    "role:dat",
+    "role:loc",
+    "tam:pst",
+    "asp:pros",
+    "asp:pfv",
+    "pol:neg",
+    "mood:pot",
+    "clause:q",
+    "dem:prox",
+    "dem:dist",
+)
+
 PRONOUNS = {
     "i": "ref:utterer", "me": "ref:utterer", "myself": "ref:utterer",
-    "you": "ref:interlocutor", "yourself": "ref:interlocutor",
-    "he": "ref:context", "him": "ref:context", "she": "ref:context", "her": "ref:context",
-    "it": "ref:context", "itself": "ref:context",
-    "we": "ref:utterer-set", "us": "ref:utterer-set",
-    "they": "ref:context-set", "them": "ref:context-set",
 }
 
 IRREGULAR = {
@@ -110,11 +151,14 @@ def _orthography(seed: int, cfg) -> dict[str, str]:
     return mapping
 
 
-def _form_pools(cfg, seed: int, count: int) -> tuple[list[str], list[str]]:
+def _form_pools(
+    cfg, seed: int, count: int, marker_count: int,
+    reserved_forms=(),
+) -> tuple[list[str], list[str]]:
     marker_forms = sorted(legal_syllables(cfg))
     random.Random(seed ^ 0x4752414D).shuffle(marker_forms)
-    marker_forms = marker_forms[: len(MARKER_SPECS)]
-    reserved = {form.replace(".", "") for form in marker_forms}
+    marker_forms = marker_forms[:marker_count]
+    reserved = {form.replace(".", "") for form in (*marker_forms, *reserved_forms)}
     lexical = []
     seen = set()
     for root in generate_roots(cfg, [2]):
@@ -136,21 +180,46 @@ def build_working_language(
     inventory = json.loads(Path(inventory_path).read_text(encoding="utf-8"))
     if inventory.get("schema") != "losica-semantic-inventory/1":
         raise ValueError("working language requires losica-semantic-inventory/1")
-    concepts = sorted(inventory["concepts"], key=lambda row: int(row["concepticon_id"]))
+    concepts = sorted(
+        (
+            row for row in inventory["concepts"]
+            if row["concepticon_id"] not in UNLICENSED_REFERENCE_CONCEPT_IDS
+        ),
+        key=lambda row: int(row["concepticon_id"]),
+    )
     cfg = load_phonology(phonology_path)
-    possession_kinship = load_possession_kinship(possession_kinship_path, inventory)
+    possession_kinship = load_possession_kinship(possession_kinship_path, inventory, cfg)
     spelling = _orthography(seed, cfg)
-    marker_forms, lexical_forms = _form_pools(cfg, seed, len(concepts))
+    documented_references = possession_kinship.reference_forms
+    marker_forms, lexical_forms = _form_pools(
+        cfg,
+        seed,
+        len(concepts),
+        len(FORM_ALLOCATION_IDS),
+        [row.form for row in documented_references.values()],
+    )
+    generated_forms = dict(zip(FORM_ALLOCATION_IDS, marker_forms))
     markers = []
-    for (semantic_id, marker_class, meaning), form in zip(MARKER_SPECS, marker_forms):
-        markers.append({
+    for semantic_id, marker_class, meaning in MARKER_SPECS:
+        documented = documented_references.get(semantic_id)
+        form = documented.form if documented else generated_forms[semantic_id]
+        row = {
             "semantic_id": semantic_id,
             "class": marker_class,
             "meaning": meaning,
             "form": form,
             "orthographic": orthographic_form(form, spelling, cfg),
-            "provenance": "generated grammatical form; UniMorph/UD-shaped function",
-        })
+            "provenance": (
+                {
+                    "source_form": documented.source_form,
+                    "adaptation": dict(documented.adaptation),
+                    "distribution_status": documented.distribution_status,
+                }
+                if documented else
+                "generated grammatical form; UniMorph/UD-shaped function"
+            ),
+        }
+        markers.append(row)
     lexicon = []
     for concept, form in zip(concepts, lexical_forms):
         concept_id = concept["concepticon_id"]
@@ -191,17 +260,11 @@ def build_working_language(
             "sources": ["Universal Dependencies 2.18", "UniMorph feature inventory"],
             "possession_kinship": {
                 "schema": possession_kinship.schema,
-                "nominal_order": list(possession_kinship.nominal_possession["order"]),
-                "kin_order": list(possession_kinship.kin_relation["order"]),
-                "compounds": {
-                    compound_id: {
-                        "meaning": compound.meaning,
-                        "components": list(compound.components),
-                        "head": compound.head,
-                        "daughter_reflex_status": compound.daughter_reflex_status,
-                    }
-                    for compound_id, compound in possession_kinship.compounds.items()
-                },
+                "stage": possession_kinship.stage,
+                "nominal_possession_status": possession_kinship.nominal_possession_status,
+                "kin_relation_status": possession_kinship.kin_relation_status,
+                "social_principles": dict(possession_kinship.social_principles),
+                "vocabulary_policy": dict(possession_kinship.vocabulary_policy),
             },
         },
         "markers": markers,
@@ -209,7 +272,8 @@ def build_working_language(
         "coverage": {
             "semantic_ids": len(lexicon),
             "generated_lexical_forms": len(lexicon),
-            "generated_grammatical_forms": len(markers),
+            "generated_grammatical_forms": len(markers) - len(documented_references),
+            "documented_reference_forms": len(documented_references),
             "english_is_adapter_only": True,
         },
     }
@@ -410,14 +474,7 @@ def _emit(language: dict, graph: dict) -> list[dict]:
             add("role:dat", role)
 
     if graph.get("type") in {"nominal_possession", "kin_relation", "clan_kin"}:
-        inventory = {"concepts": [
-            {"concepticon_id": row["semantic_id"].removeprefix("c:")}
-            for row in language["lexicon"]
-        ]}
-        grammar = load_possession_kinship(DEFAULT_POSSESSION_KINSHIP, inventory)
-        for semantic_id, role in nominal_sequence(graph, grammar):
-            add(semantic_id, role)
-        return out
+        raise ValueError("Pre-Proto Losica possession and kin-relation syntax is unresolved")
 
     arguments = graph["arguments"]
     for role in ("AGENT", "THEME", "PATIENT", "RECIPIENT", "BENEFICIARY", "ATTRIBUTE"):
