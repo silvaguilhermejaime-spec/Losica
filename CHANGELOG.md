@@ -9,6 +9,8 @@
 - Recorded branch-specific reflexes, relative chronology, comparison examples, and explicit gaps in the intermediate-form reconstruction.
 - Added the first evidence-bounded Losican comparative lexicon, covering all four lexical derivations supplied in the Komuheft and Tegofarela descriptions.
 - Distinguished complete comparisons, partial branch evidence, notation levels, unresolved meanings, and provisional Proto-stage assignments in validated data.
+- Added validated intermediate-lineage constraints for Komuheftic and Sisengwigwo, with every required segment linked to rule or cognate evidence.
+- Kept simultaneous intermediate inventories and absolute rule dates unresolved while recording the exact Proto segments that current evidence leaves unconstrained.
 
 # Losica 0.26.0
 

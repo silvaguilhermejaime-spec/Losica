@@ -115,6 +115,11 @@ descriptions. Its validated register distinguishes the sole two-branch
 comparison from partial records and keeps every source-unspecified meaning
 unresolved.
 
+[Intermediate reconstruction constraints](docs/INTERMEDIATE_RECONSTRUCTION_CONSTRAINTS.md)
+identify which Proto segments are directly required by each branch's rules and
+attested forms. They preserve the distinction between diachronic evidence and
+a complete synchronic Komuheftic or Sisengwigwo inventory.
+
 On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
 same `losica-working-language` artifact for phone download.
 

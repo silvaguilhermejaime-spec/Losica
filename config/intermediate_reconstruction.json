@@ -1,0 +1,73 @@
+{
+  "schema": "losica-intermediate-constraints/1",
+  "claim_type": "diachronic_lineage_constraints",
+  "lineages": [
+    {
+      "branch_id": "komuheftic",
+      "stage": "Komuheftic",
+      "descendant": "Komuheft",
+      "reconstruction_status": "constraint_only",
+      "required_historical_segments": {
+        "consonants": [
+          {"segment": "p", "evidence": ["rule:K01"]},
+          {"segment": "t", "evidence": ["rule:K02"]},
+          {"segment": "k", "evidence": ["rule:K03", "rule:K04"]},
+          {"segment": "kʼ", "evidence": ["rule:K09"]},
+          {"segment": "b", "evidence": ["rule:K05"]},
+          {"segment": "d", "evidence": ["rule:K06"]},
+          {"segment": "g", "evidence": ["rule:K07"]},
+          {"segment": "kʷ", "evidence": ["rule:K11"]},
+          {"segment": "gʷ", "evidence": ["rule:K08", "cognate:CG0001:komuheftic"]},
+          {"segment": "ts", "evidence": ["rule:K10"]},
+          {"segment": "β", "evidence": ["rule:K13"]},
+          {"segment": "n", "evidence": ["rule:K14"]},
+          {"segment": "l", "evidence": ["rule:K15"]},
+          {"segment": "r", "evidence": ["cognate:CG0001:komuheftic"]}
+        ],
+        "vowels": [
+          {"segment": "i", "evidence": ["cognate:CG0001:komuheftic"]},
+          {"segment": "a", "evidence": ["cognate:CG0001:komuheftic"]},
+          {"segment": "o", "evidence": ["cognate:CG0003:komuheftic"]}
+        ]
+      },
+      "unconstrained_proto_segments": {
+        "consonants": ["m", "j", "w"],
+        "vowels": ["e", "u"]
+      },
+      "simultaneous_inventory_status": "unresolved",
+      "absolute_chronology_status": "unresolved",
+      "scope_note": "Required segments are attested at some point in the Komuheftic lineage; the evidence does not establish that they coexisted in one synchronic inventory."
+    },
+    {
+      "branch_id": "sisengwigwo",
+      "stage": "Sisengwigwo",
+      "descendant": "Tegofarela",
+      "reconstruction_status": "constraint_only",
+      "required_historical_segments": {
+        "consonants": [
+          {"segment": "p", "evidence": ["rule:S12"]},
+          {"segment": "t", "evidence": ["rule:S08"]},
+          {"segment": "k", "evidence": ["rule:S09"]},
+          {"segment": "kʼ", "evidence": ["rule:S02"]},
+          {"segment": "g", "evidence": ["rule:S04"]},
+          {"segment": "kʷ", "evidence": ["rule:S01"]},
+          {"segment": "gʷ", "evidence": ["rule:S05", "rule:S06", "cognate:CG0001:sisengwigwo"]},
+          {"segment": "ts", "evidence": ["rule:S03"]},
+          {"segment": "β", "evidence": ["rule:S07"]},
+          {"segment": "r", "evidence": ["rule:S10", "rule:S11", "cognate:CG0001:sisengwigwo"]}
+        ],
+        "vowels": [
+          {"segment": "i", "evidence": ["cognate:CG0001:sisengwigwo"]},
+          {"segment": "a", "evidence": ["cognate:CG0001:sisengwigwo"]}
+        ]
+      },
+      "unconstrained_proto_segments": {
+        "consonants": ["b", "d", "m", "n", "l", "j", "w"],
+        "vowels": ["e", "o", "u"]
+      },
+      "simultaneous_inventory_status": "unresolved",
+      "absolute_chronology_status": "unresolved",
+      "scope_note": "Required segments are attested at some point in the Sisengwigwo lineage; the evidence does not establish that they coexisted in one synchronic inventory."
+    }
+  ]
+}

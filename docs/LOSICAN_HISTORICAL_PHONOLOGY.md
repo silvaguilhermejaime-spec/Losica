@@ -157,3 +157,8 @@ using a modern inventory as proof of an undocumented retention.
 The attested lexical derivations are indexed separately in
 [LOSICAN_COMPARATIVE_LEXICON.md](LOSICAN_COMPARATIVE_LEXICON.md) and the
 validated `data/losican_cognates.json` register.
+
+The evidence-supported limits on intermediate Komuheftic and Sisengwigwo
+inventories are stated in
+[INTERMEDIATE_RECONSTRUCTION_CONSTRAINTS.md](INTERMEDIATE_RECONSTRUCTION_CONSTRAINTS.md)
+and validated by `config/intermediate_reconstruction.json`.
