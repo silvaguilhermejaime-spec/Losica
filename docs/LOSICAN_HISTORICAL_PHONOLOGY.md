@@ -15,9 +15,9 @@ levels. It distinguishes three kinds of statement:
 
 The machine-readable companion is `config/family_history.json`. Its
 Proto-Losica inventory has status `provisional`: the inventory is exactly the
-output segment set licensed by the implemented Pre-Proto transition, but a
-larger body of cognate sets is still needed for a full comparative
-reconstruction.
+output segment set licensed by the implemented Pre-Proto transition. It is a
+project reconstruction, not a result derived from an absent daughter-language
+wordlist.
 
 ## Family chronology
 
@@ -147,16 +147,17 @@ The current evidence does **not** yet establish:
 - the conditioning of the consonantal and vocalized Tegofarela reflexes of
   `*gʷ`;
 - a daughter reflex for every Proto segment in every environment;
-- enough regular cognate sets to promote the Proto inventory from provisional
-  to established.
+- enough independently authored historical evidence to promote the Proto
+  inventory from provisional to established.
 
 New historical claims should be added only when they name a source section,
 state an environment, distinguish phonemic from phonetic outcomes, and avoid
 using a modern inventory as proof of an undocumented retention.
 
-The attested lexical derivations are indexed separately in
-[LOSICAN_COMPARATIVE_LEXICON.md](LOSICAN_COMPARATIVE_LEXICON.md) and the
-validated `data/losican_cognates.json` register.
+The printed phonological derivations are indexed separately in
+[HISTORICAL_WORKED_EXAMPLES.md](HISTORICAL_WORKED_EXAMPLES.md) and the
+validated `data/historical_worked_examples.json` register. The register does
+not classify them as cognate sets or a daughter-language lexicon.
 
 The evidence-supported limits on intermediate Komuheftic and Sisengwigwo
 inventories are stated in

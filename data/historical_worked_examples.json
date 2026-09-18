@@ -1,5 +1,5 @@
 {
-  "schema": "losica-comparative-lexicon/1",
+  "schema": "losica-historical-examples/1",
   "sources": [
     {
       "id": "komuheft",
@@ -18,13 +18,13 @@
   ],
   "entries": [
     {
-      "id": "CG0001",
+      "id": "HX0001",
       "reconstruction": {"form": "igwara", "stage": "Proto-Losica", "status": "provisional_mapping"},
-      "gloss": null,
-      "semantic_status": "unresolved",
+      "meaning": null,
+      "meaning_status": "not_supplied",
       "morphology": "simple root",
       "related_to": null,
-      "coverage": "complete",
+      "coverage": "both_descriptions",
       "attestations": {
         "komuheftic": {
           "status": "attested",
@@ -57,17 +57,17 @@
       },
       "notes": [
         "This is the only presently supplied form with outcomes in both daughter descriptions.",
-        "The source documents do not provide a gloss."
+        "The source documents do not provide a meaning."
       ]
     },
     {
-      "id": "CG0002",
+      "id": "HX0002",
       "reconstruction": {"form": "Kwaratsiβ", "stage": "Proto-Losica", "status": "provisional_mapping"},
-      "gloss": null,
-      "semantic_status": "unresolved",
-      "morphology": "unspecified lexical form",
+      "meaning": null,
+      "meaning_status": "not_supplied",
+      "morphology": "unspecified historical form",
       "related_to": null,
-      "coverage": "partial",
+      "coverage": "one_description",
       "attestations": {
         "komuheftic": {
           "status": "attested",
@@ -84,18 +84,18 @@
             {"form": "warajwi", "notation": "phonemic"}
           ]
         },
-        "sisengwigwo": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []}
+        "sisengwigwo": {"status": "not_printed", "source_id": null, "source_section": null, "chain": []}
       },
-      "notes": ["No Tegofarela reflex or gloss is supplied."]
+      "notes": ["The Tegofarela description prints no corresponding chain or meaning."]
     },
     {
-      "id": "CG0003",
+      "id": "HX0003",
       "reconstruction": {"form": "Atsaokwo", "stage": "Proto-Losica", "status": "provisional_mapping"},
-      "gloss": null,
-      "semantic_status": "unresolved",
-      "morphology": "unspecified lexical form",
+      "meaning": null,
+      "meaning_status": "not_supplied",
+      "morphology": "unspecified historical form",
       "related_to": null,
-      "coverage": "partial",
+      "coverage": "one_description",
       "attestations": {
         "komuheftic": {
           "status": "attested",
@@ -108,23 +108,23 @@
             {"form": "(a)oʃe", "notation": "phonemic"}
           ]
         },
-        "sisengwigwo": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []}
+        "sisengwigwo": {"status": "not_printed", "source_id": null, "source_section": null, "chain": []}
       },
       "notes": [
         "Parentheses are preserved exactly from the supplied Komuheft derivation.",
-        "No Tegofarela reflex or gloss is supplied."
+        "The Tegofarela description prints no corresponding chain or meaning."
       ]
     },
     {
-      "id": "CG0004",
+      "id": "HX0004",
       "reconstruction": {"form": "igwaramira", "stage": "Proto-Losica", "status": "provisional_mapping"},
-      "gloss": null,
-      "semantic_status": "unresolved",
+      "meaning": null,
+      "meaning_status": "not_supplied",
       "morphology": "morphologically extended form",
-      "related_to": "CG0001",
-      "coverage": "partial",
+      "related_to": "HX0001",
+      "coverage": "one_description",
       "attestations": {
-        "komuheftic": {"status": "missing_evidence", "source_id": null, "source_section": null, "chain": []},
+        "komuheftic": {"status": "not_printed", "source_id": null, "source_section": null, "chain": []},
         "sisengwigwo": {
           "status": "attested",
           "source_id": "tegofarela",
@@ -139,7 +139,7 @@
       },
       "notes": [
         "The source presents this form as the morphologically extended counterpart to the simple igwara root.",
-        "No Komuheft reflex or gloss is supplied."
+        "The Komuheft description prints no corresponding chain or meaning."
       ]
     }
   ]

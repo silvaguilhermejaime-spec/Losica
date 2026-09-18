@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from losica_engine.comparative_lexicon import load_comparative_lexicon
+from losica_engine.historical_examples import load_historical_examples
 from losica_engine.config import load_phonology, load_transition
 from losica_engine.family_history import load_family_history
 from losica_engine.intermediate_reconstruction import load_intermediate_reconstruction
@@ -17,12 +17,12 @@ HISTORY = load_family_history(
     PHONOLOGY,
     TRANSITION,
 )
-LEXICON = load_comparative_lexicon(ROOT / "data/losican_cognates.json", HISTORY)
+EXAMPLES = load_historical_examples(ROOT / "data/historical_worked_examples.json", HISTORY)
 CONSTRAINTS_PATH = ROOT / "config/intermediate_reconstruction.json"
 
 
 def constraints():
-    return load_intermediate_reconstruction(CONSTRAINTS_PATH, HISTORY, LEXICON)
+    return load_intermediate_reconstruction(CONSTRAINTS_PATH, HISTORY, EXAMPLES)
 
 
 def segments(items):
@@ -62,15 +62,15 @@ def test_sisengwigwo_constraints_leave_unattested_retentions_open():
     assert set(lineage.unconstrained_proto_vowels) == {"e", "o", "u"}
 
 
-def test_cognate_evidence_requires_an_attested_branch(tmp_path):
+def test_example_evidence_requires_an_attested_branch(tmp_path):
     data = json.loads(CONSTRAINTS_PATH.read_text())
     data["lineages"][0]["required_historical_segments"]["vowels"][0]["evidence"] = [
-        "cognate:CG0004:komuheftic"
+        "example:HX0004:komuheftic"
     ]
     changed = tmp_path / "constraints.json"
     changed.write_text(json.dumps(data))
-    with pytest.raises(ValueError, match="cognate evidence is missing"):
-        load_intermediate_reconstruction(changed, HISTORY, LEXICON)
+    with pytest.raises(ValueError, match="example evidence is missing"):
+        load_intermediate_reconstruction(changed, HISTORY, EXAMPLES)
 
 
 def test_rule_evidence_must_belong_to_the_branch(tmp_path):
@@ -81,7 +81,7 @@ def test_rule_evidence_must_belong_to_the_branch(tmp_path):
     changed = tmp_path / "constraints.json"
     changed.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="unknown branch rule"):
-        load_intermediate_reconstruction(changed, HISTORY, LEXICON)
+        load_intermediate_reconstruction(changed, HISTORY, EXAMPLES)
 
 
 def test_unconstrained_lists_must_be_exact_proto_complements(tmp_path):
@@ -90,7 +90,7 @@ def test_unconstrained_lists_must_be_exact_proto_complements(tmp_path):
     changed = tmp_path / "constraints.json"
     changed.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="exact Proto complement"):
-        load_intermediate_reconstruction(changed, HISTORY, LEXICON)
+        load_intermediate_reconstruction(changed, HISTORY, EXAMPLES)
 
 
 def test_complete_inventory_claim_is_rejected(tmp_path):
@@ -99,4 +99,4 @@ def test_complete_inventory_claim_is_rejected(tmp_path):
     changed = tmp_path / "constraints.json"
     changed.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="must remain unresolved"):
-        load_intermediate_reconstruction(changed, HISTORY, LEXICON)
+        load_intermediate_reconstruction(changed, HISTORY, EXAMPLES)

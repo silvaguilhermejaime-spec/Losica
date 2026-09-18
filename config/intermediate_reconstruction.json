@@ -17,17 +17,17 @@
           {"segment": "d", "evidence": ["rule:K06"]},
           {"segment": "g", "evidence": ["rule:K07"]},
           {"segment": "kʷ", "evidence": ["rule:K11"]},
-          {"segment": "gʷ", "evidence": ["rule:K08", "cognate:CG0001:komuheftic"]},
+          {"segment": "gʷ", "evidence": ["rule:K08", "example:HX0001:komuheftic"]},
           {"segment": "ts", "evidence": ["rule:K10"]},
           {"segment": "β", "evidence": ["rule:K13"]},
           {"segment": "n", "evidence": ["rule:K14"]},
           {"segment": "l", "evidence": ["rule:K15"]},
-          {"segment": "r", "evidence": ["cognate:CG0001:komuheftic"]}
+          {"segment": "r", "evidence": ["example:HX0001:komuheftic"]}
         ],
         "vowels": [
-          {"segment": "i", "evidence": ["cognate:CG0001:komuheftic"]},
-          {"segment": "a", "evidence": ["cognate:CG0001:komuheftic"]},
-          {"segment": "o", "evidence": ["cognate:CG0003:komuheftic"]}
+          {"segment": "i", "evidence": ["example:HX0001:komuheftic"]},
+          {"segment": "a", "evidence": ["example:HX0001:komuheftic"]},
+          {"segment": "o", "evidence": ["example:HX0003:komuheftic"]}
         ]
       },
       "unconstrained_proto_segments": {
@@ -51,14 +51,14 @@
           {"segment": "kʼ", "evidence": ["rule:S02"]},
           {"segment": "g", "evidence": ["rule:S04"]},
           {"segment": "kʷ", "evidence": ["rule:S01"]},
-          {"segment": "gʷ", "evidence": ["rule:S05", "rule:S06", "cognate:CG0001:sisengwigwo"]},
+          {"segment": "gʷ", "evidence": ["rule:S05", "rule:S06", "example:HX0001:sisengwigwo"]},
           {"segment": "ts", "evidence": ["rule:S03"]},
           {"segment": "β", "evidence": ["rule:S07"]},
-          {"segment": "r", "evidence": ["rule:S10", "rule:S11", "cognate:CG0001:sisengwigwo"]}
+          {"segment": "r", "evidence": ["rule:S10", "rule:S11", "example:HX0001:sisengwigwo"]}
         ],
         "vowels": [
-          {"segment": "i", "evidence": ["cognate:CG0001:sisengwigwo"]},
-          {"segment": "a", "evidence": ["cognate:CG0001:sisengwigwo"]}
+          {"segment": "i", "evidence": ["example:HX0001:sisengwigwo"]},
+          {"segment": "a", "evidence": ["example:HX0001:sisengwigwo"]}
         ]
       },
       "unconstrained_proto_segments": {

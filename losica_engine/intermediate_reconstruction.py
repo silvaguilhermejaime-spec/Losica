@@ -43,7 +43,7 @@ def _constraint(value, context):
     )
 
 
-def _validate_evidence(reference, branch, comparative_lexicon, context):
+def _validate_evidence(reference, branch, historical_examples, context):
     parts = reference.split(":")
     require(len(parts) >= 2, f"{context}: malformed evidence reference {reference!r}")
     if parts[0] == "rule":
@@ -51,20 +51,20 @@ def _validate_evidence(reference, branch, comparative_lexicon, context):
         require(parts[1] in {rule.id for rule in branch.rules},
                 f"{context}: unknown branch rule {parts[1]!r}")
         return
-    if parts[0] == "cognate":
-        require(len(parts) == 3, f"{context}: malformed cognate reference {reference!r}")
-        require(comparative_lexicon is not None,
-                f"{context}: comparative lexicon required for cognate evidence")
-        entries = {entry.id: entry for entry in comparative_lexicon.entries}
-        require(parts[1] in entries, f"{context}: unknown cognate entry {parts[1]!r}")
-        require(parts[2] == branch.id, f"{context}: cognate evidence belongs to another branch")
+    if parts[0] == "example":
+        require(len(parts) == 3, f"{context}: malformed example reference {reference!r}")
+        require(historical_examples is not None,
+                f"{context}: historical worked-example register required for example evidence")
+        entries = {entry.id: entry for entry in historical_examples.entries}
+        require(parts[1] in entries, f"{context}: unknown historical example {parts[1]!r}")
+        require(parts[2] == branch.id, f"{context}: example evidence belongs to another branch")
         require(entries[parts[1]].attestations[branch.id].status == "attested",
-                f"{context}: cognate evidence is missing in branch {branch.id}")
+                f"{context}: example evidence is missing in branch {branch.id}")
         return
-    require(False, f"{context}: evidence kind must be rule or cognate")
+    require(False, f"{context}: evidence kind must be rule or example")
 
 
-def _lineage(value, family_history, comparative_lexicon):
+def _lineage(value, family_history, historical_examples):
     keys(
         value,
         {
@@ -111,7 +111,7 @@ def _lineage(value, family_history, comparative_lexicon):
                 _validate_evidence(
                     reference,
                     branch,
-                    comparative_lexicon,
+                    historical_examples,
                     f"lineage {branch_id} segment {item.segment}",
                 )
 
@@ -155,7 +155,7 @@ def _lineage(value, family_history, comparative_lexicon):
     )
 
 
-def load_intermediate_reconstruction(path, family_history, comparative_lexicon=None):
+def load_intermediate_reconstruction(path, family_history, historical_examples=None):
     data = read_json(path)
     keys(data, {"schema", "claim_type", "lineages"}, context="intermediate reconstruction")
     schema = text(data["schema"], "intermediate reconstruction schema")
@@ -166,7 +166,7 @@ def load_intermediate_reconstruction(path, family_history, comparative_lexicon=N
             "intermediate reconstruction must contain diachronic lineage constraints")
     require(isinstance(data["lineages"], list), "intermediate lineages must be a list")
     rows = tuple(
-        _lineage(value, family_history, comparative_lexicon)
+        _lineage(value, family_history, historical_examples)
         for value in data["lineages"]
     )
     lineages = {row.branch_id: row for row in rows}

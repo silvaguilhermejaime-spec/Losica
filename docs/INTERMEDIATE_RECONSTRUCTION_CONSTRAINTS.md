@@ -11,7 +11,7 @@ single date.
 
 The validated register is `config/intermediate_reconstruction.json`. It links
 each segment claim to a rule in `config/family_history.json` or an attested
-entry in `data/losican_cognates.json`.
+worked derivation in `data/historical_worked_examples.json`.
 
 ## Komuheftic lineage
 
@@ -85,7 +85,7 @@ one inventory would erase that chronology.
 
 A defensible sequence of intermediate inventories requires:
 
-- more two-branch cognate sets, preferably with glosses;
+- additional explicitly authored historical examples where the project later defines them;
 - examples for the currently unconstrained Proto segments;
 - morphological boundaries and stress for each historical input;
 - clearer conditioning for the Tegofarela reflexes of `*gʷ`;
