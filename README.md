@@ -109,11 +109,16 @@ correspondence claims also have a validated machine-readable register at
 explicitly marked, and modern inventories serve as evidence requiring separate
 correspondence support.
 
-The initial [comparative lexicon](docs/LOSICAN_COMPARATIVE_LEXICON.md) indexes
-every explicit lexical derivation in the supplied Komuheft and Tegofarela
-descriptions. Its validated register distinguishes the sole two-branch
-comparison from partial records and keeps every source-unspecified meaning
-unresolved.
+The [historical worked-example register](docs/HISTORICAL_WORKED_EXAMPLES.md)
+indexes the derivation examples printed in the supplied Komuheft and
+Tegofarela descriptions. It records source coverage and notation, classifies
+the material as phonological worked examples, and leaves source-unspecified
+meanings unassigned.
+
+[Intermediate reconstruction constraints](docs/INTERMEDIATE_RECONSTRUCTION_CONSTRAINTS.md)
+identify which Proto segments are directly required by each branch's rules and
+attested forms. They preserve the distinction between diachronic evidence and
+a complete synchronic Komuheftic or Sisengwigwo inventory.
 
 On GitHub, **Actions → Build working Losica → Run workflow** builds and tests the
 same `losica-working-language` artifact for phone download.
